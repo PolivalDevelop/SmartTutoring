@@ -12,22 +12,30 @@
 html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#111;background:var(--bg)}
 a{color:inherit;text-decoration:none}
 
-.app{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  gap:var(--gap);
-  padding:1rem;
-  grid-template-columns: auto 1fr;
+.app {
+  padding-top: calc(1rem + 3rem);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  gap: var(--gap);
 }
 
-header.app-header{
-  grid-column:1/-1;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:1rem;
+
+header.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--card);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
+
 .brand{
   display:flex;gap:.75rem;align-items:center
 }
@@ -47,12 +55,14 @@ header.app-header{
 .btn-ghost{background:transparent;border:1px solid rgba(17,24,39,.06)}
 
 .sidebar {
+  margin-top: 3.5rem; 
+  position: sticky; 
   background: var(--card);
   border-radius: var(--radius);
   padding: 1rem;
+  top: 0;
   box-shadow: 0 6px 20px rgba(16,24,40,.06);
   height: calc(100vh - 3rem);
-  top: 1rem;
   overflow: auto;
   width: var(--sidebar-w);
   cursor: default;
