@@ -1,0 +1,95 @@
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --radius:12px;
+  --gap:1rem;
+  --sidebar-w:300px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#111;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  gap:var(--gap);
+  padding:1rem;
+}
+
+header.app-header{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+.brand{
+  display:flex;gap:.75rem;align-items:center
+}
+.brand .logo{
+  width:44px;height:44px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),#8b5cf6);
+  display:inline-grid;place-items:center;color:white;font-weight:700
+}
+.brand h1{font-size:1.125rem;margin:0}
+.top-actions{display:flex;gap:.5rem;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .75rem;
+  border-radius:10px;border:0;cursor:pointer;font-weight:600
+}
+.btn:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px}
+.btn-primary{background:var(--accent);color:white}
+.btn-ghost{background:transparent;border:1px solid rgba(17,24,39,.06)}
+
+aside.sidebar{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:1rem;
+  box-shadow:0 6px 20px rgba(16,24,40,.06);
+  height:calc(100vh - 3rem);
+  position:sticky;
+  top:1rem;
+  overflow:auto;
+}
+.controls{display:flex;flex-direction:column;gap:.5rem}
+.control-group{display:flex;flex-direction:column;gap:.25rem}
+input,select{padding:.5rem .6rem;border-radius:8px;border:1px solid #e6eaf2}
+
+main.content{
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:var(--gap);
+}
+.content-header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.filters-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.results{display:flex;flex-direction:column;gap:.5rem}
+.lesson-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:.75rem 1rem;
+  box-shadow:0 6px 18px rgba(15,23,42,.04);
+  display:flex;flex-direction:column;
+}
+.lesson-line{
+  display:grid;
+  grid-template-columns:2fr 1fr auto;
+  align-items:center;
+  gap:.5rem;
+}
+.lesson-title{font-weight:700}
+.lesson-info{display:flex;gap:1rem;color:var(--muted);font-size:.9rem;justify-content:flex-start;align-items:center}
+.card-actions{display:flex;gap:.5rem}
+.small{font-size:.9rem;padding:.35rem .6rem;border-radius:8px}
+.footer-note{color:var(--muted);font-size:.85rem;margin-top:1rem}
+
+@media(max-width:880px){
+  .app{grid-template-columns:1fr}
+  aside.sidebar{position:relative;height:auto;order:2}
+  main.content{order:1}
+  .lesson-line{grid-template-columns:1fr;gap:.25rem}
+}

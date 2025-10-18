@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ripetizioni — Home</title>
+  <meta name="description" content="Sistema di prenotazione ripetizioni online" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
+
+    <header class="app-header" role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">R</div>
+        <div>
+          <h1>Ripetizioni</h1>
+          <p class="lesson-sub">Trova e prenota lezioni universitarie — in tempo reale</p>
+        </div>
+      </div>
+
+      <div class="top-actions" role="navigation" aria-label="Azioni principali">
+        <a href="#registrati" class="btn btn-primary" id="signupBtn">Iscriviti</a>
+        <button class="btn btn-ghost" aria-haspopup="dialog" aria-controls="loginDialog">Accedi</button>
+      </div>
+    </header>
+
+    <aside class="sidebar" role="complementary" aria-labelledby="sidebarTitle">
+      <h2 id="sidebarTitle">Filtri</h2>
+      <div class="controls">
+        <div class="control-group">
+          <label for="course">Materia</label>
+          <input list="courses" id="course" name="course" placeholder="Seleziona o digita" />
+          <datalist id="courses">
+            <option value="Analisi" />
+            <option value="Programmazione in C" />
+            <option value="Inglese" />
+          </datalist>
+        </div>
+
+        <div class="control-group">
+          <label for="author">Autore</label>
+          <input type="text" id="author" name="author" placeholder="Nome docente" />
+        </div>
+
+        <div class="control-group">
+          <label for="day">Giorno</label>
+          <select id="day" name="day">
+            <option value="any">Qualsiasi giorno</option>
+            <option>Lunedì</option>
+            <option>Martedì</option>
+            <option>Mercoledì</option>
+            <option>Giovedì</option>
+            <option>Venerdì</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Prezzo (€)</label>
+          <div style="display:flex;gap:.5rem">
+            <input type="number" min="0" placeholder="min" />
+            <input type="number" min="0" placeholder="max" />
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content" role="main" aria-labelledby="mainTitle">
+      <div class="content-header">
+        <h2 id="mainTitle">Lezioni disponibili</h2>
+        <div class="filters-row">
+          <span class="lesson-sub">Ordina per:</span>
+          <select aria-label="Ordina lezioni">
+            <option>Più recenti</option>
+            <option>Prezzo crescente</option>
+            <option>Prezzo decrescente</option>
+          </select>
+        </div>
+      </div>
+
+      <section class="results" aria-live="polite" aria-relevant="additions removals" id="lessonsList">
+
+        <article class="lesson-card" role="article" aria-labelledby="lesson1Title" data-id="lesson_1">
+          <div class="lesson-line">
+            <div id="lesson1Title" class="lesson-title">Analisi — Marco Rossi (Triennale)</div>
+            <div class="lesson-info">
+              <span class="duration">1h</span>
+              <span class="price">€10</span>
+              <span class="time">Mercoledì • 12:00</span>
+            </div>
+            <div class="card-actions">
+              <button class="small btn-primary">Prenota</button>
+              <button class="small btn-ghost">Profilo</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson-card" role="article" aria-labelledby="lesson2Title" data-id="lesson_2">
+          <div class="lesson-line">
+            <div id="lesson2Title" class="lesson-title">Programmazione in C — Laura Bianchi (Magistrale)</div>
+            <div class="lesson-info">
+              <span class="duration">1.5h</span>
+              <span class="price">€15</span>
+              <span class="time">Giovedì • 15:00</span>
+            </div>
+            <div class="card-actions">
+              <button class="small btn-primary">Prenota</button>
+              <button class="small btn-ghost">Profilo</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="lesson-card" role="article" aria-labelledby="lesson3Title" data-id="lesson_3">
+          <div class="lesson-line">
+            <div id="lesson3Title" class="lesson-title">Inglese — Teodoro Verdi (Dottorando)</div>
+            <div class="lesson-info">
+              <span class="duration">1h</span>
+              <span class="price">€12</span>
+              <span class="time">Venerdì • 17:00</span>
+            </div>
+            <div class="card-actions">
+              <button class="small btn-primary">Prenota</button>
+              <button class="small btn-ghost">Profilo</button>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <footer class="footer-note">© Progetto universitario — Applicazioni e Servizi Web</footer>
+    </main>
+  </div>
+</body>
+</html>
