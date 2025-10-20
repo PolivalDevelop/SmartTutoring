@@ -79,6 +79,9 @@
       <div class="content-header">
         <h2 id="mainTitle">Lezioni disponibili</h2>
         <div class="filters-row">
+          <button id="filtersToggle" class="btn btn-ghost filters-toggle" aria-expanded="false" aria-controls="sidebar">
+            🎚️ Filtri
+          </button>
           <span class="lesson-sub">Ordina per:</span>
           <select aria-label="Ordina lezioni">
             <option>Più recenti</option>
@@ -138,6 +141,30 @@
     </main>
   </div>
 <script src="darkmode.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('filtersToggle');
+  const sidebar = document.querySelector('.sidebar');
+
+  // Mostra/chiudi sidebar solo su mobile
+  toggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.textContent = isOpen ? '❌ Chiudi filtri' : '🎚️ Filtri';
+  });
+
+  // Chiude sidebar se si ridimensiona a desktop
+  const handleResize = () => {
+    if (window.innerWidth >= 880) {
+      sidebar.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
+      toggle.textContent = '🎚️ Filtri';
+    }
+  };
+  window.addEventListener('resize', handleResize);
+});
+</script>
+
 
 </body>
 </html>
