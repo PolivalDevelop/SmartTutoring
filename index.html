@@ -12,7 +12,9 @@
 
     <header class="app-header" role="banner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">ST</div>
+        <div class="logo" aria-hidden="true">
+            <img src="src/LogoSmartTutoring.png" alt="Logo ripetizioni" width="44" height="44" style="border-radius: 10px;" />
+        </div>
         <div>
           <h1>Smart Tutoring</h1>
           <p class="lesson-sub">Trova e prenota lezioni universitarie</p>
@@ -36,7 +38,7 @@
     </header>
 
     <aside class="sidebar" role="complementary" aria-labelledby="sidebarTitle">
-      <h2 id="sidebarTitle">Filtri</h2>
+      <h2 id="sidebarTitle">Mostra filtri</h2>
       <div class="controls">
         <div class="control-group">
           <label for="course">Materia</label>
@@ -80,7 +82,7 @@
         <h2 id="mainTitle">Lezioni disponibili</h2>
         <div class="filters-row">
           <button id="filtersToggle" class="btn btn-ghost filters-toggle" aria-expanded="false" aria-controls="sidebar">
-            🎚️ Filtri
+            Filtri
           </button>
           <span class="lesson-sub">Ordina per:</span>
           <select aria-label="Ordina lezioni">
@@ -141,29 +143,7 @@
     </main>
   </div>
 <script src="darkmode.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('filtersToggle');
-  const sidebar = document.querySelector('.sidebar');
-
-  // Mostra/chiudi sidebar solo su mobile
-  toggle.addEventListener('click', () => {
-    const isOpen = sidebar.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', isOpen);
-    toggle.textContent = isOpen ? '❌ Chiudi filtri' : '🎚️ Filtri';
-  });
-
-  // Chiude sidebar se si ridimensiona a desktop
-  const handleResize = () => {
-    if (window.innerWidth >= 880) {
-      sidebar.classList.remove('open');
-      toggle.setAttribute('aria-expanded', false);
-      toggle.textContent = '🎚️ Filtri';
-    }
-  };
-  window.addEventListener('resize', handleResize);
-});
-</script>
+<script src="filtersForMobile.js"></script>
 
 
 </body>
