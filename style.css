@@ -62,7 +62,7 @@ header.app-header {
   padding: 1rem;
   top: 0;
   box-shadow: 0 6px 20px rgba(16,24,40,.06);
-  height: calc(100vh - 3rem);
+  height: fit-content;
   overflow: auto;
   width: var(--sidebar-w);
   cursor: default;
@@ -88,12 +88,19 @@ header.app-header {
 input,select{padding:.5rem .6rem;border-radius:8px;border:1px solid #e6eaf2}
 
 main.content{
+  margin-top: 3.5rem; 
   padding:0;
   display:flex;
   flex-direction:column;
   gap:var(--gap);
 }
-.content-header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.content-header{padding:1rem;
+  display:flex;
+  align-items:center;
+  justify-content:
+  space-between;
+  gap:1rem
+}
 .filters-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
 .results{display:flex;flex-direction:column;gap:.5rem}
 .lesson-card{
@@ -113,7 +120,7 @@ main.content{
 .lesson-info{display:flex;gap:1rem;color:var(--muted);font-size:.9rem;justify-content:flex-start;align-items:center}
 .card-actions{display:flex;gap:.5rem}
 .small{font-size:.9rem;padding:.35rem .6rem;border-radius:8px}
-.footer-note{color:var(--muted);font-size:.85rem;margin-top:1rem}
+.footer-note{color:var(--muted);font-size:.85rem;margin-top:1rem;text-align: right;padding: 1rem;}
 
 @media(max-width:880px){
   .app{grid-template-columns:1fr}
