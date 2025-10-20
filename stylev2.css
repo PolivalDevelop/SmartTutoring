@@ -286,24 +286,38 @@ main.content {
 
 /* === Tema toggle === */
 .theme-toggle {
-  font-size: 1.1rem;
-  line-height: 1;
-  padding: .5rem;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
   display: inline-flex;
   place-items: center;
+  position: relative;
+  transition: background .2s ease;
 }
 
-/* Animazione di transizione tema */
-html {
-  transition: background-color .3s ease, color .3s ease;
+.theme-toggle .icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
 }
-body, .lesson-card, .sidebar, .content-header, header.app-header {
+
+.theme-toggle .hidden {
+  opacity: 0;
+  transform: scale(0.7);
+  position: absolute;
+}
+
+.theme-toggle:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-radius: 50%;
+}
+
+/* Transizioni tema fluide */
+html, body, .lesson-card, .sidebar, .content-header, header.app-header {
   transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
 }
 
-/* Tema dark manuale */
+/* Light/Dark override */
 html[data-theme='dark'] {
   --bg: #0f172a;
   --card: #1e293b;
@@ -315,7 +329,6 @@ html[data-theme='dark'] {
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Tema chiaro manuale */
 html[data-theme='light'] {
   --bg: #f9fafb;
   --card: #ffffff;
@@ -326,4 +339,3 @@ html[data-theme='light'] {
   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-
