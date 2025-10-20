@@ -20,8 +20,12 @@
       </div>
 
       <div class="top-actions" role="navigation" aria-label="Azioni principali">
+        <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">
+          🌓
+        </button>
         <a href="#registrati" class="btn btn-primary" id="signupBtn">Iscriviti</a>
         <button class="btn btn-ghost" aria-haspopup="dialog" aria-controls="loginDialog">Accedi</button>
+        
       </div>
     </header>
 
@@ -258,5 +262,29 @@
       <footer class="footer-note">© Progetto universitario — Applicazioni e Servizi Web</footer>
     </main>
   </div>
+  <script>
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const storageKey = 'st-theme';
+
+  // Recupera tema salvato o preferenza sistema
+  const saved = localStorage.getItem(storageKey);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const currentTheme = saved || (prefersDark ? 'dark' : 'light');
+  root.setAttribute('data-theme', currentTheme);
+
+  // Aggiorna l’icona
+  btn.textContent = currentTheme === 'dark' ? '🌞' : '🌙';
+
+  btn.addEventListener('click', () => {
+    const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem(storageKey, newTheme);
+    btn.textContent = newTheme === 'dark' ? '🌞' : '🌙';
+  });
+})();
+</script>
+
 </body>
 </html>
