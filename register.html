@@ -6,6 +6,37 @@
   <title>Iscriviti — Smart Tutoring</title>
   <link rel="stylesheet" href="register.css" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* === Tooltip d'errore (vignetta) === */
+    .error-tooltip {
+      position: absolute;
+      background: #e63946;
+      color: #fff;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      white-space: nowrap;
+      top: 100%;
+      left: 0;
+      transform: translateY(6px);
+      animation: fadeIn .2s ease-out;
+      z-index: 50;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(6px); }
+    }
+
+    .form-group { position: relative; }
+
+    /* Facoltativo: evidenzia input con errore */
+    input.error {
+      border-color: #e63946 !important;
+      outline: none;
+    }
+  </style>
 </head>
 <body>
   <header class="app-header" role="banner">
@@ -42,7 +73,6 @@
         <div class="form-group">
           <label for="email">Email istituzionale *</label>
           <input type="email" id="email" name="email" placeholder="nome.cognome@studio.unibo.it" required />
-          <small id="emailError" class="error-text" aria-live="polite"></small>
         </div>
 
         <div class="form-group password-group">
@@ -51,7 +81,6 @@
             <input type="password" id="password" name="password" minlength="6" required />
             <button type="button" id="togglePassword" aria-label="Mostra password">👁️</button>
           </div>
-          <small id="passwordError" class="error-text" aria-live="polite"></small>
         </div>
 
         <div class="form-group">
@@ -101,6 +130,100 @@
     <button id="toastClose" aria-label="Chiudi notifica">✖</button>
   </div>
 
-  <script src="register.js"></script>
+  <script>
+    // === Tema toggle ===
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('click', () => {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+    });
+
+    // === Mostra/Nascondi password ===
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    // === Toast utility ===
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastClose = document.getElementById('toastClose');
+    let toastTimeout;
+
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(hideToast, 3000);
+    }
+
+    function hideToast() {
+      toast.classList.remove('show');
+      setTimeout(() => toast.classList.add('hidden'), 300);
+    }
+
+    toastClose.addEventListener('click', hideToast);
+
+    // === Funzione vignetta errore ===
+    function showFieldError(inputEl, message) {
+      // Rimuove tooltip precedente
+      const existing = inputEl.parentElement.querySelector('.error-tooltip');
+      if (existing) existing.remove();
+
+      // Crea vignetta
+      const tooltip = document.createElement('div');
+      tooltip.className = 'error-tooltip';
+      tooltip.textContent = message;
+      inputEl.classList.add('error');
+      inputEl.parentElement.appendChild(tooltip);
+
+      // Rimuovi tooltip dopo 3s o al correggere input
+      setTimeout(() => tooltip.remove(), 3000);
+      inputEl.addEventListener('input', () => {
+        tooltip.remove();
+        inputEl.classList.remove('error');
+      }, { once: true });
+    }
+
+    // === Validazione form ===
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      let valid = true;
+
+      // Reset errori precedenti
+      form.querySelectorAll('.error-tooltip').forEach(el => el.remove());
+      form.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+
+      // Controllo email istituzionale
+      if (!email.endsWith('@studio.unibo.it')) {
+        showFieldError(form.email, 'Usa la tua email istituzionale @studio.unibo.it');
+        valid = false;
+      }
+
+      // Controllo password
+      const passwordRegex = /^(?=.*[0-9]).{6,}$/;
+      if (!passwordRegex.test(password)) {
+        showFieldError(form.password, 'La password deve avere almeno 6 caratteri e includere un numero');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Simula invio dati
+      showToast('✅ Registrazione completata con successo!');
+      setTimeout(() => {
+        form.reset();
+        window.location.href = 'index.html';
+      }, 3000);
+    });
+  </script>
 </body>
 </html>

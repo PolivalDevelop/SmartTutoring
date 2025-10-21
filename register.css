@@ -183,3 +183,12 @@ input:focus, select:focus, textarea:focus {
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* === Error text (uniforme per email e password) === */
+.error-text {
+  color: #e63946;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
+
+

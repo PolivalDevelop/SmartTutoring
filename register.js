@@ -41,32 +41,34 @@ document.getElementById('registerForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const form = e.target;
 
-  const email = form.email.value.trim();
-  const password = form.password.value;
+  const emailInput = form.email;
+  const passwordInput = form.password;
 
   // Reset messaggi errore
-  document.getElementById('emailError').textContent = '';
-  document.getElementById('passwordError').textContent = '';
+  const emailError = document.getElementById('emailError');
+  const passwordError = document.getElementById('passwordError');
+  emailError.textContent = '';
+  passwordError.textContent = '';
 
   let valid = true;
 
-  // Controllo email istituzionale
+  // === Controllo email istituzionale ===
+  const email = emailInput.value.trim();
   if (!email.endsWith('@studio.unibo.it')) {
-    document.getElementById('emailError').textContent = 'Usa la tua email istituzionale @studio.unibo.it';
+    emailError.textContent = 'Usa la tua email istituzionale @studio.unibo.it';
     valid = false;
   }
 
-  // Controllo password
+  // === Controllo password ===
+  const password = passwordInput.value;
   const passwordRegex = /^(?=.*[0-9]).{6,}$/;
   if (!passwordRegex.test(password)) {
-    document.getElementById('passwordError').textContent = 'La password deve avere almeno 6 caratteri e includere un numero';
+    passwordError.textContent = 'La password deve avere almeno 6 caratteri e includere un numero';
     valid = false;
   }
 
-  if (!form.checkValidity() || !valid) {
-    form.reportValidity();
-    return;
-  }
+  // === Se non valido, non inviare ===
+  if (!valid) return;
 
   const data = Object.fromEntries(new FormData(form).entries());
   console.log('Dati form inviati:', data);
