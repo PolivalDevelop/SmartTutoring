@@ -1,0 +1,28 @@
+/* Transizioni tema fluide */
+html, body, .lesson-card, .sidebar, .content-header, header.app-header {
+  transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+
+/* Light/Dark override */
+html[data-theme='dark'] {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --muted: #94a3b8;
+  --text: #f1f5f9;
+  --accent: #60a5fa;
+  --accent-hover: #3b82f6;
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme='light'] {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --text: #111827;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
