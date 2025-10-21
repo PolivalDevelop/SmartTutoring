@@ -191,4 +191,43 @@ input:focus, select:focus, textarea:focus {
   display: block;
 }
 
+    /* === Tooltip d'errore con freccetta (vignetta sopra il campo) === */
+    .error-tooltip {
+      position: absolute;
+      background: #e63946;
+      color: #fff;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      white-space: nowrap;
+      bottom: 100%;
+      left: 0;
+      transform: translateY(-6px);
+      animation: fadeIn .2s ease-out;
+      z-index: 50;
+    }
 
+    /* Piccola freccetta triangolare */
+    .error-tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 12px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: #e63946 transparent transparent transparent;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(-6px); }
+    }
+
+    .form-group { position: relative; }
+
+    /* Evidenzia input con errore */
+    input.error {
+      border-color: #e63946 !important;
+      outline: none;
+    }

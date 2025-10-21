@@ -6,37 +6,6 @@
   <title>Iscriviti — Smart Tutoring</title>
   <link rel="stylesheet" href="register.css" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* === Tooltip d'errore (vignetta) === */
-    .error-tooltip {
-      position: absolute;
-      background: #e63946;
-      color: #fff;
-      font-size: 0.85rem;
-      padding: 0.4rem 0.6rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      white-space: nowrap;
-      top: 100%;
-      left: 0;
-      transform: translateY(6px);
-      animation: fadeIn .2s ease-out;
-      z-index: 50;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(6px); }
-    }
-
-    .form-group { position: relative; }
-
-    /* Facoltativo: evidenzia input con errore */
-    input.error {
-      border-color: #e63946 !important;
-      outline: none;
-    }
-  </style>
 </head>
 <body>
   <header class="app-header" role="banner">
@@ -52,7 +21,7 @@
 
     <div class="top-actions" role="navigation" aria-label="Azioni principali">
       <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">🌓</button>
-      <a href="login.html" class="btn btn-ghost">Accedi</a>
+      <a href="accedi.html" class="btn btn-ghost">Accedi</a>
     </div>
   </header>
 
@@ -169,20 +138,17 @@
 
     toastClose.addEventListener('click', hideToast);
 
-    // === Funzione vignetta errore ===
+    // === Funzione vignetta errore sopra il campo ===
     function showFieldError(inputEl, message) {
-      // Rimuove tooltip precedente
       const existing = inputEl.parentElement.querySelector('.error-tooltip');
       if (existing) existing.remove();
 
-      // Crea vignetta
       const tooltip = document.createElement('div');
       tooltip.className = 'error-tooltip';
       tooltip.textContent = message;
       inputEl.classList.add('error');
       inputEl.parentElement.appendChild(tooltip);
 
-      // Rimuovi tooltip dopo 3s o al correggere input
       setTimeout(() => tooltip.remove(), 3000);
       inputEl.addEventListener('input', () => {
         tooltip.remove();

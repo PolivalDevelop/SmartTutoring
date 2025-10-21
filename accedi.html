@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accedi — Smart Tutoring</title>
+  <link rel="stylesheet" href="accedi.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <img src="src/LogoSmartTutoring.png" alt="Logo ripetizioni" width="44" height="44" style="border-radius:10px;" />
+      </div>
+      <div>
+        <h1>Smart Tutoring</h1>
+        <p class="lesson-sub">Trova e prenota lezioni universitarie</p>
+      </div>
+    </div>
+
+    <div class="top-actions" role="navigation" aria-label="Azioni principali">
+      <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">🌓</button>
+      <a href="register.html" class="btn btn-ghost">Iscriviti</a>
+    </div>
+  </header>
+
+  <main class="login-container" role="main" aria-labelledby="loginTitle">
+    <section class="login-card">
+      <h2 id="loginTitle">Accedi al tuo account</h2>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email istituzionale *</label>
+          <input type="email" id="email" name="email" placeholder="nome.cognome@studio.unibo.it" required />
+        </div>
+
+        <div class="form-group password-group">
+          <label for="password">Password *</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" name="password" minlength="6" required />
+            <button type="button" id="togglePassword" aria-label="Mostra password">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Accedi</button>
+
+        <p class="secondary-text">
+          Non hai ancora un account?
+          <a href="register.html">Iscriviti</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite">
+    <span id="toastMessage"></span>
+    <button id="toastClose" aria-label="Chiudi notifica">✖</button>
+  </div>
+
+  <script src="accedi.js"></script>
+</body>
+</html>
