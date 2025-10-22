@@ -2,11 +2,17 @@
 // === Mostra/Nascondi password ===
 const togglePassword = document.getElementById('togglePassword');
 const passwordInput = document.getElementById('password');
+const eye = togglePassword.querySelector('.eye');
+const eyeOff = togglePassword.querySelector('.eye-off');
+
 togglePassword.addEventListener('click', () => {
     const type = passwordInput.type === 'password' ? 'text' : 'password';
     passwordInput.type = type;
-    togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+
+    eye.classList.toggle('hidden');
+    eyeOff.classList.toggle('hidden');
 });
+
 
 // === Toast utility ===
 const toast = document.getElementById('toast');
