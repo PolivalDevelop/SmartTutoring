@@ -21,7 +21,15 @@
     </div>
 
     <div class="top-actions" role="navigation" aria-label="Azioni principali">
-      <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">🌓</button>
+      <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">
+        <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 0 1 12.21 3a9.002 9.002 0 0 0 0 18A9 9 0 0 1 21 12.79z"/>
+          </svg>
+          <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 6.95-1.41-1.41M6.46 6.46 5.05 5.05m0 13.9 1.41-1.41M18.36 5.64l1.41-1.41"/>
+          </svg>
+      </button>
       <a href="register.html" class="btn btn-ghost">Iscriviti</a>
     </div>
   </header>
@@ -30,7 +38,7 @@
     <section class="access-card">
       <h2 id="loginTitle">Accedi al tuo account</h2>
 
-      <form id="loginForm" novalidate>
+      <form id="accessForm" novalidate>
         <div class="form-group">
           <label for="email">Email istituzionale *</label>
           <input type="email" id="email" name="email" placeholder="nome.cognome@studio.unibo.it" required />
@@ -60,7 +68,7 @@
     <button id="toastClose" aria-label="Chiudi notifica">✖</button>
   </div>
     </div>
-  <script src="accedi.js"></script>
+  <script src="access.js"></script>
   <script src="darkmode.js"></script>
 </body>
 </html>
