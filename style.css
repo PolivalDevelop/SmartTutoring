@@ -3,6 +3,7 @@
 @import url('header.css');
 @import url('components.css');
 @import url('footer.css');
+@import url('darkmode.css');
 
 /* Main content */
 main.content {

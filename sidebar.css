@@ -54,12 +54,11 @@ input:focus, select:focus {
   }
 }
 
-/* === Toggle sidebar per mobile === */
 
 /* Desktop: sidebar sempre visibile, bottone nascosto */
 @media (min-width: 880px) {
   .filters-toggle {
-    display: none;
+    display: none !important;
   }
 
   .sidebar {
