@@ -7,9 +7,6 @@ WORKDIR /app
 # Imposta la variabile d'ambiente per il database
 ENV MONGODB_URI="mongodb://mongodb:27017/tutoring"
 
-# Copia i file di configurazione delle dipendenze
-COPY package.json package-lock.json ./
-
 # Installa le dipendenze
 RUN npm install
 
