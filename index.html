@@ -184,8 +184,43 @@
       <footer class="footer-note">© Progetto universitario — Applicazioni e Servizi Web</footer>
     </main>
   </div>
+
+
+
+  <!-- Modal di conferma prenotazione -->
+<div id="bookingDialog" class="booking-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="bookingDialogTitle" aria-hidden="true">
+  <div class="booking-overlay" data-dismiss="true"></div>
+
+  <div class="booking-panel" role="document">
+    <button class="dialog-close" aria-label="Chiudi finestra" data-dismiss="true">&times;</button>
+
+    <header class="dialog-header">
+      <h2 id="bookingDialogTitle">Conferma prenotazione</h2>
+      <p class="dialog-sub" id="bookingDialogSub">Sei sicuro di voler prenotare questa lezione?</p>
+    </header>
+
+    <div class="dialog-body" id="bookingDialogBody">
+      <p><strong>Lezione:</strong> <span id="dlgLessonTitle">—</span></p>
+      <p><strong>Autore:</strong> <span id="dlgLessonAuthor">—</span></p>
+      <p><strong>Costo:</strong> <span id="dlgLessonPrice">—</span></p>
+      <p class="muted">Il costo sarà addebitato dal saldo interno di Smart Tutoring.</p>
+    </div>
+
+    <footer class="dialog-footer">
+      <button id="dlgCancel" class="btn btn-ghost">Annulla</button>
+      <button id="dlgConfirm" class="btn btn-primary">Conferma e paga</button>
+    </footer>
+  </div>
+</div>
+<div id="toast" class="toast hidden" role="status" aria-live="polite">
+    <span id="toastMessage"></span>
+    <button id="toastClose" aria-label="Chiudi notifica">✖</button>
+</div>
+
 <script src="darkmode.js"></script>
+<script src="toast.js" defer></script>
 <script src="filtersForMobile.js"></script>
+<script src="booking-modal.js" defer></script>
 
 
 </body>
