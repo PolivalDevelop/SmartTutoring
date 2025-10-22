@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Accedi — Smart Tutoring</title>
-  <link rel="stylesheet" href="accedi.css" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="access.css" />
   <link rel="stylesheet" href="darkmode.css">
 </head>
 <body>
+    <div class="app" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
+
   <header class="app-header" role="banner">
     <div class="brand">
       <div class="logo" aria-hidden="true">
@@ -26,8 +27,8 @@
     </div>
   </header>
 
-  <main class="login-container" role="main" aria-labelledby="loginTitle">
-    <section class="login-card">
+  <main class="access-container" role="main" aria-labelledby="loginTitle">
+    <section class="access-card">
       <h2 id="loginTitle">Accedi al tuo account</h2>
 
       <form id="loginForm" novalidate>
@@ -44,7 +45,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-primary">Accedi</button>
+        <button type="submit" class="btn-primary-large">Accedi</button>
 
         <p class="secondary-text">
           Non hai ancora un account?
@@ -59,7 +60,7 @@
     <span id="toastMessage"></span>
     <button id="toastClose" aria-label="Chiudi notifica">✖</button>
   </div>
-
+    </div>
   <script src="accedi.js"></script>
 </body>
 </html>

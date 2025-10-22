@@ -1,0 +1,51 @@
+@import url('base.css');
+@import url('header.css');
+@import url('components.css');
+
+/* Access and sign in Page Styles */
+.access-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+}
+
+.access-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin-top: calc(5rem);
+}
+
+
+h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.password-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  flex: 1;
+}
+
+.password-wrapper button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: .3rem .5rem;
+  font-size: 1.1rem;
+}
