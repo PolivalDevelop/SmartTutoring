@@ -162,31 +162,3 @@ main.content {
 
 }
 
-/* === Tema toggle === */
-.theme-toggle {
-  width: 2.4rem;
-  height: 2.4rem;
-  display: inline-flex;
-  place-items: center;
-  position: relative;
-  transition: background .2s ease;
-}
-
-.theme-toggle .icon {
-  width: 1.4rem;
-  height: 1.4rem;
-  pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
-}
-
-.theme-toggle .hidden {
-  opacity: 0;
-  transform: scale(0.7);
-  position: absolute;
-}
-
-.theme-toggle:hover {
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  border-radius: 50%;
-}
-
