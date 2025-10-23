@@ -38,11 +38,11 @@
   margin-bottom: 0.75rem;
 }
 
-/* Form e campi */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.55rem; /* leggermente più aria tra label e input */
+  margin-bottom: 1rem; /* aggiunge spazio visivo verso il gruppo successivo */
 }
 
 label {
