@@ -21,8 +21,8 @@ services:
     environment:
       APP_MONGODB_URL: mongodb://mongo:mongo@mongo:27017/tutoring
       APP_REDIS_URL: redis://valkey:6379
-      APP_SESSION_SECRET: ${WEBRM_SESSION_SECRET}
-      APP_ALLOW_ORIGIN: http://localhost,${WEBRM_FRONTEND_URL}
+      APP_SESSION_SECRET: ${ST_SESSION_SECRET}
+      APP_ALLOW_ORIGIN: http://localhost,${ST_FRONTEND_URL}
 
   frontend:
     depends_on:
@@ -30,8 +30,8 @@ services:
     build:
       dockerfile: Dockerfile.frontend
       args:
-        WEBRM_BACKEND_URL: ${WEBRM_BACKEND_URL}
-        WEBRM_FRONTEND_URL: ${WEBRM_FRONTEND_URL}
+        ST_BACKEND_URL: ${ST_BACKEND_URL}
+        ST_FRONTEND_URL: ${ST_FRONTEND_URL}
     ports:
       - "4000:4000"
 
