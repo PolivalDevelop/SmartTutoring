@@ -15,7 +15,7 @@ services:
       - mongo
       - valkey
     build:
-      dockerfile: Dockerfile.backend
+      dockerfile: backend/Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - backend
     build:
-      dockerfile: Dockerfile.frontend
+      dockerfile: frontend/Dockerfile
       args:
         ST_BACKEND_URL: ${ST_BACKEND_URL}
         ST_FRONTEND_URL: ${ST_FRONTEND_URL}
