@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 // Interfaccia per il documento Admin
 interface IAdmin extends Document {

@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 // Enum TypeScript per il campo "tipo"
 export type UserType = 'triennale' | 'magistrale' | 'dottorato';

@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 // Interfaccia per il documento Lesson
 export interface ILesson extends Document {
