@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Socket.IO Test</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>Test Socket.IO</h1>
+    <button id="create">Crea utente</button>
+    <button id="list">Lista utenti</button>
+
+    <script>
+      const socket = io("http://localhost:3000");
+
+      socket.on("connect", () => {
+        console.log("Connesso con ID:", socket.id);
+      });
+
+      document.getElementById("create").onclick = () => {
+        socket.emit("user:create", {
+          nome: "Luca",
+          cognome: "Bianchi",
+          email: "luca.bianchi@studio.unibo.it",
+          password: "password123",
+          tipo: "magistrale",
+        });
+      };
+
+      document.getElementById("list").onclick = () => {
+        socket.emit("user:getAll");
+      };
+
+      socket.on("user:list", (users) => console.log("Utenti:", users));
+      socket.on("user:created", (u) => console.log("Creato:", u));
+      socket.on("error", (e) => console.error("Errore:", e));
+    </script>
+  </body>
+</html>
