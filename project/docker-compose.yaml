@@ -1,55 +1,39 @@
-
 services:
-  frontend:
-    image: frontend
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    restart: always
-    ports:
-      - "8080:80"   # frontend disponibile su http://localhost:8080
-    depends_on:
-      - backend
-    deploy:
-      replicas: 1   # puoi scalare se vuoi
+  mongo:
+    image: mongo:8.0.4
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+
+  valkey:
+    image: valkey/valkey:8.0.2-alpine3.21
 
   backend:
-    image: applicazione
+    depends_on:
+      - mongo
+      - valkey
     build:
-      context: .
-      dockerfile: backend/Dockerfile
-    restart: always
-    environment:
-      MONGO_HOST: mongodb
-      MONGO_PORT: 27017
-      DB_URI: mongodb://mongodb:27017/tutoring
+      dockerfile: Dockerfile.backend
     ports:
-      - "3000:3000"  # backend disponibile su http://localhost:3000
-    depends_on:
-      - mongodb
-    deploy:
-      replicas: 1
-
-  mongodb:
-    image: mongo
-    restart: always
-    command: [ "--bind_ip_all", "--port", "27017" ]
-    volumes:
-      - mongodata:/data/db
-
-  mongoexpress:
-    image: mongo-express
-    restart: always
+      - "3000:3000"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/tutoring
-    ports:
-      - "8081:8081"   # interfaccia Mongo Express su http://localhost:8081
+      APP_MONGODB_URL: mongodb://mongo:mongo@mongo:27017/tutoring
+      APP_REDIS_URL: redis://valkey:6379
+      APP_SESSION_SECRET: ${WEBRM_SESSION_SECRET}
+      APP_ALLOW_ORIGIN: http://localhost,${WEBRM_FRONTEND_URL}
+
+  frontend:
     depends_on:
-      - mongodb
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - backend
+    build:
+      dockerfile: Dockerfile.frontend
+      args:
+        WEBRM_BACKEND_URL: ${WEBRM_BACKEND_URL}
+        WEBRM_FRONTEND_URL: ${WEBRM_FRONTEND_URL}
+    ports:
+      - "4000:4000"
 
 volumes:
-  mongodata:
+  mongo-data:

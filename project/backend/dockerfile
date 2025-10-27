@@ -1,27 +1,33 @@
-# Usa un'immagine base leggera di Node.js
-FROM node:22-alpine
+# Stage 1: Build
+FROM oven/bun:1.2.0-alpine AS builder
 
-# Imposta la directory di lavoro
+# Set the working directory
 WORKDIR /app
 
-# Imposta la variabile d'ambiente per il database
-ENV MONGODB_URI="mongodb://mongodb:27017/tutoring"
-
-# Installa le dipendenze
-RUN npm install
-
-# Copia il resto del codice dell'app nel container
+# Copy the entire monorepo context into the container
 COPY . .
 
-# Compila i file TypeScript
-WORKDIR /app/models
-RUN ../node_modules/typescript/bin/tsc
+# Set the working directory to the backend package
+WORKDIR /app/packages/backend
 
-WORKDIR /app/backend
-RUN ../node_modules/typescript/bin/tsc
+# Install all workspace dependencies
+RUN bun install --frozen-lockfile
 
-# Espone la porta su cui gira Express
+# Build the backend application
+RUN bun run build
+
+# Stage 2: Runtime
+FROM node:22-alpine AS runner
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the build output from the builder stage
+COPY --from=builder /app/packages/backend/dist ./dist
+
+# Expose the application's port
+ENV APP_PORT=3000
 EXPOSE 3000
 
-# Avvia l'applicazione
-CMD ["node", "app.js"]
+# Set the default command to run the backend application
+CMD ["node", "dist/server.js"]

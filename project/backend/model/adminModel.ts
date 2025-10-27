@@ -1,6 +1,16 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-const adminSchema = new Schema({
+// Interfaccia per il documento Admin
+interface IAdmin extends Document {
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    hasFullPrivileges: boolean;
+}
+
+// Schema Mongoose
+const adminSchema = new Schema<IAdmin>({
     username: {
         type: String,
         required: true
@@ -21,5 +31,9 @@ const adminSchema = new Schema({
         type: Boolean,
         required: true
     }
-
 });
+
+// Modello Mongoose
+const Admin = model<IAdmin>('Admin', adminSchema);
+
+export default Admin;

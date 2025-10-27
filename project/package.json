@@ -1,5 +1,5 @@
 {
-  "name": "gym-manager",
+  "name": "smart-tutoring",
   "workspaces": [
     "backend",
     "frontend"

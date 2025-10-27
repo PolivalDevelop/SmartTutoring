@@ -1,6 +1,25 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-const userSchema = new Schema(
+// Enum TypeScript per il campo "tipo"
+export type UserType = 'triennale' | 'magistrale' | 'dottorato';
+
+// Interfaccia per il documento User
+export interface IUser extends Document {
+  nome: string;
+  cognome: string;
+  email: string;
+  password: string;
+  tipo: UserType;
+  foto: string | null;
+  nascita: Date | null;
+  media: number | null;
+  bio: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Schema Mongoose
+const userSchema = new Schema<IUser>(
   {
     nome: {
       type: String,
@@ -17,7 +36,10 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      match: [/^[a-z]+\.[a-z]+@studio\.unibo\.it$/, 'Email non valida (usa quella istituzionale)'],
+      match: [
+        /^[a-z]+\.[a-z]+@studio\.unibo\.it$/,
+        'Email non valida (usa quella istituzionale)',
+      ],
     },
     password: {
       type: String,
@@ -31,7 +53,7 @@ const userSchema = new Schema(
       enum: ['triennale', 'magistrale', 'dottorato'],
     },
     foto: {
-      type: String, // puoi salvare URL o percorso del file
+      type: String,
       default: null,
     },
     nascita: {
@@ -52,8 +74,11 @@ const userSchema = new Schema(
     },
   },
   {
-    timestamps: true, // aggiunge createdAt e updatedAt automaticamente
+    timestamps: true, // createdAt e updatedAt
   }
 );
 
-export default model('User', userSchema);
+// Modello Mongoose tipizzato
+const User = model<IUser>('User', userSchema);
+
+export default User;
