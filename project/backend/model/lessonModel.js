@@ -1,21 +1,6 @@
-import mongoose, { Document, Schema } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-// Interfaccia per il documento Lesson
-export interface ILesson extends Document {
-  docente: Types.ObjectId;
-  studente: Types.ObjectId | null;
-  materia: string;
-  data: Date;
-  durata: number;
-  costo: number;
-  stato: 'libera' | 'prenotata' | 'completata' | 'annullata';
-  note: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-// Schema Mongoose
-const lessonSchema = new Schema<ILesson>(
+const lessonSchema = new Schema(
   {
     docente: {
       type: Schema.Types.ObjectId,
@@ -38,7 +23,7 @@ const lessonSchema = new Schema<ILesson>(
     },
     durata: {
       type: Number,
-      default: 60,
+      default: 60, // minuti, puoi cambiare se serve
     },
     costo: {
       type: Number,
@@ -58,20 +43,16 @@ const lessonSchema = new Schema<ILesson>(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // createdAt, updatedAt
   }
 );
 
 // Validazione logica: se una lezione è prenotata, deve avere uno studente
 lessonSchema.pre('save', function (next) {
-  const lesson = this as ILesson;
-  if (lesson.stato === 'prenotata' && !lesson.studente) {
+  if (this.stato === 'prenotata' && !this.studente) {
     return next(new Error('Una lezione prenotata deve avere uno studente associato.'));
   }
   next();
 });
 
-// Modello Mongoose
-const Lesson = model<ILesson>('Lesson', lessonSchema);
-
-export default Lesson;
+export default model('Lesson', lessonSchema);
