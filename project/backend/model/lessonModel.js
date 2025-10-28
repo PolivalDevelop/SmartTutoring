@@ -32,7 +32,7 @@ const lessonSchema = new Schema(
     },
     stato: {
       type: String,
-      enum: ['libera', 'prenotata', 'completata', 'annullata'],
+      enum: ['libera', 'prenotata', 'completata'],
       default: 'libera',
     },
     note: {
