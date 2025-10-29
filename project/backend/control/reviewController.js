@@ -1,53 +1,52 @@
-const {postModel} = require('../models/lessonModel')
+const {lessonModel} = require('../models/lessonModel')
 const {reviewModel} = require('../models/reviewModel')
 const {userModel} = require('../models/userModel')
 const mongoose = require('mongoose')
 
 exports.createReview = async (req, res) => {
-  const {buyer, seller, post, score, title, description} = req.body;
+  const {student, teacher, lesson, score, description} = req.body;
   try {
-    const userBuyer = await userModel.findOne({username: buyer.username});
-    if (!userBuyer) {
-      return res.status(404).json({message: 'Buyer not found'});
+    const userStudent = await userModel.findOne({username: student.username});
+    if (!userStudent) {
+      return res.status(404).json({message: 'student not found'});
     }
 
-    const userSeller = await userModel.findOne({username: seller.username});
-    if (!userSeller) {
-      return res.status(404).json({message: 'Seller not found'});
+    const userTeacher = await userModel.findOne({username: teacher.username});
+    if (!userTeacher) {
+      return res.status(404).json({message: 'Teacher not found'});
     }
 
-    if (userBuyer._id.equals(userSeller._id)) {
-      return res.status(400).json({message: 'Buyer and seller cannot be the same user'});
+    if (userStudent._id.equals(userTeacher._id)) {
+      return res.status(400).json({message: 'student and teacher cannot be the same user'});
     }
 
-    const productPost = await postModel.findById(post);
-    if (!productPost) {
-      return res.status(404).json({message: 'Post not found'});
+    const referedLesson = await lessonModel.findById(lesson);
+    if (!referedLesson) {
+      return res.status(404).json({message: 'Lesson not found'});
     }
 
-    if (!productPost.seller.equals(userSeller._id)) {
-      return res.status(400).json({message: 'Seller does not match the seller of the post'});
+    if (!referedLesson.teacher.equals(userTeacher._id)) {
+      return res.status(400).json({message: 'Teacher does not match the teacher of the lesson'});
     }
 
-    if (productPost.buyer && !productPost.buyer.equals(userBuyer._id)) {
-      return res.status(400).json({message: 'Buyer does not match the buyer of the post'});
+    if (referedLesson.student && !referedLesson.student.equals(userStudent._id)) {
+      return res.status(400).json({message: 'student does not match the student of the lesson'});
     }
 
     const existingReview = await reviewModel.findOne({
-      buyer: userBuyer._id,
-      seller: userSeller._id,
-      post: productPost._id,
+      student: userStudent._id,
+      teacher: userTeacher._id,
+      lesson: referedLesson._id,
     });
     if (existingReview) {
-      return res.status(400).json({message: 'Review already exists for this buyer, seller, and post'});
+      return res.status(400).json({message: 'Review already exists for this student, teacher, and lesson'});
     }
 
     const newReview = new reviewModel({
-      buyer: userBuyer._id,
-      seller: userSeller._id,
-      post: productPost._id,
+      student: userStudent._id,
+      teacher: userTeacher._id,
+      lesson: referedLesson._id,
       score,
-      title,
       description,
     });
 
@@ -59,14 +58,14 @@ exports.createReview = async (req, res) => {
   }
 };
 
-exports.getAllUserPostsWithReview = (req, res) => {
+exports.getAllUserLessonsReview = (req, res) => {
   const username = req.params.username;
   userModel.find({ username: username })
     .exec()
     .then(user => {
       if (user.length > 0) {
         const userId = user[0]._id;
-        return reviewModel.find({ seller: userId }).exec();
+        return reviewModel.find({ teacher: userId }).exec();
       } else {
         res.status(404).json({ message: 'No user found' });
         throw new Error('No user'); // per interrompere la catena
@@ -74,52 +73,24 @@ exports.getAllUserPostsWithReview = (req, res) => {
     })
     .then(reviews => {
       if (reviews && reviews.length > 0) {
-        return postModel.find({ _id: { $in: reviews.map(review => review.post) } }).exec();
+        return lessonModel.find({ _id: { $in: reviews.map(review => review.lesson) } }).exec();
       } else {
-        res.status(404).json({ message: 'No reviews found for this seller' });
+        res.status(404).json({ message: 'No reviews found for this teacher' });
         throw new Error('No reviews');
       }
     })
     .then(posts => {
-      const formattedPosts = posts.map(post => {
-        const formattedImages = post.images.map(image => ({
-          data: image.data.toString('base64'),
-          contentType: image.contentType
-        }));
+      const formattedLessons = posts.map(lesson => {
         return {
-          ...post.toObject(),
-          images: formattedImages
+          ...lesson.toObject()
         };
       });
-      res.status(200).json(formattedPosts);
+      res.status(200).json(formattedLessons);
     })
     .catch(err => {
       if (!res.headersSent) {
         res.status(500).json({ message: 'Error searching user reviews or posts' });
       }
       console.error(err);
-    });
-};
-
-
-exports.getReviewByProductId = (req, res) => {
-  let productId;
-  try {
-    productId = new mongoose.Types.ObjectId(req.params.id);
-  } catch (err) {
-    return res.status(400).json({ message: 'Invalid product ID' });
-  }
-
-  reviewModel.find({ post: productId })
-    .exec()
-    .then(reviews => {
-      if (reviews.length > 0) {
-        res.status(200).json(reviews);
-      } else {
-        res.status(404).json({ message: 'No reviews found for this product' });
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ message: 'Error searching product reviews' });
     });
 };

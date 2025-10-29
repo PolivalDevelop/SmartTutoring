@@ -7,6 +7,11 @@ const reviewSchema = new Schema(
       ref: 'Lesson',
       required: true,
     },
+    teacher:{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     author: {
       type: Schema.Types.ObjectId,
       ref: 'User',
