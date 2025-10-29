@@ -10,6 +10,6 @@ router.route('/product/:id')
   .delete(controller.deleteReport);
 
 router.route('/user/:username')
-  .get(controller.getAllUserPostsWithReport)
+  .get(controller.getAllUserLessonsWithReport)
 
 module.exports = router;
