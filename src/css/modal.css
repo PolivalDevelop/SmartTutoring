@@ -72,3 +72,138 @@
   .dialog-footer { flex-direction: column-reverse; align-items: stretch; }
   .dialog-footer .btn { width: 100%; }
 }
+
+/* Modal publish */
+/* === Publish Lesson Modal === */
+.publish-dialog.hidden { display: none; }
+.publish-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.publish-overlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, black 40%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.publish-panel {
+  position: relative;
+  background: var(--card);
+  color: var(--text);
+  border-radius: calc(var(--radius) - 4px);
+  padding: 1.15rem;
+  width: min(520px, calc(100% - 2rem));
+  box-shadow: var(--shadow-md);
+  z-index: 1101;
+  transform: translateY(6px);
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.publish-dialog.open .publish-panel {
+  transform: translateY(0);
+}
+
+.publish-panel label {
+  display: block;
+  margin-top: .6rem;
+  font-weight: 500;
+}
+
+.publish-panel input,
+.publish-panel textarea {
+  width: 100%;
+  margin-top: .25rem;
+  padding: .5rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  resize: vertical;
+}
+
+.publish-panel input:focus,
+.publish-panel textarea:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.publish-panel .dialog-actions {
+  display: flex;
+  gap: .6rem;
+  justify-content: flex-end;
+  margin-top: .9rem;
+}
+
+.publish-panel .dialog-close {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  font-size: 1.4rem;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.publish-panel .dialog-close:hover {
+  color: var(--text);
+}
+
+@media (max-width: 520px) {
+  .publish-panel { width: calc(100% - 1.4rem); padding: .9rem; }
+  .publish-panel .dialog-actions { flex-direction: column-reverse; }
+  .publish-panel .dialog-actions .btn { width: 100%; }
+}
+
+/* === FAB (Floating Action Button) === */
+.fab-inline {
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.5rem;
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  z-index: 1050;
+}
+
+.fab-inline button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: transform .2s ease, background .2s ease;
+}
+
+.fab-inline button:hover {
+  transform: scale(1.05);
+}
+
+.fab-main {
+  background: var(--accent);
+}
+
+.fab-secondary {
+  background: color-mix(in srgb, var(--accent) 70%, black);
+}
+
+.fab-secondary svg {
+  width: 22px;
+  height: 22px;
+  stroke: white;
+}
