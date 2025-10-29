@@ -6,6 +6,6 @@ router.route('/')
   .post(controller.createReview);
 
 router.route('/user/:username')
-  .get(controller.getAllUserLessonsWithReview)
+  .get(controller.getAllUserLessonsReview)
 
 module.exports = router;
