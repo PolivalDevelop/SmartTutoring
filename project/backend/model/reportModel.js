@@ -2,49 +2,49 @@ import { Schema, model } from 'mongoose';
 
 const reportSchema = new Schema(
   {
-    // Utente che invia la segnalazione
-    segnalante: {
+    // User who submits the report
+    reporter: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
 
-    // Utente segnalato
-    segnalato: {
+    // Reported user
+    reportedUser: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
 
-    // Motivo selezionato dal menu a tendina
-    motivo: {
+    // Reason selected from the dropdown menu
+    reason: {
       type: String,
       required: true,
       enum: [
-        'contenuto-inappropriato',
-        'linguaggio-offensivo',
-        'profilo-falso',
-        'altro',
+        'inappropriate-content',
+        'offensive-language',
+        'fake-profile',
+        'other',
       ],
     },
 
-    // Descrizione testuale fornita dall’utente
-    dettagli: {
+    // Text description provided by the user
+    details: {
       type: String,
       required: true,
       maxlength: 1000,
       trim: true,
     },
 
-    // Stato della segnalazione, utile lato admin
-    stato: {
+    // Report status, useful for the admin side
+    status: {
       type: String,
-      enum: ['in_attesa', 'in_esame', 'risolta', 'rifiutata'],
-      default: 'in_attesa',
+      enum: ['pending', 'under_review', 'resolved', 'rejected'],
+      default: 'pending',
     },
 
-    // Opzionale: risposta o nota dell’amministratore
-    rispostaAdmin: {
+    // Optional: admin’s response or note
+    adminResponse: {
       type: String,
       maxlength: 500,
       trim: true,
@@ -52,16 +52,16 @@ const reportSchema = new Schema(
     },
   },
   {
-    timestamps: true, // Aggiunge createdAt e updatedAt
+    timestamps: true, // Adds createdAt and updatedAt automatically
   }
 );
 
-// Validazione logica opzionale
+// Optional logical validation
 reportSchema.pre('save', function (next) {
-  if (!this.segnalante.equals(this.segnalato)) {
+  if (!this.reporter.equals(this.reportedUser)) {
     next();
   } else {
-    next(new Error('Un utente non può segnalare sé stesso.'));
+    next(new Error('A user cannot report themselves.'));
   }
 });
 

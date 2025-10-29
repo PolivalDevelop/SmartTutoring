@@ -2,40 +2,53 @@ import { Schema, model } from 'mongoose';
 
 const lessonSchema = new Schema(
   {
-    docente: {
+    teacher: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    studente: {
+    student: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       default: null,
     },
-    materia: {
+    subject: {
       type: String,
       required: true,
+      enum: [
+        'Mathematics',
+        'Physics',
+        'Computer Science',
+        'Chemistry',
+        'Biology',
+        'Economics',
+        'Statistics',
+        'Law',
+        'Literature',
+        'Engineering',
+        'Other',
+      ],
       trim: true,
     },
-    data: {
+    date: {
       type: Date,
       required: true,
     },
-    durata: {
+    duration: {
       type: Number,
-      default: 60, // minuti, puoi cambiare se serve
+      default: 60, // minutes, can be changed if needed
     },
-    costo: {
+    price: {
       type: Number,
       required: true,
       min: 0,
     },
-    stato: {
+    status: {
       type: String,
-      enum: ['libera', 'prenotata', 'completata'],
-      default: 'libera',
+      enum: ['available', 'booked', 'completed'],
+      default: 'available',
     },
-    note: {
+    notes: {
       type: String,
       maxlength: 300,
       trim: true,
@@ -43,14 +56,14 @@ const lessonSchema = new Schema(
     },
   },
   {
-    timestamps: true, // createdAt, updatedAt
+    timestamps: true, // adds createdAt and updatedAt automatically
   }
 );
 
-// Validazione logica: se una lezione è prenotata, deve avere uno studente
+// Logical validation: if a lesson is booked, it must have a student assigned
 lessonSchema.pre('save', function (next) {
-  if (this.stato === 'prenotata' && !this.studente) {
-    return next(new Error('Una lezione prenotata deve avere uno studente associato.'));
+  if (this.status === 'booked' && !this.student) {
+    return next(new Error('A booked lesson must have a student assigned.'));
   }
   next();
 });

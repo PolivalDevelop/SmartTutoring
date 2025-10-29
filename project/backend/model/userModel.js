@@ -1,20 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 const userSchema = new Schema(
   {
-    userId: {
-      type: String,
-      default: uuidv4, // genera automaticamente un UUID
-      unique: true,    // garantisce unicità nel database
-      immutable: true, // non può essere modificato
-    },
-    nome: {
+    firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    cognome: {
+    lastName: {
       type: String,
       required: true,
       trim: true,
@@ -24,28 +17,28 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      match: [/^[a-z]+\.[a-z]+@studio\.unibo\.it$/, 'Email non valida (usa quella istituzionale)'],
+      match: [/^[a-z]+\.[a-z]+@studio\.unibo\.it$/, 'Invalid email (use your institutional address)'],
     },
     password: {
       type: String,
       required: true,
       minlength: 6,
-      select: false,
+      select: false, // excludes password when querying
     },
-    tipo: {
+    degreeType: {
       type: String,
       required: true,
-      enum: ['triennale', 'magistrale', 'dottorato'],
+      enum: ['bachelor', 'master', 'phd'],
     },
-    foto: {
-      type: String,
+    photo: {
+      type: String, // URL or file path
       default: null,
     },
-    nascita: {
+    birthDate: {
       type: Date,
       default: null,
     },
-    media: {
+    averageGrade: {
       type: Number,
       min: 18,
       max: 30,
@@ -59,7 +52,7 @@ const userSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // automatically adds createdAt and updatedAt
   }
 );
 

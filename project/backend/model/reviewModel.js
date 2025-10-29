@@ -2,23 +2,23 @@ import { Schema, model } from 'mongoose';
 
 const reviewSchema = new Schema(
   {
-    lezione: {
+    lesson: {
       type: Schema.Types.ObjectId,
       ref: 'Lesson',
       required: true,
     },
-    autore: {
+    author: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    valutazione: {
+    rating: {
       type: Number,
       required: true,
-      min: [1, 'La valutazione minima è 1'],
-      max: [5, 'La valutazione massima è 5'],
+      min: [1, 'Minimum rating is 1'],
+      max: [5, 'Maximum rating is 5'],
     },
-    commento: {
+    comment: {
       type: String,
       trim: true,
       maxlength: 500,
@@ -26,11 +26,11 @@ const reviewSchema = new Schema(
     },
   },
   {
-    timestamps: true, // aggiunge createdAt e updatedAt
+    timestamps: true, // adds createdAt and updatedAt automatically
   }
 );
 
-// Prevenire recensioni duplicate sulla stessa lezione da parte dello stesso utente
-reviewSchema.index({ lezione: 1, autore: 1 }, { unique: true });
+// Prevent duplicate reviews for the same lesson by the same user
+reviewSchema.index({ lesson: 1, author: 1 }, { unique: true });
 
 export default model('Review', reviewSchema);
