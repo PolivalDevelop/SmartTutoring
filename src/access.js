@@ -69,6 +69,6 @@ function showFieldError(inputEl, message) {
       showToast('✅ Registrazione completata con successo!');
       setTimeout(() => {
         form.reset();
-        window.location.href = 'index.html';
+        window.location.href = 'indexlogged.html';
       }, 3000);
     });

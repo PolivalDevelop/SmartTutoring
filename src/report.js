@@ -3,5 +3,5 @@ reportForm.addEventListener('submit', (e) => {
   e.preventDefault();
   showToast('Segnalazione inviata con successo.');
   reportForm.reset();
-  setTimeout(() => window.location.href = 'profilo.html', 1500);
+  setTimeout(() => window.location.href = 'altro-profilo-logged.html', 1500);
 });

@@ -65,7 +65,7 @@
         <div class="lesson-footer">
           <div class="lesson-author">${teacher}</div>
           <div class="card-actions">
-            <a href="profilo.html" class="small btn-ghost" aria-label="Vedi profilo">
+            <a href="altro-profilo-logged.html" class="small btn-ghost" aria-label="Vedi profilo">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 viewBox="0 0 24 24" aria-hidden="true">
