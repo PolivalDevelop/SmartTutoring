@@ -45,6 +45,12 @@ h2 {
   padding-right: 2.4rem; /* spazio per l'icona */
 }
 
+input[readonly] {
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+  cursor: not-allowed;
+  color: var(--muted);
+}
+
 .password-toggle {
   position: absolute;
   right: 0.3rem;
