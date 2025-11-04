@@ -120,3 +120,19 @@
 }
 
 
+/* Bottoni disabilitati con tinta verde */
+html[data-theme='light'] button:disabled {
+  background-color: #d1fae5; /* verde pastello */
+  color: #15803d;            /* verde scuro */
+  border: 1px solid #15803d;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+html[data-theme='dark'] button:disabled {
+  background-color: #1e3a2f; /* verde profondo */
+  color: #4ade80;            /* verde chiaro */
+  border: 1px solid #4ade80;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
