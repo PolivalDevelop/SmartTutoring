@@ -39,8 +39,25 @@
 
   <main class="access-container" role="main" aria-labelledby="registerTitle">
     <section class="access-card">
-      <h2 id="registerTitle">Modifica il profilo</h2>
-      <form id="accessForm" novalidate>
+  <div class="profile-header">
+    <h2 id="registerTitle">Modifica il profilo</h2>
+    <div class="profile-pic-wrapper">
+      <img 
+        id="profilePic" 
+        src="marcorossi.jpg" 
+        alt="Immagine del profilo" 
+        class="profile-pic" 
+        onerror="this.src='img/default-profile.png';"
+      />
+      <label for="uploadPic" class="edit-icon" title="Modifica immagine profilo" aria-label="Modifica immagine profilo">
+        ✎
+      </label>
+      <input type="file" id="uploadPic" accept="image/*" hidden />
+    </div>
+  </div>
+
+  <form id="accessForm" novalidate>
+
         <div class="form-group">
           <label for="nome">Nome</label>
           <input type="text" id="nome" name="nome" value="Marco" />
@@ -92,13 +109,6 @@
           </select>
         </div>
 
-        <hr aria-hidden="true" />
-
-        <div class="form-group">
-          <label for="foto">Foto profilo </label>
-          <input type="file" id="foto" name="foto" accept=".jpg,.png" />
-        </div>
-
         <div class="form-group">
           <label for="nascita">Data di nascita </label>
           <input type="date" id="nascita" name="nascita" value="2000-10-15"/>
@@ -125,9 +135,10 @@
     <button id="toastClose" aria-label="Chiudi notifica">✖</button>
   </div>
     </div>
-  <script src="access.js"></script>
+  <script src="modificaprofilo.js"></script>
   <script src="darkmode.js"></script>
   <script src="toast.js"></script>
   <script src="default-tipo-di-corso.js"></script>
+  <script src="change-profile-image.js"></script>
 </body>
 </html>
