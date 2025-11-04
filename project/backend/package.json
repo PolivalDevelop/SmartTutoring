@@ -1,22 +1,28 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@gym-manager/backend",
+  "version": "0.0.0",
+  "main": "app.js",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
+    "@gym-manager/models": "^1.0.0",
+    "@node-rs/argon2": "^2.0.2",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
     "express": "^4.21.2",
-    "express-session": "^1.18.1",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.5",
-    "socket.io": "^4.8.1"
+    "express-openapi-generator": "^1.2.0",
+    "http-errors": "~1.6.3",
+    "jose": "^5.9.6",
+    "mongoose": "^8.1.1",
+    "morgan": "~1.9.1",
+    "socket.io": "^4.8.1",
+    "ulidx": "^2.4.1"
   },
-  "devDependencies": {},
-  "keywords": [],
-  "description": ""
+  "peerDependencies": {
+    "ajv": "8.17.1"
+  }
 }
