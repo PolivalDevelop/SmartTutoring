@@ -16,7 +16,7 @@ WORKDIR /app/frontend
 COPY . .
 
 # Set the working directory to the frontend package
-WORKDIR /app
+WORKDIR /app/frontend
 
 # Install all workspace dependencies
 RUN bun install --frozen-lockfile
