@@ -14,7 +14,7 @@
     <header class="app-header" role="banner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <img src="LogoSmartTutoring.png" alt="Logo Smart Tutoring" width="44" height="44" style="border-radius:10px;" />
+            <img src="LogoSmartTutoring.png" alt="Logo ripetizioni" width="44" height="44" style="border-radius: 10px;" />
         </div>
         <div>
           <h1>Smart Tutoring</h1>
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="top-actions" role="navigation">
+      <div class="top-actions" role="navigation" aria-label="Azioni principali">
         <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">
           <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12.79A9 9 0 0 1 12.21 3a9.002 9.002 0 0 0 0 18A9 9 0 0 1 21 12.79z"/>
@@ -32,7 +32,10 @@
             <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 6.95-1.41-1.41M6.46 6.46 5.05 5.05m0 13.9 1.41-1.41M18.36 5.64l1.41-1.41"/>
           </svg>
         </button>
-        <a href="indexlogged.html" class="btn btn-ghost">Home</a>
+        <a href="indexlogged.html" class="btn ghost" aria-label="Home" title="Home">Home</a>
+        <a href="offerte.html" class="btn ghost" aria-label="Lezioni offerte" title="Lezioni offerte">Offerte</a>
+        <a href="profilo-personale-logged.html" class="btn ghost" aria-label="Profilo personale" title="Profilo personale">Profilo</a>
+        
       </div>
     </header>
 
@@ -75,19 +78,9 @@
 <main class="content" role="main">
 
   <section class="tutor-header" aria-labelledby="tutorName">
-    <img src="marcorossi.jpg" alt="Foto profilo Marco Rossi" class="profile-pic" />
     <div class="tutor-info">
       <div class="tutor-header-top">
-        <h2 id="tutorName">Marco Rossi</h2>
-        <a href="profilo-personale-logged.html" class="small btn-ghost" aria-label="Vedi profilo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-               viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </a>
+        <h2 id="tutorName">Lezioni prenotate</h2>
         <div class="filters-row">
         <label for="sort">Ordina per:</label>
         <select id="sort" name="sort">
@@ -97,65 +90,60 @@
           <option value="duration">Durata</option>
         </select>
       </div>
-      </div>
-
-      <p class="course-type">Corso di Laurea Magistrale in Informatica</p>
-      <div class="rating" aria-label="Valutazione media 4.8 su 5">
-        ★★★★☆ <span class="rating-value">4.8</span> <span class="reviews">(32 valutazioni)</span>
-      </div>
-
-      
+      </div>    
     </div>
   </section>
 
   <section class="results" aria-live="polite" id="lessonsList">
-    <article class="lesson-card">
-      <div class="lesson-content">
-        <div class="lesson-header">
-          <h3 class="lesson-title">Analisi 2</h3>
-          <div class="lesson-info">
-            <span class="time">Martedì • 11:00</span>
-            <span class="duration">1h</span>
-            <span class="price">€12</span>
-          </div>
+    <article class="lesson-card" role="article" aria-labelledby="lesson1Title" data-id="lesson_1">
+        <div class="lesson-content">
+            <div class="lesson-header">
+            <h3 id="lesson1Title" class="lesson-title">Programmazione in C</h3>
+            <div class="lesson-info">
+                <span class="time">Giovedì • 15:00 - 17:00 • €15</span>
+            </div>
+            </div>
+            <div class="lesson-footer">
+            <div class="lesson-author">Laura Bianchi</div>
+            <div class="card-actions">
+                <a href="profilo.html" class="small btn-ghost" aria-label="Vedi profilo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                </a>
+            </div>
+            </div>
         </div>
-        <div class="lesson-footer">
-          <button class="small btn-primary">Prenota</button>
-        </div>
-      </div>
     </article>
-
-    <article class="lesson-card">
-      <div class="lesson-content">
-        <div class="lesson-header">
-          <h3 class="lesson-title">Programmazione in C</h3>
-          <div class="lesson-info">
-            <span class="time">Mercoledì • 14:00</span>
-            <span class="duration">1.5h</span>
-            <span class="price">€15</span>
-          </div>
+    <article class="lesson-card" role="article" aria-labelledby="lesson2Title" data-id="lesson_2">
+        <div class="lesson-content">
+            <div class="lesson-header">
+            <h3 id="lesson2Title" class="lesson-title">Analisi</h3>
+            <div class="lesson-info">
+                <span class="time">Venerdì • 16:00 - 17:00 • €12</span>
+            </div>
+            </div>
+            <div class="lesson-footer">
+            <div class="lesson-author">Laura Bianchi</div>
+            <div class="card-actions">
+                <a href="profilo.html" class="small btn-ghost" aria-label="Vedi profilo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                </a>
+            </div>
+            </div>
         </div>
-        <div class="lesson-footer">
-          <button class="small btn-primary">Prenota</button>
-        </div>
-      </div>
     </article>
-
-    <article class="lesson-card">
-      <div class="lesson-content">
-        <div class="lesson-header">
-          <h3 class="lesson-title">Algoritmi e Strutture Dati</h3>
-          <div class="lesson-info">
-            <span class="time">Giovedì • 10:00</span>
-            <span class="duration">2h</span>
-            <span class="price">€18</span>
-          </div>
-        </div>
-        <div class="lesson-footer">
-          <button class="small btn-primary">Prenota</button>
-        </div>
-      </div>
-    </article>
+    
 
   </section>
 

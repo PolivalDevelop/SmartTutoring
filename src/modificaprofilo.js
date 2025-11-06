@@ -1,3 +1,5 @@
+// è un file completamente uguale a src/access.js tranne per a gestione del tost e del redirect dopo il submit, viola DRY principle
+
 
 // === Mostra/Nascondi password ===
 const togglePassword = document.getElementById('togglePassword');
@@ -66,9 +68,9 @@ function showFieldError(inputEl, message) {
       if (!valid) return;
 
       // Simula invio dati
-      showToast('✅ Registrazione completata con successo!');
+      showToast('✅ Modifica del profilo completata con successo!');
       setTimeout(() => {
         form.reset();
-        window.location.href = 'indexlogged.html';
+        window.location.href = 'profilo-personale-logged.html';
       }, 3000);
     });
