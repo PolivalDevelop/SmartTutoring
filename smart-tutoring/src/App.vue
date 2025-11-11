@@ -1,13 +1,13 @@
 <template>
   <div class="app" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
     <AppHeader @toggle-theme="toggleTheme" />
-    <div class="main-layout">
-      <SidebarFilters v-if="showFilters" />
-      <main class="content" role="main" aria-labelledby="mainTitle">
-        <HomeView />
-        <FooterNote />
-      </main>
-    </div>
+    
+    <!-- Sidebar e contenuto principali come figli diretti di .app -->
+    <SidebarFilters v-if="showFilters" />
+    <main class="content" role="main" aria-labelledby="mainTitle">
+      <HomeView />
+      <FooterNote />
+    </main>
 
     <BookingDialog
       v-if="bookingDialog.visible"
@@ -19,6 +19,7 @@
     <ToastNotification v-if="toast.visible" :message="toast.message" @close="toast.visible = false" />
   </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue'
@@ -48,11 +49,3 @@ function confirmBooking() {
   }
 }
 </script>
-
-<style>
-.main-layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap);
-}
-</style>
