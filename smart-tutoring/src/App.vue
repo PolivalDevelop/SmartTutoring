@@ -4,7 +4,10 @@
     <AppHeader :logged-in="isLoggedIn" @toggle-theme="toggleTheme" />
     
     <SidebarFilters v-if="showFilters" />
-    <RouterView @book="openBooking" />
+    <RouterView 
+      @book="openBooking"
+      @publish-request="publishDialog.visible = true"
+    />
 
 
     <!-- FAB pubblicazione lezione -->

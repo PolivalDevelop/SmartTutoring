@@ -18,7 +18,23 @@
         :key="lesson.id"
         :lesson="lesson"
         @book="handleBook(lesson)"
+        v-if="lessons.length > 0"
       />
+      <!-- Stato vuoto -->
+      <div v-else class="empty-state" role="status" aria-live="polite">
+        <div class="empty-icon">📚</div>
+        <h3 class="empty-title">Nessuna lezione disponibile</h3>
+        <p class="empty-text">
+          {{ isLoggedIn ? 'Pubblica tu una lezione o controlla più tardi!' : 'Effettua l’accesso per pubblicare la tua prima lezione.' }}
+        </p>
+        <button
+          v-if="isLoggedIn"
+          class="btn btn-primary"
+          @click="$emit('publish-request')"
+        >
+          Pubblica una lezione
+        </button>
+      </div>
     </section>
     <FooterNote />
   </main>
@@ -29,7 +45,7 @@
 import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
-
+import { isLoggedIn } from '@/composables/auth.js'
 import { lessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
@@ -92,6 +108,45 @@ main.content {
   }
 
 }
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  text-align: center;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 2rem 1rem;
+  box-shadow: var(--shadow-sm);
+  min-height: 280px;
+  color: var(--text);
+  opacity: .9;
+ 
+}
+
+.empty-icon {
+  font-size: 2.2rem;
+}
+
+.empty-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.empty-text {
+  color: var(--muted);
+  font-size: .95rem;
+  max-width: 320px;
+}
+
+.empty-state .btn {
+  margin-top: .5rem;
+}
+
 
 
 </style>
