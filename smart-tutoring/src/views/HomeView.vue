@@ -17,7 +17,7 @@
         v-for="lesson in lessons"
         :key="lesson.id"
         :lesson="lesson"
-        @book="$emit('book', lesson)"
+        @book="handleBook(lesson)"
       />
     </section>
     <FooterNote />
@@ -36,6 +36,13 @@ const sortOrder = ref('Più recenti')
 
 function addLesson(lesson) {
   lessons.value.unshift(lesson)
+}
+
+// Emit verso App.vue
+const emit = defineEmits(['book'])
+
+function handleBook(lesson) {
+  emit('book', lesson)
 }
 
 </script>

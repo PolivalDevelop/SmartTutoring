@@ -4,7 +4,8 @@
     <AppHeader :logged-in="isLoggedIn" @toggle-theme="toggleTheme" />
     
     <SidebarFilters v-if="showFilters" />
-    <RouterView />
+    <RouterView @book="openBooking" />
+
 
     <!-- FAB pubblicazione lezione -->
     <button
