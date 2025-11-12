@@ -25,3 +25,81 @@
 <script setup>
 defineProps({ lesson: Object })
 </script>
+
+<style scoped>
+/* modal.css */
+/* Modal booking */
+.booking-dialog.hidden { display: none; }
+.booking-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.booking-overlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, black 40%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.booking-panel {
+  position: relative;
+  background: var(--card);
+  color: var(--text);
+  border-radius: calc(var(--radius) - 4px);
+  padding: 1.15rem;
+  width: min(520px, calc(100% - 2rem));
+  box-shadow: var(--shadow-md);
+  z-index: 1101;
+  transform: translateY(6px);
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+/* show animation (remove hidden then add .open via JS if vuoi animare) */
+.booking-dialog.open .booking-panel { transform: translateY(0); }
+
+/* Close button */
+.dialog-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  padding: .25rem;
+  border-radius: 8px;
+}
+.dialog-close:focus { outline: 2px solid var(--accent); }
+
+/* Header/body/footer */
+.dialog-header { margin-bottom: .5rem; }
+.dialog-sub { margin: .25rem 0 0; color: var(--muted); font-size: .95rem; }
+
+.dialog-body p { margin: .45rem 0; font-size: .95rem; }
+.dialog-body .muted { color: var(--muted); font-size: .9rem; margin-top: .5rem; }
+
+.dialog-footer {
+  display: flex;
+  gap: .6rem;
+  justify-content: flex-end;
+  margin-top: .8rem;
+}
+
+/* focus styles for buttons */
+.dialog-footer .btn:focus { outline: 3px solid color-mix(in srgb, var(--accent) 25%, transparent); outline-offset: 2px; }
+
+/* Responsive */
+@media (max-width: 520px) {
+  .booking-panel { padding: .85rem; width: calc(100% - 1.6rem); }
+  .dialog-footer { flex-direction: column-reverse; align-items: stretch; }
+  .dialog-footer .btn { width: 100%; }
+}
+</style>

@@ -12,3 +12,7 @@ export const lessons = ref([
 export function addLesson(lesson) {
   lessons.value.unshift(lesson)
 }
+
+export function removeLesson(id) {
+  lessons.value = lessons.value.filter(lesson => lesson.id !== id)
+}
