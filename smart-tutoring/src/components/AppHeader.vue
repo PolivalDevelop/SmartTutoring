@@ -16,8 +16,8 @@
           <path d="M21 12.79A9 9 0 0 1 12.21 3a9.002 9.002 0 0 0 0 18A9 9 0 0 1 21 12.79z"/>
         </svg>
       </button>
-      <a href="/register" class="btn btn-primary">Iscriviti</a>
-      <a href="/accedi" class="btn btn-ghost">Accedi</a>
+      <RouterLink to="/register" class="btn btn-primary">Iscriviti</RouterLink>
+      <RouterLink to="/accedi" class="btn btn-ghost">Accedi</RouterLink>
     </div>
   </header>
 </template>

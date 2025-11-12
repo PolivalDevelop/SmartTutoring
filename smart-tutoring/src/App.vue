@@ -4,10 +4,8 @@
     
     <!-- Sidebar e contenuto principali come figli diretti di .app -->
     <SidebarFilters v-if="showFilters" />
-    <main class="content" role="main" aria-labelledby="mainTitle">
-      <HomeView />
-      <FooterNote />
-    </main>
+    <RouterView />
+      
 
     <BookingDialog
       v-if="bookingDialog.visible"
@@ -23,12 +21,12 @@
 
 <script setup>
 import { ref } from 'vue'
+import { RouterView } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
 import HomeView from './views/HomeView.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
-import FooterNote from './components/FooterNote.vue'
 import useDarkMode from './composables/useDarkMode.js'
 
 const { toggleTheme } = useDarkMode()

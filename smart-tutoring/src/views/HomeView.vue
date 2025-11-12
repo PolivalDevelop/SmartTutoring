@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
       <h2 id="mainTitle">Lezioni disponibili</h2>
       <div class="filters-row">
@@ -20,12 +20,14 @@
         @book="$emit('book', lesson)"
       />
     </section>
-  </div>
+    <FooterNote />
+  </main>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
+import FooterNote from '@/components/FooterNote.vue'
 
 const sortOrder = ref('Più recenti')
 
