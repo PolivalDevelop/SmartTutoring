@@ -1,5 +1,6 @@
 <template>
-  <div class="app" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
+  <div :class="['app', showFilters ? 'with-sidebar' : 'no-sidebar']" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
+
     <AppHeader @toggle-theme="toggleTheme" />
     
     <!-- Sidebar e contenuto principali come figli diretti di .app -->
@@ -52,3 +53,28 @@ function confirmBooking() {
   }
 }
 </script>
+
+<<style lang="scss" scoped>
+.app {
+  min-height: 100vh;
+  gap: var(--gap);
+  padding-top: 4.5rem;
+
+  &.no-sidebar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  &.with-sidebar {
+    @media (min-width: 880px) {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+    }
+
+    @media (max-width: 879px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+</style>
