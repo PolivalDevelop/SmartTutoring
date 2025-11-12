@@ -39,7 +39,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
 import BookingDialog from './components/BookingDialog.vue'
@@ -54,6 +54,7 @@ import { addLesson, removeLesson } from '@/composables/useLessons.js'
 const { toggleTheme } = useDarkMode()
 
 const route = useRoute()
+const router = useRouter()
 const showFilters = computed(() => route.meta.showFilters)
 
 
@@ -63,8 +64,15 @@ const publishDialog = ref({ visible: false })
 const toast = ref({ visible: false, message: '' })
 
 function openBooking(lesson) {
+  if (!isLoggedIn.value) {
+    showToast('⚠️ Devi effettuare l’accesso per prenotare una lezione.')
+    router.push('/login')
+    return
+  }
+
   bookingDialog.value = { visible: true, lesson }
 }
+
 
 function confirmBooking() {
   bookingDialog.value.visible = false
@@ -87,7 +95,7 @@ function handlePublish(lesson) {
 function showToast(message) {
   toast.value.message = message
   toast.value.visible = true
-  setTimeout(() => (toast.value.visible = false), 3000)
+  setTimeout(() => (toast.value.visible = false), 2000)
 }
 </script>
 
