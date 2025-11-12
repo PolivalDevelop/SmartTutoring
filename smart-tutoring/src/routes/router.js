@@ -4,7 +4,7 @@ import RegisterView from '@/views/RegisterView.vue'
 
 
 const routes = [
-  { path: '/', name: 'home', component: HomeView },
+  { path: '/', name: 'home', component: HomeView, meta: { showFilters: true } },
   { path: '/register', name: 'register', component: RegisterView },
   // potrai aggiungere qui /accedi, /register, /profilo ecc.
 ]

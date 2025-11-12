@@ -20,8 +20,8 @@
 
 
 <script setup>
-import { ref } from 'vue'
-import { RouterView } from 'vue-router'
+import { ref, computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
 import HomeView from './views/HomeView.vue'
@@ -31,7 +31,12 @@ import useDarkMode from './composables/useDarkMode.js'
 
 const { toggleTheme } = useDarkMode()
 
-const showFilters = ref(true)
+// const showFilters = ref(true)
+const route = useRoute()
+const showFilters = computed(() => route.meta.showFilters)
+
+
+
 const bookingDialog = ref({ visible: false, lesson: null })
 const toast = ref({ visible: false, message: '' })
 
