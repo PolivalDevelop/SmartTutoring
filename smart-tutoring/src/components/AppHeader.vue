@@ -17,7 +17,7 @@
         </svg>
       </button>
       <RouterLink to="/register" class="btn btn-primary">Iscriviti</RouterLink>
-      <RouterLink to="/accedi" class="btn btn-ghost">Accedi</RouterLink>
+      <RouterLink to="/login" class="btn btn-ghost">Accedi</RouterLink>
     </div>
   </header>
 </template>

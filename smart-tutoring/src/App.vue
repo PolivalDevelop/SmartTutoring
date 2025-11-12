@@ -3,7 +3,6 @@
 
     <AppHeader @toggle-theme="toggleTheme" />
     
-    <!-- Sidebar e contenuto principali come figli diretti di .app -->
     <SidebarFilters v-if="showFilters" />
     <RouterView />
       
@@ -25,14 +24,12 @@ import { ref, computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
-import HomeView from './views/HomeView.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 
 const { toggleTheme } = useDarkMode()
 
-// const showFilters = ref(true)
 const route = useRoute()
 const showFilters = computed(() => route.meta.showFilters)
 
@@ -54,7 +51,7 @@ function confirmBooking() {
 }
 </script>
 
-<<style lang="scss" scoped>
+<style lang="scss" scoped>
 .app {
   min-height: 100vh;
   gap: var(--gap);
