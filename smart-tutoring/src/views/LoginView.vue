@@ -66,6 +66,9 @@ import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
+import { login, isLoggedIn } from '@/composables/auth.js'
+
+
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
 
@@ -125,7 +128,8 @@ function handleSubmit() {
 
   if (!emailValid || !passwordValid) return
 
+  login()
   showToast('✅ Accesso effettuato con successo!')
-  setTimeout(() => router.push('/home'), 2000)
+  setTimeout(() => router.push('/'), 2000)
 }
 </script>

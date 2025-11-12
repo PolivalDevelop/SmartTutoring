@@ -1,10 +1,21 @@
 <template>
   <div :class="['app', showFilters ? 'with-sidebar' : 'no-sidebar']" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
 
-    <AppHeader @toggle-theme="toggleTheme" />
+    <AppHeader :logged-in="isLoggedIn" @toggle-theme="toggleTheme" />
     
     <SidebarFilters v-if="showFilters" />
     <RouterView />
+
+    <!-- FAB pubblicazione lezione -->
+    <button
+      v-if="isLoggedIn"
+      class="fab-main"
+      aria-label="Pubblica nuova lezione"
+      title="Pubblica nuova lezione"
+      @click="publishDialog.visible = true"
+    >
+      +
+    </button>
       
 
     <BookingDialog
@@ -12,6 +23,12 @@
       :lesson="bookingDialog.lesson"
       @close="bookingDialog.visible = false"
       @confirm="confirmBooking"
+    />
+
+    <PublishDialog
+      v-if="publishDialog.visible"
+      @close="publishDialog.visible = false"
+      @publish="handlePublish"
     />
 
     <ToastNotification v-if="toast.visible" :message="toast.message" @close="toast.visible = false" />
@@ -25,8 +42,13 @@ import { RouterView, useRoute } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
 import BookingDialog from './components/BookingDialog.vue'
+import PublishDialog from './components/PublishDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
+import { isLoggedIn } from './composables/auth.js'
+import { addLesson } from '@/composables/useLessons.js'
+
+
 
 const { toggleTheme } = useDarkMode()
 
@@ -36,6 +58,7 @@ const showFilters = computed(() => route.meta.showFilters)
 
 
 const bookingDialog = ref({ visible: false, lesson: null })
+const publishDialog = ref({ visible: false })
 const toast = ref({ visible: false, message: '' })
 
 function openBooking(lesson) {
@@ -48,6 +71,19 @@ function confirmBooking() {
     visible: true,
     message: '✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring.'
   }
+}
+
+function handlePublish(lesson) {
+  addLesson(lesson)
+  showToast('✅ Lezione pubblicata con successo!')
+  publishDialog.value.visible = false
+}
+
+
+function showToast(message) {
+  toast.value.message = message
+  toast.value.visible = true
+  setTimeout(() => (toast.value.visible = false), 3000)
 }
 </script>
 
@@ -73,5 +109,29 @@ function confirmBooking() {
       flex-direction: column;
     }
   }
+}
+
+.fab-main {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.fab-main:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 </style>

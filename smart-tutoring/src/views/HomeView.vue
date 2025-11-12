@@ -30,13 +30,14 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 
+import { lessons } from '@/composables/useLessons.js'
+
 const sortOrder = ref('Più recenti')
 
-const lessons = ref([
-  { id: 1, title: 'Analisi', time: 'Mercoledì • 12:00', duration: '1h', price: 10, author: 'Marco Rossi' },
-  { id: 2, title: 'Programmazione in C', time: 'Giovedì • 15:00', duration: '1.5h', price: 15, author: 'Laura Bianchi' },
-  { id: 3, title: 'Inglese', time: 'Venerdì • 17:00', duration: '1h', price: 12, author: 'Teodoro Verdi' }
-])
+function addLesson(lesson) {
+  lessons.value.unshift(lesson)
+}
+
 </script>
 
 <style scoped>
