@@ -1,9 +1,15 @@
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap"
 import { createApp } from 'vue'
+import './assets/styles/base.css'
 import App from './App.vue'
-import 'bootstrap';
-import axios from "axios";
+import { createPinia } from 'pinia'
+import router from "./routes/router"
+import { VueResponsiveness, Presets } from 'vue-responsiveness'
 
-const app = createApp(App);
-app.config.globalProperties.$socket = {};
 
-axios.defaults.withCredentials = true;
+createApp(App)
+  .use(router)
+  .use(createPinia())
+  .use(VueResponsiveness, Presets.Bootstrap_5)
+  .mount('#app')

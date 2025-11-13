@@ -1,0 +1,30 @@
+<template>
+  <header class="app-header" role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+            <img src="@/assets/LogoSmartTutoring.png" alt="Logo ripetizioni" width="44" height="44" style="border-radius: 10px;" />
+        </div>
+        <div>
+          <h1>Smart Tutoring</h1>
+          <p class="lesson-sub">Trova e prenota lezioni universitarie</p>
+        </div>
+      </div>
+
+      <div class="top-actions" role="navigation" aria-label="Azioni principali">
+        <button class="btn btn-ghost theme-toggle" id="themeToggle" aria-label="Cambia tema">
+          <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 0 1 12.21 3a9.002 9.002 0 0 0 0 18A9 9 0 0 1 21 12.79z"/>
+          </svg>
+          <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 6.95-1.41-1.41M6.46 6.46 5.05 5.05m0 13.9 1.41-1.41M18.36 5.64l1.41-1.41"/>
+          </svg>
+        </button>
+        
+        <a href="prenotate.html" class="btn ghost" aria-label="Lezioni prenotate" title="Lezioni prenotate">Prenotate</a>
+        <a href="offerte.html" class="btn ghost" aria-label="Lezioni offerte" title="Lezioni offerte">Offerte</a>
+        <a href="profilo-personale-logged.html" class="btn ghost" aria-label="Profilo personale" title="Profilo personale">Profilo</a>
+        
+      </div>
+    </header>
+</template>
