@@ -14,7 +14,7 @@
       <!-- Guest/Logged menu -->
       <template v-if="isLoggedIn">
         <div class="logged-menu">
-          <RouterLink to="/home" class="menu-item">Home</RouterLink>
+          <RouterLink to="/" class="menu-item">Home</RouterLink>
           <RouterLink to="/prenotazioni" class="menu-item">Lezioni Prenotate</RouterLink>
           <RouterLink to="/offerte" class="menu-item">Lezioni Offerte</RouterLink>
           <RouterLink to="/profile" class="menu-item">Profilo</RouterLink>

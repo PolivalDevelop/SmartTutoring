@@ -15,7 +15,7 @@ export function registerUser(userData) {
     birthDate: userData.nascita || '',
     avgGrade: userData.media || null,
     bio: userData.bio || '',
-    photo: userData.foto ? URL.createObjectURL(userData.foto) : '/images/default-profile.jpg',
+    photo: userData.foto ? URL.createObjectURL(userData.foto) : null,
     rating: 0,
     reviewsCount: 0,
   }

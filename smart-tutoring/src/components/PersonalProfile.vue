@@ -1,31 +1,48 @@
-<!-- src/components/PersonalProfile.vue -->
 <template>
   <section class="profile-card" aria-describedby="profileInfo">
     <!-- HEADER -->
     <div class="profile-header">
-      <img :src="user.photo" :alt="`Foto profilo di ${user.name}`" class="profile-photo" />
-      <div>
-        <h2>{{ user.name }}</h2>
-        <p class="profile-sub">{{ user.subtitle }}</p>
-      </div>
-    </div>
+      <img
+        :src="user.photo || defaultPhoto"
+        :alt="`Foto profilo di ${user.name}`"
+        class="profile-photo"
+      />
 
-    <!-- RATING -->
-    <div class="profile-rating" aria-label="Valutazione media utente">
-      <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
-      <span class="rating-value">({{ user.rating }} / 5)</span>
-      <span class="rating-count">• {{ user.reviewsCount }} valutazioni</span>
+      <div class="profile-main">
+        <h2 class="profile-name">{{ user.name }}</h2>
+        <p class="profile-role">{{ fullDegreeInfo }}</p>
+
+        <!-- Rating sempre visibile -->
+        <div class="profile-rating" aria-label="Valutazione media utente">
+          <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
+          <span class="rating-value">({{ user.rating.toFixed(1) }} / 5)</span>
+          <span class="rating-count">• {{ user.reviewsCount || 0 }} valutazioni</span>
+        </div>
+      </div>
     </div>
 
     <hr />
 
     <!-- INFO -->
     <div id="profileInfo" class="profile-info">
-      <div v-for="(value, label) in userInfo" :key="label" class="info-item">
-        <strong>{{ label }}:</strong>
-        <span v-if="typeof value === 'string'">{{ value }}</span>
-        <p v-else>{{ value }}</p>
+      <div class="info-item">
+        <strong>Email:</strong>
+        <span>{{ user.email || '—' }}</span>
       </div>
+      <div class="info-item">
+        <strong>Data di nascita:</strong>
+        <span>{{ user.birthDate || '—' }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Media universitaria:</strong>
+        <span>{{ avg }}</span>
+      </div>
+    </div>
+
+    <!-- BIO (se presente) -->
+    <div v-if="user.bio" class="profile-bio">
+      <h3>Bio</h3>
+      <p>{{ user.bio }}</p>
     </div>
 
     <!-- ACTIONS -->
@@ -38,135 +55,185 @@
 
 <script setup>
 import { computed } from 'vue'
+import defaultPhotoPath from '@/assets/images/user.png'
 
 const props = defineProps({
-  user: {
-    type: Object,
-    required: true
-  }
+  user: { type: Object, required: true }
 })
 
-const roundedRating = computed(() => Math.round(props.user.rating))
-const userInfo = computed(() => ({
-  'Email': props.user.email,
-  'Tipo di corso': props.user.degreeType,
-  'Data di nascita': props.user.birthDate || '—',
-  'Media universitaria': props.user.avgGrade ? `${props.user.avgGrade} / 30` : '—',
-  'Bio': props.user.bio || '—'
-}))
+const defaultPhoto = defaultPhotoPath
+const roundedRating = computed(() => Math.round(props.user.rating || 0))
+const avg = computed(() => (props.user.avgGrade ? `${props.user.avgGrade} / 30` : '- / 30'))
+
+const fullDegreeInfo = computed(() => {
+  const degree = props.user.degreeType
+  if (!degree) return '—'
+  const formatted =
+    degree === 'triennale' || degree === 'magistrale'
+      ? `Studente ${degree.charAt(0).toUpperCase() + degree.slice(1)}`
+      : degree.charAt(0).toUpperCase() + degree.slice(1)
+  return `${formatted} — Ingegneria e Scienze Informatiche`
+})
 </script>
 
 <style scoped>
 .profile-card {
   background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  padding: 2rem 1.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  max-width: 850px;
   width: 100%;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
 }
 
+.profile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* HEADER */
 .profile-header {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
 .profile-photo {
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  border: 3px solid var(--accent-light);
 }
 
-.profile-sub {
+.profile-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Allinea tutto a sinistra */
+.profile-name,
+.profile-role,
+.profile-rating {
+  text-align: left;
+}
+
+.profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.profile-role {
+  font-size: 1rem;
   color: var(--muted);
-  margin: 0.25rem 0 0;
 }
 
+/* RATING */
 .profile-rating {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--muted);
+  gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .stars {
-  color: #fbbf24; /* giallo stelle */
-  font-size: 1rem;
-  letter-spacing: 1px;
+  color: #facc15;
+  font-size: 1.1rem;
 }
 
 .rating-value {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text);
+  font-size: 0.95rem;
 }
 
+.rating-count {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* INFO */
 .profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem 2rem;
 }
 
 .info-item strong {
-  display: inline-block;
-  width: 50%;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.info-item span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* BIO */
+.profile-bio {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-bio h3 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.1rem;
   color: var(--text);
 }
 
-.info-item span,
-.info-item p {
-  color: var(--muted);
+.profile-bio p {
   margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
+/* ACTIONS */
 .profile-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
-.footer-note {
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-top: 2rem;
-}
-
-/* === Mobile First === */
-@media (max-width: 600px) {
+/* RESPONSIVE */
+@media (max-width: 700px) {
   .profile-card {
     padding: 1.5rem 1rem;
   }
-  .info-item strong {
-    width: auto;
-    display: block;
-    margin-bottom: 0.25rem;
-  }
+
   .profile-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
+
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-name {
+    font-size: 1.4rem;
+  }
+
   .profile-actions {
     justify-content: center;
-  }
-}
-
-/* === Desktop === */
-@media (min-width: 900px) {
-  .profile-card {
-    padding: 2.5rem 2rem;
-  }
-  .profile-photo {
-    width: 110px;
-    height: 110px;
   }
 }
 </style>
