@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+    # This service starts a static resource web server that will be used by clients
+
+    client:
+        image: smart-tutoring-frontend:latest
+        ports:
+            - 8080:8080
+        volumes:
+            - .:/usr/src/app/app
+            - /usr/src/app/app/node_modules
+    server:
+        hostname: smart_tutoring_api
+        image: smart-tutoring-api
+        ports:
+        - 4000:4000
+        expose:
+        - 4000
+    db:
+        image: mongo:latest
+        ports:
+            - '27017:27017'
+        expose:
+            - 27017
+        volumes:
+            - dbdata6:/data/db
+
+volumes:
+    dbdata6:
+        
