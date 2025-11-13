@@ -19,11 +19,14 @@ const router = useRouter()
 const { currentUser } = useUser()
 const user = currentUser
 
+const emit = defineEmits(['edit-profile'])
+
+
 function viewBalance() {
   alert('💰 Funzione saldo non ancora implementata!')
 }
 function editProfile() {
-  router.push('/edit-profile')
+  emit('edit-profile')
 }
 </script>
 

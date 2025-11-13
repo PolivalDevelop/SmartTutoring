@@ -49,6 +49,7 @@
     <div class="profile-actions">
       <button class="btn btn-ghost" @click="$emit('view-balance')">Visualizza saldo</button>
       <button class="btn btn-primary" @click="$emit('edit-profile')">Modifica profilo</button>
+
     </div>
   </section>
 </template>

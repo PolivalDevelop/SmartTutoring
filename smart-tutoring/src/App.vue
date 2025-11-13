@@ -7,6 +7,7 @@
     <RouterView 
       @book="openBooking"
       @publish-request="publishDialog.visible = true"
+      @edit-profile="openEditProfile"
     />
 
 
@@ -35,6 +36,13 @@
       @publish="handlePublish"
     />
 
+    <EditProfileDialog
+      v-if="editProfileDialog.visible"
+      :user="currentUser"
+      @close="editProfileDialog.visible = false"
+      @save="updateUser"
+    />
+
     <ToastNotification v-if="toast.visible" :message="toast.message" @close="toast.visible = false" />
   </div>
 </template>
@@ -47,10 +55,12 @@ import AppHeader from './components/AppHeader.vue'
 import SidebarFilters from './components/SidebarFilters.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import PublishDialog from './components/PublishDialog.vue'
+import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn } from '@/composables/auth.js'
 import { addLesson, removeLesson } from '@/composables/useLessons.js'
+import { useUser } from '@/composables/useUser.js'
 
 
 
@@ -64,7 +74,11 @@ const showFilters = computed(() => route.meta.showFilters)
 
 const bookingDialog = ref({ visible: false, lesson: null })
 const publishDialog = ref({ visible: false })
+const editProfileDialog = ref({ visible: false })
+
+
 const toast = ref({ visible: false, message: '' })
+const { currentUser } = useUser()
 
 function openBooking(lesson) {
   if (!isLoggedIn) {
@@ -93,6 +107,19 @@ function handlePublish(lesson) {
   showToast('✅ Lezione pubblicata con successo!')
   publishDialog.value.visible = false
 }
+
+function openEditProfile() {
+  const name = currentUser.value?.name || 'utente'
+  showToast('Ciao ' + name)
+  editProfileDialog.value.visible = true
+}
+
+function updateUser(updatedUser) {
+  currentUser.value = { ...currentUser.value, ...updatedUser }
+  localStorage.setItem('user', JSON.stringify(currentUser.value))
+  editProfileDialog.value.visible = false
+}
+
 
 
 function showToast(message) {

@@ -41,3 +41,9 @@ export function logoutUser() {
   isLoggedIn.value = false
   localStorage.removeItem('loggedIn')
 }
+
+export function updateUser(updatedData) {
+  currentUser.value = updatedData
+  localStorage.setItem('user', JSON.stringify(updatedData))
+}
+
