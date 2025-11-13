@@ -1,7 +1,7 @@
 <template>
   <div :class="['app', showFilters ? 'with-sidebar' : 'no-sidebar']" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
 
-    <AppHeader :logged-in="isLoggedIn" @toggle-theme="toggleTheme" />
+    <AppHeader @toggle-theme="toggleTheme" />
     
     <SidebarFilters v-if="showFilters" />
     <RouterView 
@@ -49,7 +49,7 @@ import BookingDialog from './components/BookingDialog.vue'
 import PublishDialog from './components/PublishDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
-import { isLoggedIn } from './composables/auth.js'
+import { isLoggedIn } from '@/composables/auth.js'
 import { addLesson, removeLesson } from '@/composables/useLessons.js'
 
 
@@ -67,7 +67,7 @@ const publishDialog = ref({ visible: false })
 const toast = ref({ visible: false, message: '' })
 
 function openBooking(lesson) {
-  if (!isLoggedIn.value) {
+  if (!isLoggedIn) {
     showToast('⚠️ Devi effettuare l’accesso per prenotare una lezione.')
     router.push('/login')
     return

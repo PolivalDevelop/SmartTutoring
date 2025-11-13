@@ -110,6 +110,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
+import { registerUser } from '@/composables/useUser.js'
 import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
@@ -173,6 +174,8 @@ function handleSubmit() {
 
   if (!emailValid || !passwordValid) return
 
+  const newUser = registerUser(form)
+  login(newUser)
   showToast('✅ Registrazione completata con successo!')
   setTimeout(() => router.push('/'), 2000)
 }

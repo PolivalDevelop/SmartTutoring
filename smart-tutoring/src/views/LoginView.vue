@@ -67,10 +67,11 @@ import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
 import { login, isLoggedIn } from '@/composables/auth.js'
-
+import { useUser } from '@/composables/useUser.js'
 
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
+const { currentUser } = useUser()
 
 // Stato form
 const form = reactive({
@@ -128,7 +129,13 @@ function handleSubmit() {
 
   if (!emailValid || !passwordValid) return
 
-  login()
+  const storedUser = JSON.parse(localStorage.getItem('user'))
+  if (!storedUser || storedUser.email !== form.email) {
+    showToast('❌ Nessun utente registrato con questa email')
+    return
+  }
+  currentUser.value = storedUser
+  login(storedUser)
   showToast('✅ Accesso effettuato con successo!')
   setTimeout(() => router.push('/'), 2000)
 }
