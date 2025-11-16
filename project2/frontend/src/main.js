@@ -1,15 +1,16 @@
-import "bootstrap/dist/css/bootstrap.css"
-import "bootstrap"
 import { createApp } from 'vue'
-import './assets/styles/base.css'
 import App from './App.vue'
-import { createPinia } from 'pinia'
-import router from "./routes/router"
-import { VueResponsiveness, Presets } from 'vue-responsiveness'
+import router from './routes'
+import 'bootstrap';
+import store from "core-js/internals/shared-store";
+import axios from "axios";
+
+const app = createApp(App);
+app.config.globalProperties.$socket = {};
+
+axios.defaults.withCredentials = true;
+
+app.use(store).use(router)/*.use(VueCookies, { expires: '7d'})*/.mount('#app');
 
 
-createApp(App)
-  .use(router)
-  .use(createPinia())
-  .use(VueResponsiveness, Presets.Bootstrap_5)
-  .mount('#app')
+
