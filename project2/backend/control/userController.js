@@ -54,7 +54,7 @@ exports.searchById = (req, res) => {
 }
 
 exports.createUser = (req, res) => {
-  const { username, email, password, image } = req.body
+  const { username, email, password, degreeType, birthDate, avgGrade, bio, image } = req.body
 
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
@@ -68,7 +68,7 @@ exports.createUser = (req, res) => {
     }
 
     const user = new userModel({
-      username, email, password: hashedPassword, image: formattedImage
+      username, email, password: hashedPassword, image: formattedImage, degreeType, birthDate, avgGrade, bio
     })
 
     user.save()

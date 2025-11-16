@@ -24,5 +24,8 @@ module.exports = function(jwtSettings) {
   router.route('/id/:id')
     .get(controller.searchById)
 
+  router.route('/session/register')  
+    .post((req, res) => controller.registerUser(req, res, jwtSettings))
+
   return router
 }
