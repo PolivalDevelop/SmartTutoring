@@ -1,178 +1,195 @@
-const { userModel } = require('../models/userModel')
-const { postModel } = require('../models/postModel')
-const bcrypt = require('bcrypt')
-const defaultImage = require('fs').readFileSync('public/DefaultPfp.png')
-const jwt = require('jsonwebtoken')
+// controllers/userController.js
 
-exports.searchByUsername = (req, res) => {
-  userModel.findOne({ username: req.params.username })
-    .then((result) => {
-      if (!result) {
-        return res.status(404).json({ message: 'User not found' })
-      }
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const User = require("../models/userModel") // adattalo al tuo export default
+                                           // (User in CommonJS)
 
-      const formattedImage = {
-        data: result.image.data.toString('base64'),
-        contentType: result.image.contentType
-      }
 
-      const formattedUser = {
-        ...result.toObject(),
-        image: formattedImage
-      }
-
-      res.json(formattedUser)
-    })
-    .catch((error) => {
-      res.status(500).json(error)
-    })
+// 🔹 Utility: Rimuove password dal risultato
+const sanitizeUser = (user) => {
+  const obj = user.toObject()
+  delete obj.password
+  return obj
 }
 
-exports.searchById = (req, res) => {
 
-  userModel.findOne({ _id: req.params.id })
-    .then((result) => {
-      if (!result) {
-        return res.status(404).json({ message: 'User not found' })
-      }
-
-      const formattedImage = {
-        data: result.image.data.toString('base64'),
-        contentType: result.image.contentType
-      }
-
-      const formattedUser = {
-        ...result.toObject(),
-        image: formattedImage
-      }
-
-      res.json(formattedUser)
-    })
-    .catch((error) => {
-      res.status(500).json(error)
-    })
-}
-
-exports.createUser = (req, res) => {
-  const { username, email, password, degreeType, birthDate, avgGrade, bio, image } = req.body
-
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error while encrypting password', error: err })
-    }
-
-    const formattedImage = image ? {
-      data: Buffer.from(image, 'base64'), contentType: 'image/jpeg'
-    } : {
-      data: defaultImage, contentType: 'image/png'
-    }
-
-    const user = new userModel({
-      username, email, password: hashedPassword, image: formattedImage, degreeType, birthDate, avgGrade, bio
-    })
-
-    user.save()
-      .then((result) => {
-        res.status(200).json(result)
-      })
-      .catch((err) => {
-        res.status(500).json({ message: 'Error creating the user', error: err})
-      })
-  })
-}
-
-exports.deleteUser = (req, res) => {
-  const username = req.params.username
-  const password = req.body.password
-
-  // Search user by username
-  userModel.findOne({ username })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' })
-      }
-
-      // Compare password
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) {
-          return res.status(500).json({ message: 'Server error during password comparison' })
-        }
-
-        if (!isMatch) {
-          return res.status(401).json({ message: 'Incorrect password' })
-        }
-
-        // Delete user if password is correct
-        userModel.deleteOne({ username })
-          .then(() => {
-            res.json({ message: 'User deleted successfully' })
-
-            // Delete all posts from the user
-            postModel.deleteMany({ user: user._id })
-          })
-          .catch((error) => {
-            res.status(500).json({ message: 'Error deleting user', error })
-          })
-      })
-    })
-    .catch((error) => {
-      res.status(500).json({ message: 'Error finding user', error })
-    })
-}
-
-exports.getAllUsers = (req, res) => {
-  userModel.find()
-    .then((result) => {
-      res.json(result)
-    })
-    .catch((error) => {
-      res.status(500).json(error)
-    })
-}
-
-exports.loginUser = async (req, res, jwtSettings) => {
-  const { username, password } = req.body
-
+// ======================================================
+//  CREATE USER ( / )
+// ======================================================
+exports.createUser = async (socket, data) => {
   try {
-    const user = await userModel.findOne({ username })
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      degreeType,
+      photo,
+      birthDate,
+      averageGrade,
+      bio
+    } = data
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid password' })
-    }
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Generate JWT token
-    const token = jwt.sign({
-      userId: user._id, username: user.username
-    }, jwtSettings.secret, { expiresIn: jwtSettings.expires })
-
-    req.session.user = { username: user.username, userId: user._id }
-
-    req.session.save((err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error saving session' })
-      }
-      res.status(200).json({ message: 'Authentication successful', token })
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      degreeType,
+      photo,
+      birthDate,
+      averageGrade,
+      bio
     })
-  } catch (error) {
-    res.status(500).json({ message: 'Authentication failed' })
+
+    await user.save()
+
+    socket.emit("createUserResponse", {
+      success: true,
+      user: sanitizeUser(user)
+    })
+
+  } catch (err) {
+    socket.emit("createUserResponse", { error: err.message })
   }
 }
 
-exports.logoutUser = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error destroying session' })
+
+
+// ======================================================
+//  LOGIN USER  ( /session/login )
+// ======================================================
+exports.loginUser = async (socket, data, jwtSettings) => {
+  try {
+    const { email, password } = data
+
+    // Password ha select:false → bisogna selezionarla a mano
+    const user = await User.findOne({ email }).select("+password")
+
+    if (!user)
+      return socket.emit("session:login:response", { error: "User not found" })
+
+    const valid = await bcrypt.compare(password, user.password)
+
+    if (!valid)
+      return socket.emit("session:login:response", { error: "Invalid password" })
+
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      jwtSettings.secret,
+      { expiresIn: jwtSettings.expires }
+    )
+
+    socket.data.user = {
+      userId: user._id,
+      email: user.email
     }
-    res.status(200).json({ message: 'Session destroyed' })
-  })
+
+    socket.emit("session:login:response", {
+      success: true,
+      token,
+      user: sanitizeUser(user)
+    })
+
+  } catch (err) {
+    socket.emit("session:login:response", { error: err.message })
+  }
 }
 
-exports.getSessionData = (req, res) => {
-  req.session.user ?
-    res.status(200).json(req.session.user) :
-    res.status(404).json({ message: 'No session data found' })
+
+
+// ======================================================
+//  LOGOUT USER  ( /session/logout )
+// ======================================================
+exports.logoutUser = (socket) => {
+  socket.data.user = null
+  socket.emit("session:logout:response", { success: true })
+}
+
+
+
+// ======================================================
+//  GET SESSION DATA ( /session )
+// ======================================================
+exports.getSessionData = (socket) => {
+  if (!socket.data.user)
+    return socket.emit("session:get:response", { error: "No session active" })
+
+  socket.emit("session:get:response", socket.data.user)
+}
+
+
+
+// ======================================================
+//  SEARCH USER BY USERNAME ( /:username )
+// ======================================================
+exports.searchByUsername = async (socket, username) => {
+  try {
+    const user = await User.findOne({ firstName: username })
+
+    if (!user)
+      return socket.emit("user:searchByUsername:response", {
+        error: "User not found"
+      })
+
+    socket.emit("user:searchByUsername:response", sanitizeUser(user))
+
+  } catch (err) {
+    socket.emit("user:searchByUsername:response", { error: err.message })
+  }
+}
+
+
+
+// ======================================================
+//  DELETE USER (DELETE /:username)
+// ======================================================
+exports.deleteUser = async (socket, data) => {
+  try {
+    const { email, password } = data
+
+    const user = await User.findOne({ email }).select("+password")
+
+    if (!user)
+      return socket.emit("user:delete:response", { error: "User not found" })
+
+    const valid = await bcrypt.compare(password, user.password)
+
+    if (!valid)
+      return socket.emit("user:delete:response", { error: "Invalid password" })
+
+    await User.deleteOne({ _id: user._id })
+
+    socket.emit("user:delete:response", {
+      success: true,
+      message: "User deleted successfully"
+    })
+
+  } catch (err) {
+    socket.emit("user:delete:response", { error: err.message })
+  }
+}
+
+
+
+// ======================================================
+//  SEARCH BY ID  ( /id/:id )
+// ======================================================
+exports.searchById = async (socket, id) => {
+  try {
+    const user = await User.findById(id)
+
+    if (!user)
+      return socket.emit("user:searchById:response", {
+        error: "User not found"
+      })
+
+    socket.emit("user:searchById:response", sanitizeUser(user))
+
+  } catch (err) {
+    socket.emit("user:searchById:response", { error: err.message })
+  }
 }

@@ -1,43 +1,138 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('../controllers/lessonController');
+// lessonSocket.js
+const controller = require("../controllers/lessonController");
 
-// Create a new lesson or get all lessons
-router.route('/')
-  .post(controller.createLesson)
-  .get(controller.getAllLessons);
+module.exports = function (socket, io) {
 
-// Get or delete a lesson by ID
-router.route('/lesson/:id')
-  .get(controller.getLessonById)
-  .delete(controller.deleteLesson);
+  // -----------------------------
+  // CREATE LESSON
+  // -----------------------------
+  socket.on("lesson:create", async (data, callback) => {
+    try {
+      const lesson = await controller.createLessonSocket(data);
+      callback({ success: true, data: lesson });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by subject
-router.route('/lesson/subject/:subject')
-  .get(controller.getLessonsBySubject);
+  // -----------------------------
+  // GET ALL LESSONS
+  // -----------------------------
+  socket.on("lesson:getAll", async (callback) => {
+    try {
+      const lessons = await controller.getAllLessonsSocket();
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by date
-router.route('/lesson/date/:date')
-  .get(controller.getLessonsByDate);
+  // -----------------------------
+  // GET LESSON BY ID
+  // -----------------------------
+  socket.on("lesson:getById", async (id, callback) => {
+    try {
+      const lesson = await controller.getLessonByIdSocket(id);
+      callback({ success: true, data: lesson });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by teacher (docente)
-router.route('/lesson/teacher/:teacher')
-  .get(controller.getLessonsByTeacher);
+  // -----------------------------
+  // DELETE LESSON
+  // -----------------------------
+  socket.on("lesson:delete", async (id, callback) => {
+    try {
+      const deleted = await controller.deleteLessonSocket(id);
+      callback({ success: true, data: deleted });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by student
-router.route('/lesson/student/:student')
-  .get(controller.getLessonsByStudent);
+  // -----------------------------
+  // GET LESSONS BY SUBJECT
+  // -----------------------------
+  socket.on("lesson:bySubject", async (subject, callback) => {
+    try {
+      const lessons = await controller.getLessonsBySubjectSocket(subject);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by status (free, booked, completed)
-router.route('/lesson/status/:status')
-  .get(controller.getLessonsByStatus);
+  // -----------------------------
+  // GET LESSONS BY DATE
+  // -----------------------------
+  socket.on("lesson:byDate", async (date, callback) => {
+    try {
+      const lessons = await controller.getLessonsByDateSocket(date);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Get lessons filtered by price range
-router.route('/lesson/price/:minPrice/:maxPrice')
-  .get(controller.getLessonsByPriceRange);
+  // -----------------------------
+  // GET LESSONS BY TEACHER
+  // -----------------------------
+  socket.on("lesson:byTeacher", async (teacher, callback) => {
+    try {
+      const lessons = await controller.getLessonsByTeacherSocket(teacher);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-// Composite/advanced search (multiple filters)
-router.route('/lesson/search')
-  .get(controller.searchLessons);
+  // -----------------------------
+  // GET LESSONS BY STUDENT
+  // -----------------------------
+  socket.on("lesson:byStudent", async (student, callback) => {
+    try {
+      const lessons = await controller.getLessonsByStudentSocket(student);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-module.exports = router;
+  // -----------------------------
+  // GET LESSONS BY STATUS
+  // -----------------------------
+  socket.on("lesson:byStatus", async (status, callback) => {
+    try {
+      const lessons = await controller.getLessonsByStatusSocket(status);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
+  // -----------------------------
+  // GET LESSONS BY PRICE RANGE
+  // -----------------------------
+  socket.on("lesson:byPriceRange", async ({ minPrice, maxPrice }, callback) => {
+    try {
+      const lessons = await controller.getLessonsByPriceRangeSocket(minPrice, maxPrice);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
+  // -----------------------------
+  // ADVANCED SEARCH
+  // -----------------------------
+  socket.on("lesson:search", async (filters, callback) => {
+    try {
+      const lessons = await controller.searchLessonsSocket(filters);
+      callback({ success: true, data: lessons });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
+};

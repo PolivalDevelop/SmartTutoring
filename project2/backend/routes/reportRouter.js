@@ -1,15 +1,54 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('../controllers/reportController');
+// reportSocket.js
+const controller = require("../controllers/reportController");
 
-router.route('/')
-  .post(controller.createReport);
+module.exports = function (socket, io) {
+  
+  // -----------------------------
+  // CREATE REPORT
+  // -----------------------------
+  socket.on("report:create", async (data, callback) => {
+    try {
+      const report = await controller.createReportSocket(data);
+      callback({ success: true, data: report });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-router.route('/product/:id')
-  .get(controller.getReportByProductId)
-  .delete(controller.deleteReport);
+  // -----------------------------
+  // GET REPORT BY PRODUCT ID
+  // -----------------------------
+  socket.on("report:getByProductId", async (id, callback) => {
+    try {
+      const report = await controller.getReportByProductIdSocket(id);
+      callback({ success: true, data: report });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-router.route('/user/:username')
-  .get(controller.getAllUserReport)
+  // -----------------------------
+  // DELETE REPORT
+  // -----------------------------
+  socket.on("report:delete", async (id, callback) => {
+    try {
+      const result = await controller.deleteReportSocket(id);
+      callback({ success: true, data: result });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
 
-module.exports = router;
+  // -----------------------------
+  // GET ALL REPORTS OF A USER
+  // -----------------------------
+  socket.on("report:getAllByUser", async (username, callback) => {
+    try {
+      const reports = await controller.getAllUserReportSocket(username);
+      callback({ success: true, data: reports });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
+};

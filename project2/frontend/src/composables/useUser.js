@@ -64,10 +64,25 @@ export async function registerUser(userData) {
     return newUser
 
   } catch (error) {
+
     console.error("Errore registrazione/login:", error)
-    throw error.response?.data || error
+
+    // ⭐ ERRORE DI RETE — backend non raggiungibile
+    if (!error.response) {
+      throw {
+        message: "Impossibile collegarsi al server. Controlla che il backend sia avviato.",
+        status: 503
+      }
+    }
+
+    // ⭐ ERRORE DAL BACKEND
+    throw {
+      message: error.response.data?.message || "Errore durante la registrazione o il login.",
+      status: error.response.status
+    }
   }
 }
+
 
 
 // getter per ottenere l’utente attuale

@@ -1,31 +1,43 @@
-const express = require('express')
-const controller = require('../controllers/userController')
+// socket/userSocket.js
 
-module.exports = function(jwtSettings) {
-  const router = express.Router()
+const controller = require("../controllers/userController")
 
-  router.route('/')
-    // .get(controller.getAllUsers)
-    .post(controller.createUser)
+module.exports = function (socket, io, jwtSettings) {
 
-  router.route('/session')
-    .get(controller.getSessionData)
+  // 1. /  → createUser
+  socket.on("createUser", (data) => {
+    controller.createUser(socket, data)
+  })
 
-  router.route('/session/login')
-    .post((req, res) => controller.loginUser(req, res, jwtSettings))
+  // 2. /session → getSessionData
+  socket.on("session:get", () => {
+    controller.getSessionData(socket)
+  })
 
-  router.route('/session/logout')
-    .post(controller.logoutUser)
+  // 3. /session/login  → loginUser
+  socket.on("session:login", (data) => {
+    controller.loginUser(socket, data, jwtSettings)
+  })
 
-  router.route('/:username')
-    .get(controller.searchByUsername)
-    .delete(controller.deleteUser)
+  // 4. /session/logout → logoutUser
+  socket.on("session:logout", () => {
+    controller.logoutUser(socket)
+  })
 
-  router.route('/id/:id')
-    .get(controller.searchById)
+  // 5. /:username → searchByUsername
+  socket.on("user:searchByUsername", (username) => {
+    controller.searchByUsername(socket, username)
+  })
 
-  router.route('/session/register')  
-    .post((req, res) => controller.registerUser(req, res, jwtSettings))
+  // 6. /:username DELETE → deleteUser
+  socket.on("user:delete", (data) => {
+    // data = { username, password }
+    controller.deleteUser(socket, data)
+  })
 
-  return router
+  // 7. /id/:id  → searchById
+  socket.on("user:searchById", (id) => {
+    controller.searchById(socket, id)
+  })
+
 }

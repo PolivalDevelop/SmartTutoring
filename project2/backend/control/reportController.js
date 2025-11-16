@@ -1,80 +1,74 @@
-const Report = require('../models/reportModel');
-const User = require('../models/userModel');
+// reportController.js (versione Socket.io)
 
-// Create a new report
-exports.createReport = async (req, res) => {
-  try {
-    const { reporter, reportedUser, reason, details } = req.body;
+const Report = require("../models/reportModel");
+const User = require("../models/userModel");
 
-    if (!reporter || !reportedUser || !reason || !details) {
-      return res.status(400).json({ message: 'All required fields must be provided.' });
-    }
+// --------------------------------------------------
+// CREATE REPORT
+// --------------------------------------------------
+exports.createReportSocket = async (data) => {
+  const { reporter, reportedUser, reason, details } = data;
 
-    if (reporter === reportedUser) {
-      return res.status(400).json({ message: 'A user cannot report themselves.' });
-    }
-
-    const newReport = new Report({
-      reporter,
-      reportedUser,
-      reason,
-      details,
-    });
-
-    const savedReport = await newReport.save();
-    res.status(201).json(savedReport);
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating report', error });
+  if (!reporter || !reportedUser || !reason || !details) {
+    throw new Error("All required fields must be provided.");
   }
+
+  if (reporter === reportedUser) {
+    throw new Error("A user cannot report themselves.");
+  }
+
+  const newReport = new Report({
+    reporter,
+    reportedUser,
+    reason,
+    details,
+  });
+
+  return await newReport.save();
 };
 
-// Get a single report by ID
-exports.getReportByProductId = async (req, res) => {
-  try {
-    const report = await Report.findById(req.params.id)
-      .populate('reporter', 'firstName lastName email')
-      .populate('reportedUser', 'firstName lastName email');
+// --------------------------------------------------
+// GET REPORT BY ID
+// --------------------------------------------------
+exports.getReportByProductIdSocket = async (id) => {
+  const report = await Report.findById(id)
+    .populate("reporter", "firstName lastName email")
+    .populate("reportedUser", "firstName lastName email");
 
-    if (!report) {
-      return res.status(404).json({ message: 'Report not found' });
-    }
-
-    res.status(200).json(report);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching report', error });
+  if (!report) {
+    throw new Error("Report not found");
   }
+
+  return report;
 };
 
-// Delete a report by ID
-exports.deleteReport = async (req, res) => {
-  try {
-    const deletedReport = await Report.findByIdAndDelete(req.params.id);
+// --------------------------------------------------
+// DELETE REPORT BY ID
+// --------------------------------------------------
+exports.deleteReportSocket = async (id) => {
+  const deleted = await Report.findByIdAndDelete(id);
 
-    if (!deletedReport) {
-      return res.status(404).json({ message: 'Report not found' });
-    }
-
-    res.status(200).json({ message: 'Report successfully deleted' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting report', error });
+  if (!deleted) {
+    throw new Error("Report not found");
   }
+
+  return { message: "Report successfully deleted" };
 };
 
-// Get all reports for a specific user (by username)
-exports.getAllUserReport = async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+// --------------------------------------------------
+// GET ALL REPORTS FOR A USER (by username)
+// --------------------------------------------------
+exports.getAllUserReportSocket = async (username) => {
+  const user = await User.findOne({ username });
 
-    const reports = await Report.find({ reportedUser: user._id })
-      .populate('reporter', 'firstName lastName email')
-      .populate('reportedUser', 'firstName lastName email')
-      .sort({ createdAt: -1 });
-
-    res.status(200).json(reports);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching user reports', error });
+  if (!user) {
+    throw new Error("User not found");
   }
+
+  const reports = await Report.find({ reportedUser: user._id })
+    .populate("reporter", "firstName lastName email")
+    .populate("reportedUser", "firstName lastName email")
+    .sort({ createdAt: -1 });
+
+  return reports;
 };
