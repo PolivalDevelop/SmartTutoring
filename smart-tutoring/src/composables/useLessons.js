@@ -9,7 +9,11 @@ export const lessons = ref([
   { id: 1, title: 'Analisi', time: 'Mercoledì • 12:00', duration: '1h', price: 10, author: 'Marco Rossi', bookedBy: '' },
   { id: 2, title: 'Programmazione in C', time: 'Giovedì • 15:00', duration: '1.5h', price: 15, author: 'Laura Bianchi', bookedBy: '' },
   { id: 3, title: 'Inglese', time: 'Venerdì • 17:00', duration: '1h', price: 12, author: 'Teodoro Verdi', bookedBy: '' },
-  { id: 4, title: 'Inglese', time: 'Venerdì • 17:00', duration: '1h', price: 15, author: 'Luca Cantagallo', bookedBy: 'Marco Rossi' }
+  { id: 4, title: 'Inglese', time: 'Venerdì • 17:00', duration: '1h', price: 15, author: 'Luca Cantagallo', bookedBy: 'Marco Rossi' },
+  { id: 5, title: 'Inglese', time: 'Venerdì • 17:00', duration: '1h', price: 15, author: 'Luca Cantagallo', bookedBy: '' },
+  { id: 6, title: 'Analisi', time: 'Mercoledì • 12:00', duration: '1h', price: 10, author: 'Marco Rossi', bookedBy: 'Luca Cantagallo' },
+
+
 ])
 
 // Funzione per aggiungere una lezione
