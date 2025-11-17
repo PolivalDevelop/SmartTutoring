@@ -14,11 +14,11 @@
 
     <section class="results" id="lessonsList">
       <LessonCard
-        v-for="lesson in bookedLessons"
+        v-for="lesson in myBookedLessons"
         mode="booked"
         :key="lesson.id"
         :lesson="lesson"
-        v-if="bookedLessons.length > 0"
+        v-if="myBookedLessons.length > 0"
       />
       <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
@@ -40,7 +40,7 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
-import { bookedLessons } from '@/composables/usePersonalBookedLessons.js'
+import { myBookedLessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
 

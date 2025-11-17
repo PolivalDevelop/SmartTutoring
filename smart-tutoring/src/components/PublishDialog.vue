@@ -72,9 +72,11 @@
 
 <script setup>
 import { reactive, computed } from 'vue'
+import { useUser } from '@/composables/useUser.js'
 
 const emit = defineEmits(['close', 'publish'])
 
+const { currentUser } = useUser()
 const now = new Date()
 const today = now.toISOString().split('T')[0]
 const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
@@ -96,7 +98,7 @@ const timeOptions = computed(() => {
 })
 
 const lesson = reactive({
-  teacher: 'Marco Rossi',
+  teacher: currentUser.value?.name || '',
   course: '',
   date: '',
   timeStart: '',

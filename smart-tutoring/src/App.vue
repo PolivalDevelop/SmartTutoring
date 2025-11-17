@@ -59,8 +59,7 @@ import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn } from '@/composables/auth.js'
-import { addLesson, removeLesson } from '@/composables/useLessons.js'
-import { addBookedLesson } from '@/composables/usePersonalBookedLessons.js'
+import { addLesson, removeLesson, bookLesson } from '@/composables/useLessons.js'
 import { useUser } from '@/composables/useUser.js'
 
 
@@ -97,8 +96,7 @@ function confirmBooking() {
   bookingDialog.value.visible = false
 
   if (bookingDialog.value.lesson) {
-    removeLesson(lesson.id)
-    addBookedLesson(lesson)
+    bookLesson(lesson.id)
   }
 
   showToast('✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring.')
