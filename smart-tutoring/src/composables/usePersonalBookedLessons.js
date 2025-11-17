@@ -7,10 +7,10 @@ export const bookedLessons = ref([
 ])
 
 // Funzione per aggiungere una lezione
-export function addLesson(lesson) {
+export function addBookedLesson(lesson) {
   bookedLessons.value.unshift(lesson)
 }
 
-export function removeLesson(id) {
+export function removeBookedLesson(id) {
   bookedLessons.value = bookedLessons.value.filter(lesson => lesson.id !== id)
 }
