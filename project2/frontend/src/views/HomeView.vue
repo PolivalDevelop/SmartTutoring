@@ -50,9 +50,19 @@ import { lessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
 
-function addLesson(lesson) {
-  lessons.value.unshift(lesson)
+import socket from "@/socket.js"
+import { lessons } from "@/store/lessonStore"   // o dove tieni lessons
+
+export function addLesson(lesson) {
+  socket.emit("lesson:create", lesson, (response) => {
+    if (response.success) {
+      lessons.value.unshift(response.data) // Aggiungi la lezione creata dal server
+    } else {
+      console.error("Errore creazione lezione:", response.error)
+    }
+  })
 }
+
 
 // Emit verso App.vue
 const emit = defineEmits(['book'])

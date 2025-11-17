@@ -9,9 +9,7 @@ export const lessons = ref([
 ])
 
 // Funzione per aggiungere una lezione
-export function addLesson(lesson) {
-  lessons.value.unshift(lesson)
-}
+
 
 export function removeLesson(id) {
   lessons.value = lessons.value.filter(lesson => lesson.id !== id)

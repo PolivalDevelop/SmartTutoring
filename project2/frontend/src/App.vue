@@ -59,8 +59,10 @@ import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn } from '@/composables/auth.js'
-import { addLesson, removeLesson } from '@/composables/useLessons.js'
+import { removeLesson } from '@/composables/useLessons.js'
 import { useUser } from '@/composables/useUser.js'
+import socket from "@/socket.js"
+import { lessons } from "@/store/lessonStore"
 
 
 
@@ -91,22 +93,63 @@ function openBooking(lesson) {
 }
 
 
+import socket from "@/socket.js"
+import { sessionUser } from "@/store/sessionStore"
+import { lessons } from "@/store/lessonStore"
+
 function confirmBooking() {
+  const lesson = bookingDialog.value.lesson
   bookingDialog.value.visible = false
 
-  if (bookingDialog.value.lesson) {
-    removeLesson(bookingDialog.value.lesson.id)
+  if (!lesson) {
+    showToast("❌ Nessuna lezione selezionata.")
+    return
   }
 
-  showToast('✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring.')
+  // ID utente loggato (studente)
+  const studentId = sessionUser.value?.userId
+  if (!studentId) {
+    showToast("❌ Devi essere loggato per prenotare una lezione.")
+    return
+  }
+
+  // Invio richiesta di prenotazione via socket.io
+  socket.emit("lesson:book", {
+    lessonId: lesson.id,
+    studentId
+  }, (response) => {
+
+    if (!response.success) {
+      showToast("❌ Errore nella prenotazione della lezione.")
+      console.error("Booking error:", response.error)
+      return
+    }
+
+    // Rimuovi la lezione dalla lista locale (era disponibile)
+    lessons.value = lessons.value.filter(l => l._id !== lesson.id)
+
+    showToast("✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring.")
+  })
 }
 
+
+
+import socket from "@/socket.js"
+import { lessons } from "@/store/lessonStore"
 
 function handlePublish(lesson) {
-  addLesson(lesson)
-  showToast('✅ Lezione pubblicata con successo!')
-  publishDialog.value.visible = false
+  socket.emit("lesson:create", lesson, (response) => {
+    if (response.success) {
+      lessons.value.unshift(response.data)
+      showToast('✅ Lezione pubblicata con successo!')
+      publishDialog.value.visible = false
+    } else {
+      showToast('❌ Errore nella pubblicazione della lezione')
+      console.error(response.error)
+    }
+  })
 }
+
 
 function openEditProfile() {
   const name = currentUser.value?.name || 'utente'
