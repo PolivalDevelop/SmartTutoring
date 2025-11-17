@@ -17,7 +17,7 @@
           <RouterLink to="/" class="menu-item">Home</RouterLink>
           <RouterLink to="/booked" class="menu-item">Lezioni Prenotate</RouterLink>
           <RouterLink to="/offered" class="menu-item">Lezioni Offerte</RouterLink>
-          <RouterLink to="/profile" class="menu-item">Profilo</RouterLink>
+          <RouterLink :to="`/profile/${currentUser.id}`" class="menu-item">Profilo</RouterLink>
           <button class="menu-item logout-btn" @click="handleLogout">Logout</button>
         </div>
       </template>
@@ -51,6 +51,9 @@
 <script setup>
 import { isLoggedIn, logout } from '@/composables/auth.js'
 import useDarkMode from '@/composables/useDarkMode.js'
+import { useUser } from '@/composables/useUser.js'
+
+const { currentUser } = useUser()
 
 const { toggleTheme, isDark } = useDarkMode()
 

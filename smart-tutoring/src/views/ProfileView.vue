@@ -1,23 +1,35 @@
 <template>
   <main class="profile-container" role="main" aria-labelledby="profileTitle">
     <PersonalProfile
-      v-if="user"
-      :user="user"
+      v-if="isMe && profileUser"
+      :user="profileUser"
       @view-balance="viewBalance"
       @edit-profile="editProfile"
     />
-    <p v-else class="no-user">⚠️ Nessun utente loggato.</p>
+    <PublicProfile
+      v-else-if="profileUser"
+      :user="profileUser"
+      :is-logged="isLogged"
+    />
+    <p v-else>⚠️ Utente non trovato.</p>
   </main>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useUser } from '@/composables/useUser.js'
 import PersonalProfile from '@/components/PersonalProfile.vue'
+import PublicProfile from '@/components/PublicProfile.vue'
 
-const router = useRouter()
-const { currentUser } = useUser()
-const user = currentUser
+const route = useRoute()
+const { currentUser, getUserById } = useUser()
+
+const profileId = Number(route.params.id)
+
+const profileUser = getUserById(profileId)
+
+const isMe = currentUser.value && currentUser.value.id === profileId
+const isLogged = !!currentUser.value
 
 const emit = defineEmits(['edit-profile'])
 

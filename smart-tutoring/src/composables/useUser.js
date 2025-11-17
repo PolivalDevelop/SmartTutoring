@@ -139,7 +139,8 @@ export function removeUser(id) {
    COMPOSABLE STANDARD
 -------------------------------------- */
 export function useUser() {
-  return { currentUser, users }
+  const getUserById = (id) => userById(id).value
+  return { currentUser, users, getUserById }
 }
 
 /* --------------------------------------

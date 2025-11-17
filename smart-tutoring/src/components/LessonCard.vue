@@ -15,7 +15,7 @@
       class="lesson-footer">
         <div class="lesson-author">{{ lesson.author }}</div>
         <div class="card-actions">
-          <a href="/profilo" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${lesson.authorId}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
               <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-          </a>
+          </RouterLink>
           <button 
             v-if="mode === 'available'"
             class="small btn-primary" 
@@ -60,7 +60,7 @@
       class="lesson-footer">
         <div class="lesson-author">Prenotata da {{ lesson.bookedBy }}</div>
         <div class="card-actions">
-          <a href="/profilo" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${lesson.authorId}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
               <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-          </a>
+          </RouterLink>
           <button 
             class="small btn-primary" 
             disabled
@@ -82,6 +82,8 @@
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router';
+
 const props = defineProps({
   lesson: Object,
   mode: {
