@@ -15,6 +15,7 @@
     <section class="results" id="lessonsList">
       <LessonCard
         v-for="lesson in bookedLessons"
+        mode="booked"
         :key="lesson.id"
         :lesson="lesson"
         v-if="bookedLessons.length > 0"

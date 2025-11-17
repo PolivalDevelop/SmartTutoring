@@ -15,6 +15,7 @@
     <section class="results" id="lessonsList">
       <LessonCard
         v-for="lesson in lessons"
+        mode="available"
         :key="lesson.id"
         :lesson="lesson"
         @book="handleBook(lesson)"

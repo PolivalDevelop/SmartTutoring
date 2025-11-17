@@ -22,7 +22,13 @@
               <circle cx="12" cy="7" r="4"/>
             </svg>
           </a>
-          <button class="small btn-primary" @click="$emit('book', lesson)">Prenota</button>
+          <button 
+            v-if="mode === 'available'"
+            class="small btn-primary" 
+            @click="$emit('book', lesson)"
+          >
+            Prenota
+          </button>
         </div>
       </div>
     </div>
@@ -30,7 +36,15 @@
 </template>
 
 <script setup>
-defineProps({ lesson: Object })
+const props = defineProps({
+  lesson: Object,
+  mode: {
+    type: String,
+    default: "available"   // available | booked | offered
+  }
+})
+
+const emit = defineEmits(["book", "edit"])
 </script>
 
 <style scoped>
