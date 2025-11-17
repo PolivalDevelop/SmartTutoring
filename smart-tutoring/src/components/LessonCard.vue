@@ -10,7 +10,9 @@
         </div>
       </div>
 
-      <div class="lesson-footer">
+      <div 
+      v-if="mode !== 'offered'"
+      class="lesson-footer">
         <div class="lesson-author">{{ lesson.author }}</div>
         <div class="card-actions">
           <a href="/profilo" class="small btn-ghost" aria-label="Vedi profilo">
@@ -28,6 +30,50 @@
             @click="$emit('book', lesson)"
           >
             Prenota
+          </button>
+        </div>
+      </div>
+      <div
+      v-else-if="mode === 'offered' && !lesson.bookedBy"
+      class="lesson-footer">
+        <div class="lesson-author">Non ancora prenotata</div>
+        <div class="card-actions">
+          <button 
+            class="small btn-ghost" 
+            aria-label="Modifica lezione"
+            @click="$emit('edit', lesson)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 viewBox="0 0 24 24">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+          </button>
+        </div>
+        
+
+        
+      </div>
+      <div
+      v-else-if="mode === 'offered' && lesson.bookedBy"
+      class="lesson-footer">
+        <div class="lesson-author">Prenotata da {{ lesson.bookedBy }}</div>
+        <div class="card-actions">
+          <a href="/profilo" class="small btn-ghost" aria-label="Vedi profilo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </a>
+          <button 
+            class="small btn-primary" 
+            disabled
+          >
+            Prenotata
           </button>
         </div>
       </div>
@@ -170,5 +216,22 @@ const emit = defineEmits(["book", "edit"])
     grid-template-columns: 1fr auto;
     gap: .5rem;
   }
+}
+
+/* Bottoni disabilitati con tinta verde */
+html[data-theme='light'] button:disabled {
+  background-color: #d1fae5; /* verde pastello */
+  color: #15803d;            /* verde scuro */
+  border: 1px solid #15803d;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+html[data-theme='dark'] button:disabled {
+  background-color: #1e3a2f; /* verde profondo */
+  color: #4ade80;            /* verde chiaro */
+  border: 1px solid #4ade80;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
