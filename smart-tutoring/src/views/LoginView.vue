@@ -66,12 +66,11 @@ import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
-import { login, isLoggedIn } from '@/composables/auth.js'
-import { useUser } from '@/composables/useUser.js'
+import { login } from '@/composables/auth.js'
+import { loginUser } from '@/composables/useUser.js'
 
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
-const { currentUser } = useUser()
 
 // Stato form
 const form = reactive({
@@ -129,13 +128,14 @@ function handleSubmit() {
 
   if (!emailValid || !passwordValid) return
 
-  const storedUser = JSON.parse(localStorage.getItem('user'))
-  if (!storedUser || storedUser.email !== form.email) {
-    showToast('❌ Nessun utente registrato con questa email')
+  const user = loginUser(form.email, form.password)
+
+  if (!user) {
+    showToast('❌ Credenziali non valide o utente non registrato')
     return
   }
-  currentUser.value = storedUser
-  login(storedUser)
+
+  login(user)
   showToast('✅ Accesso effettuato con successo!')
   setTimeout(() => router.push('/'), 2000)
 }

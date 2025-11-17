@@ -110,7 +110,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
-import { registerUser } from '@/composables/useUser.js'
+import { registerUser, findUserByEmail } from '@/composables/useUser.js'
 import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
@@ -172,7 +172,15 @@ function handleSubmit() {
   if (!emailValid) showFieldError('email') && showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
   if (!passwordValid) showFieldError('password') && showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
 
+  if (findUserByEmail(form.email)) {
+    showFieldError('email')
+    showToast('❌ Esiste già un account registrato con questa email')
+    return
+  }
+
   if (!emailValid || !passwordValid) return
+
+
 
   const newUser = registerUser(form)
   login(newUser)
