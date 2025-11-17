@@ -140,7 +140,7 @@ export function removeUser(id) {
 -------------------------------------- */
 export function useUser() {
   const getUserById = (id) => userById(id).value
-  return { currentUser, users, getUserById }
+  return { currentUser, users, getUserById, updateUser } 
 }
 
 /* --------------------------------------

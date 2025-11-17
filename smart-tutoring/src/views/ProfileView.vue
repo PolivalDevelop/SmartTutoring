@@ -20,13 +20,14 @@ import { useRoute } from 'vue-router'
 import { useUser } from '@/composables/useUser.js'
 import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
+import { userById } from '@/composables/useUser.js'
 
 const route = useRoute()
 const { currentUser, getUserById } = useUser()
 
 const profileId = Number(route.params.id)
 
-const profileUser = getUserById(profileId)
+const profileUser = userById(profileId)
 
 const isMe = currentUser.value && currentUser.value.id === profileId
 const isLogged = !!currentUser.value

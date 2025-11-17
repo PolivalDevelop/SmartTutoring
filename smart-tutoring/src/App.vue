@@ -63,6 +63,7 @@ import { addLesson, removeLesson, bookLesson } from '@/composables/useLessons.js
 import { useUser } from '@/composables/useUser.js'
 
 
+const { currentUser, updateUser: updateUserInStore } = useUser()
 
 const { toggleTheme } = useDarkMode()
 
@@ -78,7 +79,6 @@ const editProfileDialog = ref({ visible: false })
 
 
 const toast = ref({ visible: false, message: '' })
-const { currentUser } = useUser()
 
 function openBooking(lesson) {
   if (!isLoggedIn) {
@@ -116,8 +116,7 @@ function openEditProfile() {
 }
 
 function updateUser(updatedUser) {
-  currentUser.value = { ...currentUser.value, ...updatedUser }
-  localStorage.setItem('user', JSON.stringify(currentUser.value))
+  updateUserInStore(updatedUser) 
   editProfileDialog.value.visible = false
 }
 
