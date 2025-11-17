@@ -44,8 +44,6 @@ import { myBookedLessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
 
-// Emit verso App.vue
-const emit = defineEmits(['book'])
 
 </script>
 

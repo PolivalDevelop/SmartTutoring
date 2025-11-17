@@ -14,19 +14,18 @@
 
     <section class="results" id="lessonsList">
       <LessonCard
-        v-for="lesson in lessons"
+        v-for="lesson in myOfferedLessons"
         mode="offered"
         :key="lesson.id"
         :lesson="lesson"
-        @book="handleBook(lesson)"
-        v-if="lessons.length > 0"
+        v-if="myOfferedLessons.length > 0"
       />
       <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-icon">📚</div>
         <h3 class="empty-title">Nessuna lezione offerta da te</h3>
         <p class="empty-text">
-          {{ isLoggedIn ? 'Pubblica tu una lezione!' : 'Effettua l’accesso per pubblicare la tua prima lezione.' }}
+          {{ isLoggedIn ? 'Pubblica una lezione!' : 'Effettua l’accesso per pubblicare la tua prima lezione.' }}
         </p>
         <button
           v-if="isLoggedIn"
@@ -47,20 +46,12 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
-import { lessons } from '@/composables/useLessons.js'
+import { myOfferedLessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
 
-function addLesson(lesson) {
-  lessons.value.unshift(lesson)
-}
 
-// Emit verso App.vue
-const emit = defineEmits(['book'])
 
-function handleBook(lesson) {
-  emit('book', lesson)
-}
 
 </script>
 
