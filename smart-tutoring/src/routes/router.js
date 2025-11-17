@@ -4,6 +4,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PersonalProfileView from '@/views/PersonalProfileView.vue'
 import BookedView from '@/views/BookedView.vue'
+import OfferedView from '@/views/OfferedView.vue'
 
 
 const routes = [
@@ -11,7 +12,9 @@ const routes = [
   { path: '/register', name: 'register', component: RegisterView },
   { path: '/login', name: 'login', component: LoginView },
   { path: '/profile', name: 'profile', component: PersonalProfileView },
-  { path: '/booked', name: 'booked', component: BookedView, meta: { showFilters: true } }
+  { path: '/booked', name: 'booked', component: BookedView, meta: { showFilters: true } },
+  { path: '/offered', name: 'offered', component: OfferedView, meta: { showFilters: true } }
+
 ]
 
 const router = createRouter({
