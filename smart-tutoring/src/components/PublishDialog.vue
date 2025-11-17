@@ -122,6 +122,7 @@ function submitLesson() {
     id,
     title: lesson.course,
     author: lesson.teacher,
+    authorId: currentUser.value.id,
     date: formattedDate,
     time: formattedTime,
     duration: lesson.duration,
