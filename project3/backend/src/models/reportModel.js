@@ -1,18 +1,18 @@
-import { Schema, model } from 'mongoose';
+const mongoose = require("mongoose");
 
-const reportSchema = new Schema(
+const reportSchema = new mongoose.Schema(
   {
     // User who submits the report
     reporter: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
     // Reported user
     reportedUser: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
@@ -21,10 +21,10 @@ const reportSchema = new Schema(
       type: String,
       required: true,
       enum: [
-        'inappropriate-content',
-        'offensive-language',
-        'fake-profile',
-        'other',
+        "inappropriate-content",
+        "offensive-language",
+        "fake-profile",
+        "other",
       ],
     },
 
@@ -36,19 +36,19 @@ const reportSchema = new Schema(
       trim: true,
     },
 
-    // Report status, useful for the admin side
+    // Report status (admin use)
     status: {
       type: String,
-      enum: ['pending', 'under_review', 'resolved', 'rejected'],
-      default: 'pending',
+      enum: ["pending", "under_review", "resolved", "rejected"],
+      default: "pending",
     },
 
-    // Optional: admin’s response or note
+    // Optional: admin response
     adminResponse: {
       type: String,
       maxlength: 500,
       trim: true,
-      default: '',
+      default: "",
     },
   },
   {
@@ -56,13 +56,13 @@ const reportSchema = new Schema(
   }
 );
 
-// Optional logical validation
-reportSchema.pre('save', function (next) {
+// Prevent a user from reporting themselves
+reportSchema.pre("save", function (next) {
   if (!this.reporter.equals(this.reportedUser)) {
     next();
   } else {
-    next(new Error('A user cannot report themselves.'));
+    next(new Error("A user cannot report themselves."));
   }
 });
 
-export default model('Report', reportSchema);
+module.exports = mongoose.model("Report", reportSchema);

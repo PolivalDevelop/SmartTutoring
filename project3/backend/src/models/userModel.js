@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+const mongoose = require("mongoose");
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -17,21 +17,21 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       lowercase: true,
-      match: [/^[a-z]+\.[a-z]+@studio\.unibo\.it$/, 'Invalid email (use your institutional address)'],
+      match: [/^[a-z]+\.[a-z]+@studio\.unibo\.it$/, "Invalid email (use your institutional address)"],
     },
     password: {
       type: String,
       required: true,
       minlength: 6,
-      select: false, // excludes password when querying
+      select: false, // Exclude password in queries
     },
     degreeType: {
       type: String,
       required: true,
-      enum: ['bachelor', 'master', 'phd'],
+      enum: ["bachelor", "master", "phd"],
     },
     photo: {
-      type: String, // URL or file path
+      type: String,
       default: null,
     },
     birthDate: {
@@ -48,12 +48,12 @@ const userSchema = new Schema(
       type: String,
       maxlength: 200,
       trim: true,
-      default: '',
+      default: "",
     },
   },
   {
-    timestamps: true, // automatically adds createdAt and updatedAt
+    timestamps: true,
   }
 );
 
-export default model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
