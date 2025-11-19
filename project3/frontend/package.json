@@ -1,0 +1,20 @@
+{
+  "name": "tutoring-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend Vue 3 con Vite e socket.io-client",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.5",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^5.0.8"
+  }
+}
