@@ -17,87 +17,77 @@ const sanitizeUser = (user) => {
 // ======================================================
 //  CREATE USER ( / )
 // ======================================================
-exports.createUser = async (socket, data) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      degreeType,
-      photo,
-      birthDate,
-      averageGrade,
-      bio
-    } = data
+exports.createUser = async (data) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    degreeType,
+    photo,
+    birthDate,
+    averageGrade,
+    bio
+  } = data;
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      degreeType,
-      photo,
-      birthDate,
-      averageGrade,
-      bio
-    })
-
-    await user.save()
-
-    socket.emit("createUserResponse", {
-      success: true,
-      user: sanitizeUser(user)
-    })
-
-  } catch (err) {
-    socket.emit("createUserResponse", { error: err.message })
+  // Controllo se l'email è già registrata
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new Error("❌ Esiste già un account registrato con questa email");
   }
-}
 
+  // Hash della password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Creazione nuovo utente
+  const user = new User({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+    degreeType,
+    photo,
+    birthDate,
+    averageGrade,
+    bio
+  });
+
+  await user.save();
+
+  return sanitizeUser(user); // restituisce utente senza password
+};
 
 
 // ======================================================
 //  LOGIN USER  ( /session/login )
 // ======================================================
-exports.loginUser = async (socket, data, jwtSettings) => {
-  try {
-    const { email, password } = data
+exports.loginUser = async (data, jwtSettings) => {
+  const { email, password } = data;
 
-    // Password ha select:false → bisogna selezionarla a mano
-    const user = await User.findOne({ email }).select("+password")
-
-    if (!user)
-      return socket.emit("session:login:response", { error: "User not found" })
-
-    const valid = await bcrypt.compare(password, user.password)
-
-    if (!valid)
-      return socket.emit("session:login:response", { error: "Invalid password" })
-
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      jwtSettings.secret,
-      { expiresIn: jwtSettings.expires }
-    )
-
-    socket.data.user = {
-      userId: user._id,
-      email: user.email
-    }
-
-    socket.emit("session:login:response", {
-      success: true,
-      token,
-      user: sanitizeUser(user)
-    })
-
-  } catch (err) {
-    socket.emit("session:login:response", { error: err.message })
+  // Recupera l'utente con la password (select +password)
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    throw new Error("User not found");
   }
-}
+
+  // Confronta la password
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) {
+    throw new Error("Invalid password");
+  }
+
+  // Genera JWT
+  const token = jwt.sign(
+    { userId: user._id, email: user.email },
+    jwtSettings.secret,
+    { expiresIn: jwtSettings.expires }
+  );
+
+  return {
+    token,
+    user: sanitizeUser(user)
+  };
+};
 
 
 

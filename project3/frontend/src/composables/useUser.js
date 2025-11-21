@@ -5,7 +5,7 @@ import { isLoggedIn, login as authLogin, logout as authLogout } from './auth.js'
 /* --------------------------------------
    UTENTI INIZIALI (persistenti)
 -------------------------------------- */
-const defaultUsers = [
+/*const defaultUsers = [
   {
     id: 1,
     name: 'Marco Rossi',
@@ -32,12 +32,12 @@ const defaultUsers = [
     rating: 4.9,
     reviewsCount: 22
   }
-]
+]*/
 
 /* --------------------------------------
    STATO REATTIVO
 -------------------------------------- */
-export const users = ref(JSON.parse(localStorage.getItem('users')) || defaultUsers)
+export const users = ref(JSON.parse(localStorage.getItem('users')) || [])
 export const currentUser = ref(JSON.parse(localStorage.getItem('user')) || null)
 
 /* --------------------------------------

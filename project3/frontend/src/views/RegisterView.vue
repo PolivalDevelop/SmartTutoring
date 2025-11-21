@@ -171,20 +171,29 @@ function handleSubmit() {
 
   if (!emailValid) showFieldError('email') && showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
   if (!passwordValid) showFieldError('password') && showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
-
-  if (findUserByEmail(form.email)) {
-    showFieldError('email')
-    showToast('❌ Esiste già un account registrato con questa email')
-    return
-  }
-
   if (!emailValid || !passwordValid) return
 
 
 
-  const newUser = registerUser(form)
-  login(newUser)
-  showToast('✅ Registrazione completata con successo!')
-  setTimeout(() => router.push('/'), 2000)
+  socket.emit("user:register", form, (response) => {
+    if (!response.success) {
+      showToast("❌ " + response.error)
+      return
+    }
+
+    // 🔵 Login automatico
+    socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
+      if (!res.success) {
+        showToast("⚠️ Registrato ma non loggato: " + res.error)
+        return
+      }
+
+      // 🔥 Utente loggato correttamente
+      login(res.data) // salva nel tuo store
+      showToast("✅ Registrazione completata con successo!")
+
+      setTimeout(() => router.push("/"), 2000)
+    })
+  })
 }
 </script>

@@ -5,9 +5,15 @@ const controller = require("../controllers/userController")
 module.exports = function (socket, io, jwtSettings) {
 
   // 1. /  → createUser
-  socket.on("createUser", (data) => {
-    controller.createUser(socket, data)
-  })
+  socket.on("user:register", async (data, callback) => {
+    try {
+      const user = await controller.createUser(data); // controller ritorna l'utente creato
+      callback({ success: true, data: user });
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
 
   // 2. /session → getSessionData
   socket.on("session:get", () => {
@@ -15,9 +21,15 @@ module.exports = function (socket, io, jwtSettings) {
   })
 
   // 3. /session/login  → loginUser
-  socket.on("session:login", (data) => {
-    controller.loginUser(socket, data, jwtSettings)
-  })
+  socket.on("session:login", async (data, callback) => {
+  try {
+    const user = await controller.loginUser(data, jwtSettings); // controller ritorna utente o token
+    callback({ success: true, data: user });
+  } catch (err) {
+    callback({ success: false, error: err.message });
+  }
+});
+
 
   // 4. /session/logout → logoutUser
   socket.on("session:logout", () => {
