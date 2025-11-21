@@ -47,9 +47,36 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
-import { availableLessons } from '@/composables/useLessons.js'
+//import { availableLessons } from '@/composables/useLessons.js'
 
 const sortOrder = ref('Più recenti')
+
+const socket = inject("socket");
+const availableLessons = ref([]);
+
+onMounted(() => {
+
+  // 1️⃣ Chiedo al server la lista delle lezioni disponibili
+  socket.emit("lessons:getAvailable");
+
+  // 2️⃣ Ricevo la lista
+  socket.on("lessons:available", (lessons) => {
+    availableLessons.value = lessons;
+    console.log("Lezioni aggiornate:", lessons);
+  });
+
+  // 3️⃣ Aggiornamenti in tempo reale
+  socket.on("lessons:updated", () => {
+    socket.emit("lessons:getAvailable"); // Ricarica lista
+  });
+});
+
+onUnmounted(() => {
+  socket.off("lessons:available");
+  socket.off("lessons:updated");
+});
+
+
 
 function addLesson(lesson) {
   lessons.value.unshift(lesson)
