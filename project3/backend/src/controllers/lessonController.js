@@ -30,12 +30,29 @@ exports.createLessonSocket = async (data) => {
 // ----------------------------------------
 // GET ALL LESSONS
 // ----------------------------------------
+
+
 exports.getAllLessonsSocket = async () => {
-  return await Lesson.find()
-    .populate("teacher", "firstName lastName email")
-    .populate("student", "firstName lastName email")
-    .sort({ date: 1 });
+  try {
+    const now = new Date();
+
+    const lessons = await Lesson.find({
+      student: null,
+      status: "available",
+      date: { $gte: now } 
+    })
+      .select("-student")
+      .populate("teacher", "firstName lastName email")
+      .sort({ date: 1 }); 
+
+    return lessons;
+  } catch (error) {
+    console.error("Error fetching lessons:", error);
+    throw error;
+  }
 };
+
+
 
 // ----------------------------------------
 // GET LESSON BY ID
