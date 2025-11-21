@@ -62,18 +62,6 @@ import { isLoggedIn } from '@/composables/auth.js'
 import { addLesson, removeLesson, bookLesson } from '@/composables/useLessons.js'
 import { useUser } from '@/composables/useUser.js'
 
-import { io } from "socket.io-client";
-
-const socket = io("http://backend:4000"); // nome servizio docker!
-
-const sendMessage = () => {
-  socket.emit("message", "Ciao dal frontend Vue!");
-};
-
-socket.on("message", msg => {
-  console.log("Messaggio ricevuto:", msg);
-});
-
 const { currentUser, updateUser: updateUserInStore } = useUser()
 
 const { toggleTheme } = useDarkMode()
