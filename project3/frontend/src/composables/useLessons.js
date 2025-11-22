@@ -15,6 +15,7 @@ const { currentUser } = useUser()
 
 export const lessons = ref([])
 // Funzione per aggiungere una lezione
+/*
 export function addLesson(lesson) {
   lessons.value.unshift({
     ...lesson,
@@ -30,6 +31,7 @@ export function removeLesson(id) {
 }
 
 // Prenota una lezione
+
 export function bookLesson(id) {
   const lesson = lessons.value.find(l => l.id === id)
   if (lesson && !lesson.bookedById) {
@@ -39,7 +41,7 @@ export function bookLesson(id) {
 }
 
 // Filtri utili
-/*
+
 export const availableLessons = computed(() =>
   lessons.value.filter(l => l.bookedBy === '')
 )

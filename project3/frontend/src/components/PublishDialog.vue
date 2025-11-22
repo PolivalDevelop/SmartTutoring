@@ -109,7 +109,6 @@ const lesson = reactive({
 function submitLesson() {
   if (!lesson.course || !lesson.date || !lesson.timeStart || !lesson.duration || !lesson.price) return
 
-  const id = Math.random().toString(36).substring(2, 9)
   const formattedDate = new Date(`${lesson.date}T${lesson.timeStart}`).toLocaleDateString('it-IT', {
     weekday: 'short',
     day: 'numeric',
@@ -119,14 +118,11 @@ function submitLesson() {
   const formattedTime = lesson.timeStart
 
   emit('publish', {
-    id,
-    title: lesson.course,
-    author: lesson.teacher,
-    authorId: currentUser.value.id,
-    date: formattedDate,
-    time: formattedTime,
+    teacher: lesson.teacher,
+    subject: lesson.course,
+    date: lesson.date,
     duration: lesson.duration,
-    price: lesson.price
+    cost: lesson.price
   })
 
   emit('close')

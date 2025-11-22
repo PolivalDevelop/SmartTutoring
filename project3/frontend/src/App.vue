@@ -59,7 +59,6 @@ import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn } from '@/composables/auth.js'
-import { addLesson } from '@/composables/useLessons.js'
 import { useUser } from '@/composables/useUser.js'
 
 const { currentUser, updateUser: updateUserInStore } = useUser()
@@ -118,9 +117,17 @@ function confirmBooking() {
 
 
 function handlePublish(lesson) {
-  addLesson(lesson)
-  showToast('✅ Lezione pubblicata con successo!')
-  publishDialog.value.visible = false
+  publishDialog.value.visible = false;
+
+  socket.emit("lesson:create", lesson, (response) => {
+    if (!response.success) {
+      showToast("❌ Errore durante la pubblicazione: " + response.error);
+      return;
+    }
+
+    showToast("✅ Lezione pubblicata con successo!");
+
+  });
 }
 
 function openEditProfile() {

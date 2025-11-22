@@ -77,11 +77,6 @@ onUnmounted(() => {
 });
 
 
-
-function addLesson(lesson) {
-  lessons.value.unshift(lesson)
-}
-
 // Emit verso App.vue
 const emit = defineEmits(['book'])
 
