@@ -67,7 +67,8 @@ import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
-import { loginUser } from '@/composables/useUser.js'
+import { inject } from "vue";
+const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
@@ -128,15 +129,16 @@ function handleSubmit() {
 
   if (!emailValid || !passwordValid) return
 
-  const user = loginUser(form.email, form.password)
+  socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
+      if (!res.success) {
+        showToast("credenziali non valide: " + res.error)
+        return
+      }
+      
+      login(res.data) // salva nel tuo store
+      showToast("✅ Registrazione completata con successo!")
 
-  if (!user) {
-    showToast('❌ Credenziali non valide o utente non registrato')
-    return
-  }
-
-  login(user)
-  showToast('✅ Accesso effettuato con successo!')
-  setTimeout(() => router.push('/'), 2000)
+      setTimeout(() => router.push("/"), 2000)
+    })
 }
 </script>
