@@ -182,3 +182,17 @@ exports.searchLessonsSocket = async (query) => {
     .populate("student", "firstName lastName")
     .sort({ date: 1 });
 };
+
+exports.getLessonsByStudentSocket = async (email) => {
+  if (!email) throw new Error("Email dello studente non fornita");
+
+  const now = new Date();
+
+  const lessons = await Lesson.find({
+      student: email,
+      date: { $gte: now } // solo date future
+    })
+    .sort({ date: 1 }); // ordina per data crescente
+
+  return lessons;
+};

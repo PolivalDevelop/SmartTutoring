@@ -40,7 +40,41 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
-import { myBookedLessons } from '@/composables/useLessons.js'
+import { socket } from "@/plugins/socket";
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const profileEmail = route.params.email
+
+/**
+ * Restituisce tutte le lezioni in cui l'utente è studente
+ * @param {string} email - email dell'utente
+ * @returns {Promise<Array>} array di lezioni
+ */
+export function bookedLessons(email) {
+  return new Promise((resolve, reject) => {
+    socket.emit("lessons:myBooked", { email }, (response) => {
+      if (!response.success) {
+        reject(response.error);
+      } else {
+        resolve(response.data);
+      }
+    });
+  });
+}
+
+
+let myBookedLessons 
+bookedLessons(profileEmail)
+  .then(lessons => {
+    console.log("Lezioni prenotate:", lessons);
+    myBookedLessons = lessons;
+  })
+  .catch(err => {
+    console.error("Errore nel recuperare le lezioni:", err);
+  });
+
 
 const sortOrder = ref('Più recenti')
 

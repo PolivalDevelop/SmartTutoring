@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const lessonSchema = new mongoose.Schema(
   {
     teacher: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,       // email del teacher
       required: true,
+      trim: true,
     },
     student: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,       // email dello studente
       default: null,
+      trim: true,
     },
     subject: {
       type: String,

@@ -20,16 +20,39 @@ import { useRoute } from 'vue-router'
 import { useUser } from '@/composables/useUser.js'
 import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
-import { userById } from '@/composables/useUser.js'
+
+import { socket } from "@/plugins/socket";
+
+export function userByEmail(email) {
+  return new Promise((resolve, reject) => {
+    socket.emit("user:getByEmail", { email }, (response) => {
+      if (!response.success) {
+        reject(response.error);
+      } else {
+        resolve(response.data);
+      }
+    });
+  });
+}
 
 const route = useRoute()
-const { currentUser, getUserById } = useUser()
+const { currentUser } = useUser()
 
-const profileId = Number(route.params.id)
+const profileEmail = route.params.email
 
-const profileUser = userById(profileId)
+//const profileUser = userById(profileId)
+let profileUser
 
-const isMe = currentUser.value && currentUser.value.id === profileId
+userByEmail(profileEmail)
+  .then(user => {
+    console.log("Profilo utente:", user);
+    profileUser = user;
+  })
+  .catch(err => {
+    console.error("Errore:", err);
+  });
+
+const isMe = currentUser.value && currentUser.value.email === profileEmail
 const isLogged = !!currentUser.value
 
 const emit = defineEmits(['edit-profile'])

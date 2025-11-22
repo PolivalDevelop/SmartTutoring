@@ -183,3 +183,40 @@ exports.searchById = async (socket, id) => {
     socket.emit("user:searchById:response", { error: err.message })
   }
 }
+
+function sanitizeUser(user) {
+  const u = user.toObject();
+  delete u.password;
+  return u;
+}
+
+exports.getUserByEmail = async (socket, email, callback) => {
+  try {
+    if (!email) {
+      return callback({
+        success: false,
+        error: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email }).select("-password");
+
+    if (!user) {
+      return callback({
+        success: false,
+        error: "User not found",
+      });
+    }
+
+    callback({
+      success: true,
+      data: sanitizeUser(user),
+    });
+
+  } catch (err) {
+    callback({
+      success: false,
+      error: err.message,
+    });
+  }
+};

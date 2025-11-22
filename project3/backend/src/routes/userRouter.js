@@ -52,4 +52,8 @@ module.exports = function (socket, io, jwtSettings) {
     controller.searchById(socket, id)
   })
 
+  socket.on("user:getByEmail", (data, callback) => {
+    controller.getUserByEmail(socket, data.email, callback)
+  })
+
 }

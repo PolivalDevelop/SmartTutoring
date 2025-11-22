@@ -168,3 +168,12 @@ module.exports = function (socket, io) {
   });
 
 };
+
+socket.on("lesson:myBooked", async (email, callback) => {
+  try {
+    const lessons = await controller.getLessonsByStudentSocket(email);
+    callback({ success: true, data: lessons });
+  } catch (err) {
+    callback({ success: false, error: err.message });
+  }
+});
