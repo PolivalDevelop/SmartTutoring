@@ -210,3 +210,25 @@ exports.getLessonsByTeacherSocket = async (email) => {
 
   return lessons;
 };
+
+exports.bookLessonSocket = async (lessonId, studentEmail) => {
+  if (!lessonId) throw new Error("Lesson ID mancante");
+  if (!studentEmail) throw new Error("Email dello studente mancante");
+
+  const lesson = await Lesson.findById(lessonId);
+
+  if (!lesson) {
+    throw new Error("Lezione non trovata");
+  }
+
+  if (lesson.status !== "available") {
+    throw new Error("La lezione è già stata prenotata");
+  }
+
+  lesson.student = studentEmail;
+  lesson.status = "booked";
+
+  await lesson.save();
+
+  return lesson;
+};

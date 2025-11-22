@@ -59,7 +59,7 @@ import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn } from '@/composables/auth.js'
-import { addLesson, removeLesson, bookLesson } from '@/composables/useLessons.js'
+import { addLesson } from '@/composables/useLessons.js'
 import { useUser } from '@/composables/useUser.js'
 
 const { currentUser, updateUser: updateUserInStore } = useUser()
@@ -90,16 +90,31 @@ function openBooking(lesson) {
 }
 
 
+import { inject } from "vue";
+const socket = inject("socket");
+
 function confirmBooking() {
-  const lesson = bookingDialog.value.lesson
-  bookingDialog.value.visible = false
+  const lesson = bookingDialog.value.lesson;
+  bookingDialog.value.visible = false;
+  const userEmail = currentUser.value?.email || null;
 
-  if (bookingDialog.value.lesson) {
-    bookLesson(lesson.id)
-  }
+  if (!lesson) return;
 
-  showToast('✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring.')
+  socket.emit("lesson:book", {
+    lessonId: lesson.id,
+    studentEmail: userEmail
+  }, (response) => {
+    if (!response.success) {
+      showToast("❌ Errore durante la prenotazione: " + response.error);
+      return;
+    }
+
+    showToast(
+      "✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring."
+    );
+  });
 }
+
 
 
 function handlePublish(lesson) {

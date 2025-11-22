@@ -177,3 +177,24 @@ socket.on("lesson:myBooked", async (email, callback) => {
     callback({ success: false, error: err.message });
   }
 });
+
+socket.on("lesson:myOffered", async (email, callback) => {
+  try {
+    const lessons = await controller.getLessonsByTeacherSocket(email);
+    callback({ success: true, data: lessons });
+  } catch (err) {
+    callback({ success: false, error: err.message });
+  }
+});
+
+socket.on("lesson:book", async ({ lessonId, studentEmail }, callback) => {
+  try {
+    const bookedLesson = await controller.bookLessonSocket(lessonId, studentEmail);
+    callback({ success: true, data: bookedLesson });
+
+    // Notifica aggiornamento
+    io.emit("lessons:updated");
+  } catch (err) {
+    callback({ success: false, error: err.message });
+  }
+}); 

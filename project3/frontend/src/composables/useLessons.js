@@ -39,6 +39,7 @@ export function bookLesson(id) {
 }
 
 // Filtri utili
+/*
 export const availableLessons = computed(() =>
   lessons.value.filter(l => l.bookedBy === '')
 )
@@ -54,4 +55,4 @@ export const myBookedLessons = computed(() =>
 export const myOfferedLessons = computed(() =>
   lessons.value.filter(l => l.authorId === currentUser.value?.id)
 )
-
+*/
