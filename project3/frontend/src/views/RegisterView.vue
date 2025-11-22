@@ -114,7 +114,8 @@ import { registerUser, findUserByEmail } from '@/composables/useUser.js'
 import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
-
+import { inject } from "vue";
+const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()
 const router = useRouter()

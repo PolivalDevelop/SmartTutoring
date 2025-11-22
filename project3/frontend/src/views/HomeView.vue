@@ -48,7 +48,7 @@ import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
 //import { availableLessons } from '@/composables/useLessons.js'
-
+import { inject, onMounted, onUnmounted } from "vue";
 const sortOrder = ref('Più recenti')
 
 const socket = inject("socket");
