@@ -2,20 +2,11 @@
   <div class="app" role="application" aria-label="Piattaforma prenotazioni ripetizioni">
     <AppHeader @toggle-theme="toggleTheme" />
 
-    <main class="access-container" role="main" aria-labelledby="registerTitle">
+    <main class="access-container" role="main" aria-labelledby="loginTitle">
       <section class="access-card">
-        <h2 id="registerTitle">Crea il tuo account</h2>
+        <h2 id="loginTitle">Accedi al tuo account</h2>
+
         <form @submit.prevent="handleSubmit" novalidate>
-          <div class="form-group">
-            <label for="nome">Nome *</label>
-            <input v-model.trim="form.nome" type="text" id="nome" required />
-          </div>
-
-          <div class="form-group">
-            <label for="cognome">Cognome *</label>
-            <input v-model.trim="form.cognome" type="text" id="cognome" required />
-          </div>
-
           <div class="form-group">
             <label for="email">Email istituzionale *</label>
             <input
@@ -53,48 +44,11 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="tipo">Tipo di corso *</label>
-            <select v-model="form.tipo" id="tipo" required>
-              <option value="">Seleziona...</option>
-              <option value="triennale">Triennale</option>
-              <option value="magistrale">Magistrale</option>
-              <option value="dottorato">Dottorato</option>
-            </select>
-          </div>
+          <button type="submit" class="btn-primary-large">Accedi</button>
 
-          <hr aria-hidden="true" />
-
-          <div class="form-group">
-            <label for="foto">Foto profilo (opzionale)</label>
-            <input type="file" id="foto" accept=".jpg,.png" @change="onFileChange" />
-          </div>
-
-          <div class="form-group">
-            <label for="nascita">Data di nascita (opzionale)</label>
-            <input v-model="form.nascita" type="date" id="nascita" />
-          </div>
-
-          <div class="form-group">
-            <label for="media">Media universitaria (opzionale)</label>
-            <input v-model.number="form.media" type="number" id="media" min="18" max="30" step="0.1" />
-          </div>
-
-          <div class="form-group">
-            <label for="bio">Breve bio (opzionale)</label>
-            <textarea
-              v-model="form.bio"
-              id="bio"
-              rows="3"
-              maxlength="200"
-              placeholder="Scrivi una breve presentazione..."
-            ></textarea>
-          </div>
-
-          <button type="submit" class="btn-primary-large">Iscriviti</button>
           <p class="secondary-text">
-            Hai già un account?
-            <RouterLink to="/login">Accedi</RouterLink>
+            Non hai ancora un account?
+            <RouterLink to="/register">Iscriviti</RouterLink>
           </p>
         </form>
       </section>
@@ -119,23 +73,19 @@ const socket = inject("socket");
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
 
+// Stato form
 const form = reactive({
-  nome: '',
-  cognome: '',
   email: '',
-  password: '',
-  tipo: '',
-  foto: null,
-  nascita: '',
-  media: null,
-  bio: ''
+  password: ''
 })
 
+// Toggle password
 const showPassword = ref(false)
 function togglePassword() {
   showPassword.value = !showPassword.value
 }
 
+// Toast
 const toast = reactive({ visible: false, message: '' })
 let toastTimeout
 function showToast(message) {
@@ -145,6 +95,7 @@ function showToast(message) {
   toastTimeout = setTimeout(() => (toast.visible = false), 3000)
 }
 
+// Errori campi
 const errors = reactive({ email: false, password: false })
 
 function showFieldError(field) {
@@ -158,10 +109,7 @@ function showFieldError(field) {
   })
 }
 
-function onFileChange(e) {
-  form.foto = e.target.files[0]
-}
-
+// Submit
 function handleSubmit() {
   errors.email = false
   errors.password = false
@@ -169,31 +117,28 @@ function handleSubmit() {
   const emailValid = form.email.endsWith('@studio.unibo.it')
   const passwordValid = /^(?=.*[0-9]).{6,}$/.test(form.password)
 
-  if (!emailValid) showFieldError('email') && showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
-  if (!passwordValid) showFieldError('password') && showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
+  if (!emailValid) {
+    showFieldError('email')
+    showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
+  }
+
+  if (!passwordValid) {
+    showFieldError('password')
+    showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
+  }
+
   if (!emailValid || !passwordValid) return
 
-
-
-  socket.emit("user:register", form, (response) => {
-    if (!response.success) {
-      showToast("❌ " + response.error)
-      return
-    }
-
-    // 🔵 Login automatico
-    socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
+  socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
       if (!res.success) {
-        showToast("⚠️ Registrato ma non loggato: " + res.error)
+        showToast("credenziali non valide: " + res.error)
         return
       }
-
-      // 🔥 Utente loggato correttamente
+      
       login(res.data) // salva nel tuo store
       showToast("✅ Registrazione completata con successo!")
 
       setTimeout(() => router.push("/"), 2000)
     })
-  })
 }
 </script>

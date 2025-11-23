@@ -60,7 +60,7 @@ const profileEmail = route.params.email
  * @param {string} email - email dell'utente
  * @returns {Promise<Array>} array di lezioni
  */
-export function offeredLessons(email) {
+function offeredLessons(email) {
   return new Promise((resolve, reject) => {
     socket.emit("lessons:myOffered", { email }, (response) => {
       if (!response.success) {

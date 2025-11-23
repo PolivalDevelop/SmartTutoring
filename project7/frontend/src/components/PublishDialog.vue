@@ -7,15 +7,17 @@
       <h2 id="publishTitle">Pubblica nuova lezione</h2>
 
       <form id="publishForm" autocomplete="off" @submit.prevent="submitLesson">
-        <label for="lessonTeacher">Docente</label>
-        <input type="text" id="lessonTeacher" v-model="lesson.teacher" readonly />
 
         <label for="lessonCourse">Corso</label>
         <select id="lessonCourse" v-model="lesson.course" required>
           <option value="">Seleziona un corso...</option>
-          <option value="Analisi">Analisi</option>
-          <option value="Programmazione in C">Programmazione in C</option>
-          <option value="Inglese">Inglese</option>
+          <option 
+            v-for="matter in matters" 
+            :key="matter" 
+            :value="matter"
+          >
+            {{ matter }}
+          </option>
         </select>
 
         <label for="lessonDate">Data</label>
@@ -73,6 +75,7 @@
 <script setup>
 import { reactive, computed } from 'vue'
 import { useUser } from '@/composables/useUser.js'
+import { matters } from '../composables/auth'
 
 const emit = defineEmits(['close', 'publish'])
 
@@ -98,7 +101,7 @@ const timeOptions = computed(() => {
 })
 
 const lesson = reactive({
-  teacher: currentUser.value?.email || '',
+  teacher: currentUser.value?.email,
   course: '',
   date: '',
   timeStart: '',

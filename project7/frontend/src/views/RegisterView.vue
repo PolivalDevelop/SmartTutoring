@@ -7,13 +7,13 @@
         <h2 id="registerTitle">Crea il tuo account</h2>
         <form @submit.prevent="handleSubmit" novalidate>
           <div class="form-group">
-            <label for="nome">Nome *</label>
-            <input v-model.trim="form.nome" type="text" id="nome" required />
+            <label for="firstName">firstName *</label>
+            <input v-model.trim="form.firstName" type="text" id="firstName" required />
           </div>
 
           <div class="form-group">
-            <label for="cognome">Cognome *</label>
-            <input v-model.trim="form.cognome" type="text" id="cognome" required />
+            <label for="lastName">lastName *</label>
+            <input v-model.trim="form.lastName" type="text" id="lastName" required />
           </div>
 
           <div class="form-group">
@@ -54,8 +54,8 @@
           </div>
 
           <div class="form-group">
-            <label for="tipo">Tipo di corso *</label>
-            <select v-model="form.tipo" id="tipo" required>
+            <label for="degreeType">Tipo di corso *</label>
+            <select v-model="form.degreeType" id="degreeType" required>
               <option value="">Seleziona...</option>
               <option value="triennale">Triennale</option>
               <option value="magistrale">Magistrale</option>
@@ -66,18 +66,18 @@
           <hr aria-hidden="true" />
 
           <div class="form-group">
-            <label for="foto">Foto profilo (opzionale)</label>
-            <input type="file" id="foto" accept=".jpg,.png" @change="onFileChange" />
+            <label for="photo">Foto profilo (opzionale)</label>
+            <input type="file" id="photo" accept=".jpg,.png" @change="onFileChange" />
           </div>
 
           <div class="form-group">
-            <label for="nascita">Data di nascita (opzionale)</label>
-            <input v-model="form.nascita" type="date" id="nascita" />
+            <label for="birthDate">Data di nascita (opzionale)</label>
+            <input v-model="form.birthDate" type="date" id="birthDate" />
           </div>
 
           <div class="form-group">
-            <label for="media">Media universitaria (opzionale)</label>
-            <input v-model.number="form.media" type="number" id="media" min="18" max="30" step="0.1" />
+            <label for="averageGrade">Media universitaria (opzionale)</label>
+            <input v-model.number="form.averageGrade" type="number" id="averageGrade" min="18" max="30" step="0.1" />
           </div>
 
           <div class="form-group">
@@ -120,14 +120,14 @@ const { toggleTheme } = useDarkMode()
 const router = useRouter()
 
 const form = reactive({
-  nome: '',
-  cognome: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
-  tipo: '',
-  foto: null,
-  nascita: '',
-  media: null,
+  degreeType: '',
+  photo: null,
+  birthDate: '',
+  averageGrade: null,
   bio: ''
 })
 
@@ -159,7 +159,7 @@ function showFieldError(field) {
 }
 
 function onFileChange(e) {
-  form.foto = e.target.files[0]
+  form.photo = e.target.files[0]
 }
 
 function handleSubmit() {
@@ -175,8 +175,10 @@ function handleSubmit() {
 
 
 
+  console.log("Submitting registration form:", form)
   socket.emit("user:register", form, (response) => {
     if (!response.success) {
+      console.log(response.error)
       showToast("❌ " + response.error)
       return
     }

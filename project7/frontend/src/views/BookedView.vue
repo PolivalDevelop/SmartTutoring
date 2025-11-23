@@ -1,7 +1,7 @@
 <template>
   <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
-      <h2 id="mainTitle">Lezioni offerte</h2>
+      <h2 id="mainTitle">Lezioni prenotate</h2>
       <div class="filters-row">
         <span class="lesson-sub">Ordina per:</span>
         <select v-model="sortOrder">
@@ -14,26 +14,20 @@
 
     <section class="results" id="lessonsList">
       <LessonCard
-        v-for="lesson in myOfferedLessons"
-        mode="offered"
+        v-for="lesson in myBookedLessons"
+        mode="booked"
         :key="lesson.id"
         :lesson="lesson"
-        v-if="myOfferedLessons.length > 0"
+        v-if="myBookedLessons.length > 0"
       />
       <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-icon">📚</div>
-        <h3 class="empty-title">Nessuna lezione offerta da te</h3>
+        <h3 class="empty-title">Nessuna lezione prenotata</h3>
         <p class="empty-text">
-          {{ isLoggedIn ? 'Pubblica una lezione!' : 'Effettua l’accesso per pubblicare la tua prima lezione.' }}
+          {{ isLoggedIn ? 'Prenota una lezione!' : 'Effettua l’accesso per prenotare la tua prima lezione.' }}
         </p>
-        <button
-          v-if="isLoggedIn"
-          class="btn btn-primary"
-          @click="$emit('publish-request')"
-        >
-          Pubblica una lezione
-        </button>
+        <RouterLink to="/" class="menu-item">Vedi le lezioni disponibili</RouterLink>      
       </div>
     </section>
     <FooterNote />
@@ -46,9 +40,7 @@ import { ref } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
-import { inject } from "vue";
-const socket = inject("socket");
-
+import { socket } from "@/plugins/socket";
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -60,9 +52,9 @@ const profileEmail = route.params.email
  * @param {string} email - email dell'utente
  * @returns {Promise<Array>} array di lezioni
  */
-export function offeredLessons(email) {
+function bookedLessons(email) {
   return new Promise((resolve, reject) => {
-    socket.emit("lessons:myOffered", { email }, (response) => {
+    socket.emit("lessons:myBooked", { email }, (response) => {
       if (!response.success) {
         reject(response.error);
       } else {
@@ -73,19 +65,18 @@ export function offeredLessons(email) {
 }
 
 
-let myOfferedLessons
-
-offeredLessons(profileEmail)
+let myBookedLessons 
+bookedLessons(profileEmail)
   .then(lessons => {
-    console.log("Lezioni offerte:", lessons);
-    myOfferedLessons = lessons;
+    console.log("Lezioni prenotate:", lessons);
+    myBookedLessons = lessons;
   })
   .catch(err => {
     console.error("Errore nel recuperare le lezioni:", err);
   });
 
 
-
+const sortOrder = ref('Più recenti')
 
 
 </script>
