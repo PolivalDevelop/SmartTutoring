@@ -22,6 +22,7 @@ import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
 
 import { socket } from "@/plugins/socket";
+import { getCurrentUser } from '../composables/auth';
 
 function userByEmail(email) {
   return new Promise((resolve, reject) => {
@@ -36,7 +37,7 @@ function userByEmail(email) {
 }
 
 const route = useRoute()
-const { currentUser } = useUser()
+const { currentUser } = getCurrentUser()
 
 const profileEmail = route.params.email
 
@@ -52,7 +53,7 @@ userByEmail(profileEmail)
     console.error("Errore:", err);
   });
 
-const isMe = currentUser.value && currentUser.value.email === profileEmail
+const isMe = currentUser.value && currentUser.value?.email === profileEmail
 const isLogged = !!currentUser.value
 
 const emit = defineEmits(['edit-profile'])

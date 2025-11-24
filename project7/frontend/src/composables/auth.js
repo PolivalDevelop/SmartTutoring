@@ -1,24 +1,20 @@
 // composables/auth.js
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
-export const isLoggedIn = ref(localStorage.getItem('loggedIn') === 'true')
+export const isLoggedIn = ref(false)
+export const user = ref(null)
 
-
-watch(isLoggedIn, (val) => {
-  localStorage.setItem('loggedIn', val)
-})
 
 export function login(user) { 
   isLoggedIn.value = true 
-  if (user) localStorage.setItem('user', JSON.stringify(user))
+ user.value = user
 }
 export function logout() { 
   isLoggedIn.value = false
-  localStorage.removeItem('loggedIn')
-  localStorage.removeItem('user')
+  user.value = null
 }
 export function getCurrentUser() {
-  return JSON.parse(localStorage.getItem('user')) || null
+  return user;
 }
 
 export const matters = ref([]);

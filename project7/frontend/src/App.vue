@@ -59,10 +59,12 @@ import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn, setMatter } from '@/composables/auth.js'
-import { useUser } from '@/composables/useUser.js'
+//import { useUser } from '@/composables/useUser.js'
 import { inject, onMounted, onBeforeUnmount } from "vue";
+import { getCurrentUser } from './composables/auth.js'
 
-const { currentUser, updateUser: updateUserInStore } = useUser()
+//const { currentUser, updateUser: updateUserInStore } = useUser()
+const {currentUser} = getCurrentUser
 
 const { toggleTheme } = useDarkMode()
 

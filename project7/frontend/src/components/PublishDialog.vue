@@ -75,11 +75,11 @@
 <script setup>
 import { reactive, computed } from 'vue'
 import { useUser } from '@/composables/useUser.js'
-import { matters } from '../composables/auth'
+import { getCurrentUser, matters } from '../composables/auth'
 
 const emit = defineEmits(['close', 'publish'])
 
-const { currentUser } = useUser()
+const { currentUser } = getCurrentUser()
 const now = new Date()
 const today = now.toISOString().split('T')[0]
 const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
