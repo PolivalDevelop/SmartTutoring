@@ -1,8 +1,5 @@
 // src/composables/useLessons.js
 import { ref, computed } from 'vue'
-import { useUser } from './useUser.js'
-
-const { currentUser } = useUser()
 
 // Stato condiviso per tutte le lezioni
 /*export const lessons = ref([
@@ -13,7 +10,7 @@ const { currentUser } = useUser()
   { id: 5, title: 'Analisi', time: 'Mercoledì • 12:00', duration: '1h', price: 10, author: 'Marco Rossi', authorId: 1, bookedBy: 'Luca Cantagallo', bookedById: 3 },
 ])*/
 
-export const lessons = ref([])
+//export const lessons = ref([])
 // Funzione per aggiungere una lezione
 /*
 export function addLesson(lesson) {

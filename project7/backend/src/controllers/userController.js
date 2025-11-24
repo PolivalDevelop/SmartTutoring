@@ -195,12 +195,14 @@ exports.getUserByEmail = async (socket, email, callback) => {
       });
     }
 
+    console.log("Utente ottenuto per email:", user);
     callback({
       success: true,
       data: sanitizeUser(user),
     });
 
   } catch (err) {
+    console.error("Errore ottenimento utente per email:", err, email);
     callback({
       success: false,
       error: err.message,
