@@ -13,9 +13,9 @@
       <div 
       v-if="mode !== 'offered'"
       class="lesson-footer">
-        <div class="lesson-author">{{ lesson.author }}</div>
+        <div class="lesson-author">{{ lesson.teacher }}</div>
         <div class="card-actions">
-          <RouterLink :to="`/profile/${lesson.authorId}`" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${lesson.teacher}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">
@@ -56,11 +56,11 @@
         
       </div>
       <div
-      v-else-if="mode === 'offered' && lesson.bookedBy"
+      v-else-if="mode === 'offered' && lesson.student"
       class="lesson-footer">
-        <div class="lesson-author">Prenotata da {{ lesson.bookedBy }}</div>
+        <div class="lesson-author">Prenotata da {{ lesson.student }}</div>
         <div class="card-actions">
-          <RouterLink :to="`/profile/${lesson.authorId}`" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${lesson.teacher}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">
