@@ -34,7 +34,7 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.lesson-card {
+.review-card {
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
@@ -47,18 +47,18 @@ const props = defineProps({
   min-height: 110px;
 }
 
-.lesson-card:hover {
+.review-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.lesson-card.removing {
+.review-card.removing {
   opacity: 0;
   transform: translateY(-6px) scale(.995);
   transition: opacity .18s ease, transform .18s ease;
 }
 
-.lesson-content {
+.review-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -66,7 +66,7 @@ const props = defineProps({
   height: 100%;
 }
 
-.lesson-header {
+.review-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -74,7 +74,7 @@ const props = defineProps({
   gap: 0.25rem;
 }
 
-.lesson-footer {
+.review-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,20 +82,20 @@ const props = defineProps({
   margin-top: 0.2rem;
 }
 
-.lesson-line {
+.review-line {
   display: grid;
   grid-template-columns: 2fr 1fr auto;
   align-items: center;
   gap: .75rem;
 }
 
-.lesson-title {
+.review-title {
   font-weight: 600;
   font-size: 0.95rem;
   margin: 0;
 }
 
-.lesson-info {
+.review-info {
   display: flex;
   gap: 0.5rem;
   color: var(--muted);
@@ -104,7 +104,7 @@ const props = defineProps({
   flex-wrap: wrap;
 }
 
-.lesson-author {
+.review-author {
   font-weight: 500;
   color: var(--muted);
   font-size: 0.85rem;

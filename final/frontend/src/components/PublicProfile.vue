@@ -51,9 +51,9 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" @click="$emit('view-balance')">Segnala Profilo</button>
+      <button class="btn btn-ghost" v-if="isLogged" @click="$emit('view-balance')">Segnala Profilo</button>
       <button class="btn btn-primary" @click="$emit('edit-profile')">Visualizza lezioni</button>
-      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="openCreateReview()">Crea recensione</button>
+      <button class="btn btn-primary" v-if="isLogged" @click="openCreateReview()">Crea recensione</button>
     </div>
   </section>
 </template>
@@ -62,7 +62,7 @@
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
-import { getCurrentUser, isLoggedIn } from '@/composables/auth.js'
+import { getCurrentUser } from '@/composables/auth.js'
 import { ref } from 'vue'
 import { inject } from "vue";
 
@@ -71,7 +71,8 @@ const socket = inject("socket");
 const createReviewDialog = ref({ visible: false })
 
 const props = defineProps({
-  user: { type: Object, required: true }
+  user: { type: Object, required: true },
+  isLogged: { type: Boolean, required: true }
 })
 
 const defaultPhoto = defaultPhotoPath
@@ -91,16 +92,15 @@ function openCreateReview() {
   createReviewDialog.value.visible = true
 }
 
+
 function createReview(newReview) {
   console.log("la nuova recensione è:", newReview);
   socket.emit("review:create", newReview, (response) => {
     if (!response.success) {
       console.log("Errore durante la creazione della recensione:", response.error);
-      showToast("❌ Errore durante la creazione della recensione: " + response.error);
       return;
     }
     console.log("Recensione creata con successo.");
-    showToast("✅ Recensione creata con successo!");
   }); 
   createReviewDialog.value.visible = false
 }

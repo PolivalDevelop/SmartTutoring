@@ -7,7 +7,7 @@ const User = require("../models/userModel")
 // CREATE REVIEW
 // --------------------------------------------------
 exports.createReviewSocket = async (data) => {
-  const { student, teacher, score, comment } = data;
+  const { student, teacher, rating, comment } = data;
 
   // Controlli utente
   const userStudent = await User.findOne({ email: student });
@@ -31,10 +31,10 @@ exports.createReviewSocket = async (data) => {
   }
 
   // Crea nuova recensione
-  const newReview = new reviewModel({
+  const newReview = new Review({
     student: userStudent.email,
     teacher: userTeacher.email,
-    score,
+    rating: rating,
     comment,
   });
 

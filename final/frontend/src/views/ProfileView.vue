@@ -7,7 +7,7 @@
     <PublicProfile
       v-else-if="profileUser"
       :user="profileUser"
-      :is-logged="isLogged"
+      :isLogged="isLogged"
     />
     <p v-else class="loading">⏳ Caricamento profilo...</p>
 
@@ -28,7 +28,7 @@ import { useRoute } from 'vue-router'
 import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
 import ReviewCard from '@/components/ReviewCard.vue'
-
+import { watch } from "vue"
 import { socket } from "@/plugins/socket";
 import { getCurrentUser, isLoggedIn } from '../composables/auth';
 
@@ -81,6 +81,7 @@ reviewByUserEmail(profileEmail)
   })
   .catch(err => {
     console.error("Errore reviews:", err);
+    reviews.value = [];
   });
 
 let isMe = false  
@@ -96,12 +97,35 @@ const isLogged = isLoggedIn.value
 const emit = defineEmits(['edit-profile'])
 
 
-function viewBalance() {
-  alert('💰 Funzione saldo non ancora implementata!')
-}
-function editProfile() {
-  emit('edit-profile')
-}
+watch(
+  () => route.params.email,
+  async (newEmail) => {
+    console.log("🔁 Cambio pagina profilo:", newEmail);
+    try {
+      profileUser.value = await userByEmail(newEmail).then(user => {
+          console.log("Profilo utente:", user);
+          profileUser.value = user;
+        })
+        .catch(err => {
+          console.error("Errore:", err);
+        });
+      reviews.value = await reviewByUserEmail(newEmail).then(userReviews => {
+          console.log("Recensioni utente:", userReviews);
+          reviews.value = userReviews;
+        })
+        .catch(err => {
+          console.error("Errore reviews:", err);
+          reviews.value = [];
+        });
+    } catch (err) {
+      console.error("Errore caricando il profilo:", err);
+    }
+
+    // Aggiorna isMe
+    isMe = isLoggedIn.value && currentUser.value?.email === newEmail;
+  }
+);
+
 </script>
 
 <style scoped>
