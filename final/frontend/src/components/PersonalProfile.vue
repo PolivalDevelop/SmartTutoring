@@ -1,5 +1,12 @@
 <template>
   <section class="profile-card" aria-describedby="profileInfo">
+    <EditProfileDialog
+          v-if="editProfileDialog.visible"
+          :user="user"
+          @close="editProfileDialog.visible = false"
+          @save="updateUser"
+        />
+
     <!-- HEADER -->
     <div class="profile-header">
       <img
@@ -44,7 +51,7 @@
     <!-- ACTIONS -->
     <div class="profile-actions">
       <button class="btn btn-ghost" @click="$emit('view-balance')">Visualizza saldo</button>
-      <button class="btn btn-primary" @click="$emit('edit-profile')">Modifica profilo</button>
+      <button class="btn btn-primary" @click="openEditProfile()">Modifica profilo</button>
 
     </div>
   </section>
@@ -53,6 +60,14 @@
 <script setup>
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
+import EditProfileDialog from '@/components/EditProfileDialog.vue'
+import { ref } from 'vue'
+import { getCurrentUser } from '@/composables/auth.js'
+import { useSocket } from '@/composables/socket.js'
+
+const socket = useSocket()
+
+const editProfileDialog = ref({ visible: false })
 
 const props = defineProps({
   user: { type: Object, required: true }
@@ -70,6 +85,23 @@ const fullDegreeInfo = computed(() => {
       : degree.charAt(0).toUpperCase() + degree.slice(1)
   return `${formatted} — Ingegneria e Scienze Informatiche`
 })
+
+function openEditProfile() {
+  console.log("Apertura dialog di modifica profilo.");
+  editProfileDialog.value.visible = true
+}
+
+function updateUser(updatedUser) {
+  socket.emit("user:updateProfile", getCurrentUser().value?.email, updatedUser, (response) => {
+    if (!response.success) {
+      console.error("Errore durante l'aggiornamento del profilo:", response.error);
+      return;
+    }
+    getCurrentUser().value = response.data;
+    console.log("Profilo aggiornato con successo:", response.data);
+  }); 
+  editProfileDialog.value.visible = false
+}
 </script>
 
 <style scoped>

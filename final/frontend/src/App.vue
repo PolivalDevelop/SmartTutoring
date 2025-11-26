@@ -6,7 +6,6 @@
     <RouterView 
       @book="openBooking"
       @publish-request="publishDialog.visible = true"
-      @edit-profile="openEditProfile"
     />
 
     <!-- FAB pubblicazione lezione -->
@@ -34,12 +33,6 @@
       @publish="handlePublish"
     />
 
-    <EditProfileDialog
-      v-if="editProfileDialog.visible"
-      :user="currentUser"
-      @close="editProfileDialog.visible = false"
-      @save="updateUser"
-    />
 
     <ToastNotification v-if="toast.visible" :message="toast.message" @close="toast.visible = false" />
   </div>
@@ -52,7 +45,6 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import PublishDialog from './components/PublishDialog.vue'
-import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn, setMatter } from '@/composables/auth.js'
@@ -69,7 +61,6 @@ const showFilters = computed(() => route.meta.showFilters)
 
 const bookingDialog = ref({ visible: false, lesson: null })
 const publishDialog = ref({ visible: false })
-const editProfileDialog = ref({ visible: false })
 
 
 const toast = ref({ visible: false, message: '' })
@@ -163,23 +154,6 @@ function handlePublish(lesson) {
   });
 }
 
-function openEditProfile() {
-  const name = currentUser.value?.name || 'utente'
-  showToast('Ciao ' + name)
-  editProfileDialog.value.visible = true
-}
-
-function updateUser(updatedUser) {
-  socket.emit("user:updateProfile", currentUser.value?.email, updatedUser, (response) => {
-    if (!response.success) {
-      showToast("❌ Errore durante l'aggiornamento del profilo: " + response.error);
-      return;
-    }
-    currentUser.value = response.data;
-    showToast("✅ Profilo aggiornato con successo!");
-  }); 
-  editProfileDialog.value.visible = false
-}
 
 function showToast(message) {
   toast.value.message = message

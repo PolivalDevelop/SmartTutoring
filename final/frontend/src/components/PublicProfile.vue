@@ -22,9 +22,9 @@
 
         <!-- Rating sempre visibile -->
         <div class="profile-rating" aria-label="Valutazione media utente">
-          <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
-          <span class="rating-value">({{ 0 }} / 5)</span>
-          <span class="rating-count">• {{  0 }} valutazioni</span>
+          <span class="stars">{{ '★'.repeat(user?.avgRating || 0) + '☆'.repeat(5 - (user?.avgRating || 0)) }}</span>
+          <span class="rating-value">({{ user?.avgRating || 0 }} / 5)</span>
+          <span class="rating-count">• {{  user?.numReviews || 0 }} valutazioni</span>
         </div>
       </div>
     </div>
@@ -51,9 +51,9 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" v-if="isLogged" @click="$emit('view-balance')">Segnala Profilo</button>
-      <button class="btn btn-primary" @click="$emit('edit-profile')">Visualizza lezioni</button>
-      <button class="btn btn-primary" v-if="isLogged" @click="openCreateReview()">Crea recensione</button>
+      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="$emit('view-balance')">Segnala Profilo</button>
+      <button class="btn btn-primary" @click="$emit('view-lessons')">Visualizza lezioni</button>
+      <button class="btn btn-primary" v-if="isLoggedIn.value" @click="openCreateReview()">Crea recensione</button>
     </div>
   </section>
 </template>
@@ -62,7 +62,7 @@
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
-import { getCurrentUser } from '@/composables/auth.js'
+import { getCurrentUser, isLoggedIn } from '@/composables/auth.js'
 import { ref } from 'vue'
 import { inject } from "vue";
 

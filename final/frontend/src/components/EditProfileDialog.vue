@@ -20,19 +20,19 @@
 
         <!-- Nome e Cognome -->
         <div class="form-group">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" v-model="form.nome" required />
+          <label for="firstname">Nome</label>
+          <input type="text" id="firstname" v-model="form.firstname" required />
         </div>
 
         <div class="form-group">
-          <label for="cognome">Cognome</label>
-          <input type="text" id="cognome" v-model="form.cognome" required />
+          <label for="lastname">Cognome</label>
+          <input type="text" id="lastname" v-model="form.lastname" required />
         </div>
 
         <!-- Tipo corso -->
         <div class="form-group">
-          <label for="tipo">Tipo di corso</label>
-          <select id="tipo" v-model="form.tipo" required>
+          <label for="degreeType">Tipo di corso</label>
+          <select id="degreeType" v-model="form.degreeType" required>
             <option value="triennale">Triennale</option>
             <option value="magistrale">Magistrale</option>
             <option value="dottorato">Dottorato</option>
@@ -41,14 +41,14 @@
 
         <!-- Data di nascita -->
         <div class="form-group">
-          <label for="nascita">Data di nascita</label>
-          <input type="date" id="nascita" v-model="form.nascita" />
+          <label for="birthDate">Data di nascita</label>
+          <input type="date" id="birthDate" v-model="form.birthDate" />
         </div>
 
         <!-- Media universitaria -->
         <div class="form-group">
-          <label for="media">Media universitaria</label>
-          <input type="number" id="media" v-model.number="form.media" min="18" max="30" step="0.1" />
+          <label for="averageGrade">Media universitaria</label>
+          <input type="number" id="averageGrade" v-model.number="form.averageGrade" min="18" max="30" step="0.1" />
         </div>
 
         <!-- Bio -->
@@ -71,17 +71,20 @@ import { reactive, ref, watch } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 
 const emit = defineEmits(['close', 'save'])
-const props = defineProps({ user: Object })
+const props = defineProps({
+  user: { type: Object, required: true }
+})
+console.log("Utente da modificare:", props.user);
 
 const defaultPhoto = defaultPhotoPath
 const photoPreview = ref(null)
 
 const form = reactive({
-  nome: props.user.name.split(' ')[0] || '',
-  cognome: props.user.name.split(' ')[1] || '',
-  tipo: props.user.degreeType || '',
-  nascita: props.user.birthDate || '',
-  media: props.user.averageGrade || null,
+  firstname: props.user.firstName || '',
+  lastname: props.user.lastName || '',
+  degreeType: props.user.degreeType || '',
+  birthDate: props.user.birthDate || '',
+  averageGrade: props.user.averageGrade || null,
   bio: props.user.bio || '',
   photo: null
 })
@@ -96,7 +99,8 @@ function onFileChange(e) {
 function saveChanges() {
   const updatedUser = {
     ...props.user,
-    name: `${form.nome} ${form.cognome}`,
+    firstName: form.firstname,
+    lastName: form.lastname,
     degreeType: form.tipo,
     birthDate: form.nascita,
     averageGrade: form.media,

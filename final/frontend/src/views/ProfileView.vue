@@ -1,5 +1,6 @@
 <template>
   <main class="profile-container" role="main" aria-labelledby="profileTitle">
+
     <PersonalProfile
       v-if="isMe && profileUser"
       :user="profileUser"
@@ -24,14 +25,14 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
 import ReviewCard from '@/components/ReviewCard.vue'
 import { watch } from "vue"
 import { socket } from "@/plugins/socket";
-import { getCurrentUser, isLoggedIn } from '../composables/auth';
+import { getCurrentUser, isLoggedIn } from '@/composables/auth';
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 function userByEmail(email) {
   return new Promise((resolve, reject) => {
@@ -78,6 +79,8 @@ reviewByUserEmail(profileEmail.value)
   .then(userReviews => {
     console.log("Recensioni utente:", userReviews);
     reviews.value = userReviews;
+    profileUser.value.numReviews = userReviews.length;
+    profileUser.value.avgRating = userReviews.reduce((sum, r) => sum + r.rating, 0) / (userReviews.length || 1);
   })
   .catch(err => {
     console.error("Errore reviews:", err);
@@ -91,7 +94,6 @@ const isMe = computed(() => {
 const isLogged = ref(isLoggedIn.value)
 
 const emit = defineEmits(['edit-profile'])
-
 
 watch(
   () => route.params.email,
