@@ -13,10 +13,10 @@
 
     <section class="results" id="reviewsList">
       <ReviewCard
-        v-for="review in filteredReviews"
+        v-for="review in reviews"
         :key="review._id"
         :review="review"
-        v-if="filteredReviews.length > 0"
+        v-if="reviews.length > 0"
       />
     </section>
   </main>
@@ -45,7 +45,7 @@ function userByEmail(email) {
 
 function reviewByUserEmail(email) {
   return new Promise((resolve, reject) => {
-    socket.emit("review:getByUserEmail", { email }, (response) => {
+    socket.emit("review:getByUserEmail", email, (response) => {
       if (!response.success) {
         reject(response.error);
       } else {
@@ -79,7 +79,7 @@ reviewByUserEmail(profileEmail)
     reviews.value = userReviews;
   })
   .catch(err => {
-    console.error("Errore:", err);
+    console.error("Errore reviews:", err);
   });
 
 let isMe = false  

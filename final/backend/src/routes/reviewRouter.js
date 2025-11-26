@@ -15,15 +15,13 @@ module.exports = function (socket, io) {
     }
   });
 
-  // -----------------------------------------
-  // GET ALL REVIEWS OF LESSONS A USER TOOK
-  // -----------------------------------------
+
   socket.on("review:getByUserEmail", async (email, callback) => {
     try {
       const reviews = await controller.getAllUserReviewSocket(email);
       callback({ success: true, data: reviews });
     } catch (err) {
-      callback({ success: false, error: err.message });
+      callback({ success: false, error: email + " la mail " + err.message });
     }
   });
 

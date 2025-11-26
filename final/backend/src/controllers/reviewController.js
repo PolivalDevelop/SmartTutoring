@@ -1,6 +1,5 @@
 // reviewController.js (versione Socket.io)
 
-const { lessonModel } = require("../models/lessonModel");
 const { reviewModel } = require("../models/reviewModel");
 const { userModel } = require("../models/userModel");
 
@@ -44,11 +43,13 @@ exports.createReviewSocket = async (data) => {
 
 exports.getAllUserReviewSocket = async (email) => {
   const user = await userModel.findOne({ email: email });
+  console.log("Utente trovato:", user);
 
   if (!user) throw new Error("User not found");
 
   const reviews = await reviewModel.find({ teacher: user.email });
 
+  console.log("Recensioni trovate:", reviews);
   if (!reviews || reviews.length === 0) {
     throw new Error("No reviews found for this teacher");
   }

@@ -8,8 +8,9 @@ const cors = require("cors");
 
 const User = require("./models/userModel");       // <--- IMPORT NECESSARIO
 const Lesson = require("./models/lessonModel");
+const Review  = require("./models/reviewModel");
 
-const { users, lessons } = require("./uploadDate");
+const { users, lessons, reviews } = require("./uploadDate");
 
 const app = express();
 app.use(cors());
@@ -34,6 +35,7 @@ mongoose
     console.log("✅ MongoDB connected to tutoring");
     await User.insertMany(users);
     await Lesson.insertMany(lessons);
+    await Review.insertMany(reviews); 
 
     // Controllo utenti
     const userCount = await User.countDocuments();
@@ -42,6 +44,10 @@ mongoose
     // Controllo lezioni
     const lessonCount = await Lesson.countDocuments();
     console.log(`📚 Lessons in DB: ${lessonCount}`);
+
+    // Controllo recensioni
+    const reviewCount = await Review.countDocuments();
+    console.log(`📝 Reviews in DB: ${reviewCount}`);
   })
   .catch((err) => console.error("❌ MongoDB error:", err));
 

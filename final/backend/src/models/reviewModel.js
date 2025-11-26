@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const reviewSchema = new mongoose.Schema(
   {
     teacher: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,       // email del teacher
       required: true,
+      trim: true,
     },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    student: {
+      type: String,       // email dello studente
       required: true,
+      trim: true,
     },
     rating: {
       type: Number,
@@ -29,8 +29,5 @@ const reviewSchema = new mongoose.Schema(
     timestamps: true, // automatically adds createdAt and updatedAt
   }
 );
-
-// Prevent duplicate reviews for the same lesson by the same user
-reviewSchema.index({ lesson: 1, author: 1 }, { unique: true });
 
 module.exports = mongoose.model("Review", reviewSchema);

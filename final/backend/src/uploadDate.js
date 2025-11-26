@@ -82,5 +82,20 @@ const lessons = [
   }
 ];
 
+const reviews = [
+  {
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "daniele.capannini@studio.unibo.it",
+    rating: 5,
+    comment: "Ottima spiegazione e molto disponibile."
+  },
+  {
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "luca.bianchi@studio.unibo.it",
+    rating: 4,
+    comment: "Lezione chiara, ma un po' veloce."
+  }
+];
+
 // Esportiamo i dati usando CommonJS
-module.exports = { users, lessons };
+module.exports = { users, lessons, reviews };
