@@ -112,7 +112,7 @@ onMounted(() => {
     if(isLoggedIn.value){
       console.log("Utente loggato, applico filtro per escludere le proprie lezioni.");
       const currentUserEmail = getCurrentUser().value.email;
-      lessons = lessons.filter(lesson => lesson.teacher !== currentUserEmail);
+      availableLessons.value = lessons.filter(lesson => lesson.teacher !== currentUserEmail);
     }else{
       console.log("Utente non loggato, nessun filtro applicato.");
       availableLessons.value = lessons;
