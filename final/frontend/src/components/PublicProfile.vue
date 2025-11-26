@@ -1,4 +1,12 @@
 <template>
+  <CreateReviewDialog
+    v-if="createReviewDialog.visible"
+    :teacherEmail="user?.email"
+    :studentEmail="getCurrentUser().value?.email"
+    @createReview="createReview"
+    @close="createReviewDialog.visible = false"
+  />  
+
   <section class="profile-card" aria-describedby="profileInfo">
     <!-- HEADER -->
     <div class="profile-header">
@@ -44,8 +52,8 @@
     <!-- ACTIONS -->
     <div class="profile-actions">
       <button class="btn btn-ghost" @click="$emit('view-balance')">Segnala Profilo</button>
-      <button class="btn btn-primary" @click="$emit('edit-profile')">Visualizza le lezioni</button>
-
+      <button class="btn btn-primary" @click="$emit('edit-profile')">Visualizza lezioni</button>
+      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="openCreateReview()">Crea recensione</button>
     </div>
   </section>
 </template>
@@ -53,6 +61,14 @@
 <script setup>
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
+import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
+import { getCurrentUser, isLoggedIn } from '@/composables/auth.js'
+import { ref } from 'vue'
+import { inject } from "vue";
+
+const socket = inject("socket");
+
+const createReviewDialog = ref({ visible: false })
 
 const props = defineProps({
   user: { type: Object, required: true }
@@ -70,6 +86,24 @@ const fullDegreeInfo = computed(() => {
       : degree.charAt(0).toUpperCase() + degree.slice(1)
   return `${formatted} — Ingegneria e Scienze Informatiche`
 })
+
+function openCreateReview() {
+  createReviewDialog.value.visible = true
+}
+
+function createReview(newReview) {
+  console.log("la nuova recensione è:", newReview);
+  socket.emit("review:create", newReview, (response) => {
+    if (!response.success) {
+      console.log("Errore durante la creazione della recensione:", response.error);
+      showToast("❌ Errore durante la creazione della recensione: " + response.error);
+      return;
+    }
+    console.log("Recensione creata con successo.");
+    showToast("✅ Recensione creata con successo!");
+  }); 
+  createReviewDialog.value.visible = false
+}
 </script>
 
 <style scoped>

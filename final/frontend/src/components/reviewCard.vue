@@ -2,16 +2,15 @@
   <article class="review-card" :data-id="review.id">
     <div class="review-content">
       <div class="review-header">
-        <h3 class="review-title">{{ review.subject }}</h3>
         <div class="review-info">
-           <span class="stars">{{ '★'.repeat(review.evaluation) + '☆'.repeat(5 - review.evaluation) }}</span> 
-          <span class="date">{{ review.bio }}</span>
+           <span class="stars">{{ '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) }}</span> 
+          <span class="date">{{ review.comment }}</span>
         </div>
       </div>
       <div class="review-footer">
-        <div class="review-author">{{ review.author }}</div>
+        <div class="review-author">{{ review.student }}</div>
         <div class="card-actions">
-          <RouterLink :to="`/profile/${review.author}`" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${review.student}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">

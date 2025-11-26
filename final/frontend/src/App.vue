@@ -181,8 +181,6 @@ function updateUser(updatedUser) {
   editProfileDialog.value.visible = false
 }
 
-
-
 function showToast(message) {
   toast.value.message = message
   toast.value.visible = true
