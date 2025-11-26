@@ -50,7 +50,7 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" @click="$emit('view-balance')">Visualizza saldo</button>
+      <button class="btn btn-ghost" @click="$emit('bhoooo')">Visualizza saldo</button>
       <button class="btn btn-primary" @click="openEditProfile()">Modifica profilo</button>
 
     </div>

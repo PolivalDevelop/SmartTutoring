@@ -6,34 +6,40 @@ const User = require("../models/userModel");
 // --------------------------------------------------
 // CREATE REPORT
 // --------------------------------------------------
-exports.createReportSocket = async (data) => {
-  const { reporter, reportedUser, reason, details } = data;
+const Report = require("../models/reportModel");
+const User = require("../models/userModel");
 
-  if (!reporter || !reportedUser || !reason || !details) {
+// --------------------------------------------------
+// CREATE REPORT
+// --------------------------------------------------
+exports.createReportSocket = async (data) => {
+  const { reporter, reported, reason, comment, createdAt } = data;
+
+  if (!reporter || !reported || !reason || !comment || !createdAt) {
     throw new Error("All required fields must be provided.");
   }
 
-  if (reporter === reportedUser) {
+  if (reporter === reported) {
     throw new Error("A user cannot report themselves.");
   }
 
   const newReport = new Report({
     reporter,
-    reportedUser,
+    reported,
     reason,
-    details,
+    comment,
+    createdAt,
   });
 
   return await newReport.save();
 };
 
+
 // --------------------------------------------------
 // GET REPORT BY ID
 // --------------------------------------------------
-exports.getReportByProductIdSocket = async (id) => {
-  const report = await Report.findById(id)
-    .populate("reporter", "firstName lastName email")
-    .populate("reportedUser", "firstName lastName email");
+exports.getReportByIdSocket = async (id) => {
+  const report = await Report.findById(id);
 
   if (!report) {
     throw new Error("Report not found");
@@ -58,16 +64,8 @@ exports.deleteReportSocket = async (id) => {
 // --------------------------------------------------
 // GET ALL REPORTS FOR A USER (by username)
 // --------------------------------------------------
-exports.getAllUserReportSocket = async (username) => {
-  const user = await User.findOne({ username });
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  const reports = await Report.find({ reportedUser: user._id })
-    .populate("reporter", "firstName lastName email")
-    .populate("reportedUser", "firstName lastName email")
+exports.getAllUserReportsSocket = async (email) => {
+  const reports = await Report.find({ reported: email })
     .sort({ createdAt: -1 });
 
   return reports;

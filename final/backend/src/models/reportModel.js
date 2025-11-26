@@ -2,18 +2,15 @@ const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema(
   {
-    // User who submits the report
     reporter: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,    
       required: true,
+      trim: true,
     },
-
-    // Reported user
-    reportedUser: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    reported: {
+      type: String,      
       required: true,
+      trim: true,
     },
 
     // Reason selected from the dropdown menu
@@ -21,15 +18,16 @@ const reportSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "inappropriate-content",
-        "offensive-language",
-        "fake-profile",
-        "other",
+        "contenuti-inappropriati",
+        "linguaggio-offensivo",
+        "comportamento-scorretto",
+        "spam-pubblicita",
+        "altro",
       ],
     },
 
     // Text description provided by the user
-    details: {
+    comment: {
       type: String,
       required: true,
       maxlength: 1000,
@@ -39,16 +37,14 @@ const reportSchema = new mongoose.Schema(
     // Report status (admin use)
     status: {
       type: String,
-      enum: ["pending", "under_review", "resolved", "rejected"],
+      enum: ["pending", "resolved"],
       default: "pending",
     },
 
     // Optional: admin response
-    adminResponse: {
-      type: String,
-      maxlength: 500,
-      trim: true,
-      default: "",
+    createdAt: {
+      type: Date,
+      required: true,
     },
   },
   {

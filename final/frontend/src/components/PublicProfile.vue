@@ -7,6 +7,14 @@
     @close="createReviewDialog.visible = false"
   />  
 
+  <CreateReportDialog
+    v-if="createReportDialog.visible"
+    :reportedEmail="user?.email"
+    :reporterEmail="getCurrentUser().value?.email"
+    @createReport="createReport"
+    @close="createReportDialog.visible = false"
+  />  
+
   <section class="profile-card" aria-describedby="profileInfo">
     <!-- HEADER -->
     <div class="profile-header">
@@ -51,7 +59,7 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="$emit('view-balance')">Segnala Profilo</button>
+      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="openCreateReport()">Segnala Profilo</button>
       <button class="btn btn-primary" @click="$emit('view-lessons')">Visualizza lezioni</button>
       <button class="btn btn-primary" v-if="isLoggedIn.value" @click="openCreateReview()">Crea recensione</button>
     </div>
@@ -69,6 +77,7 @@ import { inject } from "vue";
 const socket = inject("socket");
 
 const createReviewDialog = ref({ visible: false })
+const createReportDialog = ref({ visible: false })
 
 const props = defineProps({
   user: { type: Object, required: true },
@@ -76,7 +85,6 @@ const props = defineProps({
 })
 
 const defaultPhoto = defaultPhotoPath
-const roundedRating = computed(() => Math.round(0))
 
 const fullDegreeInfo = computed(() => {
   const degree = props.user?.degreeType
@@ -92,6 +100,10 @@ function openCreateReview() {
   createReviewDialog.value.visible = true
 }
 
+function openCreateReport() {
+  createReportDialog.value.visible = true
+}
+
 
 function createReview(newReview) {
   console.log("la nuova recensione è:", newReview);
@@ -103,6 +115,18 @@ function createReview(newReview) {
     console.log("Recensione creata con successo.");
   }); 
   createReviewDialog.value.visible = false
+}
+
+function createReport(newReport) {
+  console.log("il nuovo report è:", newReport);
+  socket.emit("report:create", newReport, (response) => {
+    if (!response.success) {
+      console.log("Errore durante la creazione del report:", response.error);
+      return;
+    }
+    console.log("Report creato con successo.");
+  }); 
+  createReportDialog.value.visible = false
 }
 </script>
 
