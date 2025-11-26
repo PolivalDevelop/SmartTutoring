@@ -8,12 +8,12 @@
 
     <section class="results" id="lessonsList">
       <LessonCard
-        v-for="lesson in availableLessons"
+        v-for="lesson in filteredLessons"
         mode="available"
         :key="lesson.id"
         :lesson="lesson"
         @book="handleBook(lesson)"
-        v-if="availableLessons.length > 0"
+        v-if="filteredLessons.length > 0"
       />
       <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
@@ -41,7 +41,8 @@ import { ref, computed } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn, getCurrentUser } from '@/composables/auth.js'
-import { inject, onMounted, onUnmounted, onBeforeUnmount } from "vue";
+import { inject, onMounted, onUnmounted } from "vue";
+import SidebarFilters from '@/components/SidebarFilters.vue'
 
 const socket = inject("socket");
 const availableLessons = ref([]);
@@ -49,13 +50,14 @@ const availableLessons = ref([]);
 const filters = ref({
   course: '',
   author: '',
-  day: 'any',
-  minPrice: null,
-  maxPrice: null
+  date: null,
+  minPrice: '',
+  maxPrice: ''
 })
 
 function handleFiltersUpdate(newFilters) {
   filters.value = newFilters  
+  console.log("Filtri aggiornati in HomeView:", filters.value);
 }
 
 const filteredLessons = computed(() => {
@@ -73,14 +75,24 @@ const filteredLessons = computed(() => {
       return false
     }
 
+    // Data
+    if (filters.value.date) {
+      const lessonDate = lesson.date.slice(0, 10)      // "2025-11-26"
+      const filterDate = filters.value.date.slice(0, 10)
+
+      if (lessonDate !== filterDate) {
+        return false
+      }
+    }
+
     // Prezzo minimo
-    if (filters.value.minPrice !== null &&
+    if (filters.value.minPrice !== '' &&
         lesson.price < filters.value.minPrice) {
       return false
     }
 
     // Prezzo massimo
-    if (filters.value.maxPrice !== null &&
+    if (filters.value.maxPrice !== '' &&
         lesson.price > filters.value.maxPrice) {
       return false
     }
@@ -97,7 +109,14 @@ onMounted(() => {
 
   // 2️⃣ Ricevo la lista
   socket.on("lessons:available", (lessons) => {
-    availableLessons.value = lessons;
+    if(isLoggedIn.value){
+      console.log("Utente loggato, applico filtro per escludere le proprie lezioni.");
+      const currentUserEmail = getCurrentUser().value.email;
+      lessons = lessons.filter(lesson => lesson.teacher !== currentUserEmail);
+    }else{
+      console.log("Utente non loggato, nessun filtro applicato.");
+      availableLessons.value = lessons;
+    }
     console.log("Lezioni aggiornate:", lessons);
     console.log("utente Attivo:  ", getCurrentUser().value)
   });

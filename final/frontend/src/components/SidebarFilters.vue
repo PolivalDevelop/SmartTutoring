@@ -62,19 +62,19 @@ const emit = defineEmits(['update:filters'])
 const filters = reactive({
   course: '',
   author: '',
-  day: 'any',
-  minPrice: null,
-  maxPrice: null
+  date: null,
+  minPrice: '',
+  maxPrice: ''
 })
 
-/*
+
 watch(
   filters,
   () => {
     emit('update:filters', { ...filters })
   },
   { deep: true }
-)*/
+)
 </script>
 <style scoped>
 /* Sidebar */
