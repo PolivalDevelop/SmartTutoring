@@ -7,16 +7,16 @@
     <PublicProfile
       v-else-if="profileUser"
       :user="profileUser"
-      :isLogged="isLogged"
+      :isLogged="isLogged.value"
     />
     <p v-else class="loading">⏳ Caricamento profilo...</p>
 
     <section class="results" id="reviewsList">
       <ReviewCard
         v-for="review in reviews"
-        :key="review._id"
+        :key="review?._id"
         :review="review"
-        v-if="reviews.length > 0"
+        v-if="reviews?.length > 0"
       />
     </section>
   </main>
@@ -31,6 +31,7 @@ import ReviewCard from '@/components/ReviewCard.vue'
 import { watch } from "vue"
 import { socket } from "@/plugins/socket";
 import { getCurrentUser, isLoggedIn } from '../composables/auth';
+import { computed } from 'vue'
 
 function userByEmail(email) {
   return new Promise((resolve, reject) => {
@@ -57,13 +58,12 @@ function reviewByUserEmail(email) {
 }
 
 const route = useRoute()
-const currentUser = getCurrentUser()
 
-const profileEmail = route.params.email
+const profileEmail = ref(route.params.email)
 
-let profileUser = ref(null)
+const profileUser = ref(null)
 
-userByEmail(profileEmail)
+userByEmail(profileEmail.value)
   .then(user => {
     console.log("Profilo utente:", user);
     profileUser.value = user;
@@ -74,7 +74,7 @@ userByEmail(profileEmail)
 
 const reviews = ref([])
 
-reviewByUserEmail(profileEmail)
+reviewByUserEmail(profileEmail.value)
   .then(userReviews => {
     console.log("Recensioni utente:", userReviews);
     reviews.value = userReviews;
@@ -84,15 +84,11 @@ reviewByUserEmail(profileEmail)
     reviews.value = [];
   });
 
-let isMe = false  
-if(isLoggedIn.value){
-  console.log("Utente loggato:", currentUser.value);
-  isMe = currentUser.value && currentUser.value?.email === profileEmail
-} else {
-  console.log("Nessun utente loggato.");
-  isMe = false
-}
-const isLogged = isLoggedIn.value
+const isMe = computed(() => {
+  return isLoggedIn.value && getCurrentUser().value?.email === profileEmail.value
+})
+
+const isLogged = ref(isLoggedIn.value)
 
 const emit = defineEmits(['edit-profile'])
 
@@ -100,29 +96,26 @@ const emit = defineEmits(['edit-profile'])
 watch(
   () => route.params.email,
   async (newEmail) => {
+    profileEmail.value = newEmail
     console.log("🔁 Cambio pagina profilo:", newEmail);
     try {
       profileUser.value = await userByEmail(newEmail).then(user => {
-          console.log("Profilo utente:", user);
-          profileUser.value = user;
-        })
-        .catch(err => {
-          console.error("Errore:", err);
-        });
+        console.log("Profilo utente:", user);
+        return user;
+      })
       reviews.value = await reviewByUserEmail(newEmail).then(userReviews => {
           console.log("Recensioni utente:", userReviews);
-          reviews.value = userReviews;
+          return userReviews;
         })
         .catch(err => {
           console.error("Errore reviews:", err);
-          reviews.value = [];
+          return [];
         });
+      console.log("isMe:", isMe);  
+      isLogged.value = isLoggedIn.value
     } catch (err) {
       console.error("Errore caricando il profilo:", err);
     }
-
-    // Aggiorna isMe
-    isMe = isLoggedIn.value && currentUser.value?.email === newEmail;
   }
 );
 
