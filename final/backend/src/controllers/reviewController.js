@@ -1,7 +1,7 @@
 // reviewController.js (versione Socket.io)
 
-const { reviewModel } = require("../models/reviewModel");
-const { userModel } = require("../models/userModel");
+const Review  = require("../models/reviewModel");
+const User = require("../models/userModel") 
 
 // --------------------------------------------------
 // CREATE REVIEW
@@ -10,10 +10,10 @@ exports.createReviewSocket = async (data) => {
   const { student, teacher, score, comment } = data;
 
   // Controlli utente
-  const userStudent = await userModel.findOne({ username: student.username });
+  const userStudent = await User.findOne({ email: student });
   if (!userStudent) throw new Error("Student not found");
 
-  const userTeacher = await userModel.findOne({ username: teacher.username });
+  const userTeacher = await User.findOne({ email: teacher });
   if (!userTeacher) throw new Error("Teacher not found");
 
   if (userStudent._id.equals(userTeacher._id)) {
@@ -21,7 +21,7 @@ exports.createReviewSocket = async (data) => {
   }
 
   // Già recensita
-  const existingReview = await reviewModel.findOne({
+  const existingReview = await Review.findOne({
     student: userStudent._id,
     teacher: userTeacher._id
   });
@@ -42,12 +42,12 @@ exports.createReviewSocket = async (data) => {
 };
 
 exports.getAllUserReviewSocket = async (email) => {
-  const user = await userModel.findOne({ email: email });
+  const user = await User.findOne({ email: email });
   console.log("Utente trovato:", user);
 
   if (!user) throw new Error("User not found");
 
-  const reviews = await reviewModel.find({ teacher: user.email });
+  const reviews = await Review.find({ teacher: email });
 
   console.log("Recensioni trovate:", reviews);
   if (!reviews || reviews.length === 0) {

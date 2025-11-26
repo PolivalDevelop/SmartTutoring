@@ -2,8 +2,7 @@
 
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const User = require("../models/userModel") // adattalo al tuo export default
-                                           // (User in CommonJS)
+const User = require("../models/userModel") 
 
 
 // 🔹 Utility: Rimuove password dal risultato

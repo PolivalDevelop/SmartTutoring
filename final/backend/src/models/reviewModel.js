@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
 const reviewSchema = new mongoose.Schema(
   {
+    id: {
+          type: String,
+          unique: true,
+          default: () => uuidv4(),
+    },
     teacher: {
       type: String,       // email del teacher
       required: true,

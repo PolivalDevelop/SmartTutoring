@@ -84,12 +84,14 @@ const lessons = [
 
 const reviews = [
   {
+    id: "review-1",
     teacher: "giulia.rossi@studio.unibo.it",
     student: "daniele.capannini@studio.unibo.it",
     rating: 5,
     comment: "Ottima spiegazione e molto disponibile."
   },
   {
+    id: "review-2",
     teacher: "giulia.rossi@studio.unibo.it",
     student: "luca.bianchi@studio.unibo.it",
     rating: 4,
