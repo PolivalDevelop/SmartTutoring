@@ -10,6 +10,15 @@
       :is-logged="isLogged"
     />
     <p v-else class="loading">⏳ Caricamento profilo...</p>
+
+    <section class="results" id="reviewsList">
+      <ReviewCard
+        v-for="review in filteredReviews"
+        :key="review._id"
+        :review="review"
+        v-if="filteredReviews.length > 0"
+      />
+    </section>
   </main>
 </template>
 
@@ -34,6 +43,18 @@ function userByEmail(email) {
   });
 }
 
+function reviewByUserEmail(email) {
+  return new Promise((resolve, reject) => {
+    socket.emit("review:getByUserEmail", { email }, (response) => {
+      if (!response.success) {
+        reject(response.error);
+      } else {
+        resolve(response.data);
+      }
+    });
+  });
+}
+
 const route = useRoute()
 const currentUser = getCurrentUser()
 
@@ -45,6 +66,17 @@ userByEmail(profileEmail)
   .then(user => {
     console.log("Profilo utente:", user);
     profileUser.value = user;
+  })
+  .catch(err => {
+    console.error("Errore:", err);
+  });
+
+const reviews = ref([])
+
+reviewByUserEmail(profileEmail)
+  .then(userReviews => {
+    console.log("Recensioni utente:", userReviews);
+    reviews.value = userReviews;
   })
   .catch(err => {
     console.error("Errore:", err);

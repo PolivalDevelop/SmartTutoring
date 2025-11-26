@@ -8,17 +8,6 @@
       @publish-request="publishDialog.visible = true"
       @edit-profile="openEditProfile"
     />
-    <!--
-    <SidebarFilters v-if="showFilters"
-          @update:filters="handleFiltersUpdate" />
-
-    <SidebarFilters @update:filters="handleFiltersUpdate" />
-
-    <HomeView :filters="filters" />
-  --> 
-
-
-
 
     <!-- FAB pubblicazione lezione -->
     <button
@@ -61,17 +50,14 @@
 import { ref, computed } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
-import SidebarFilters from './components/SidebarFilters.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import PublishDialog from './components/PublishDialog.vue'
 import EditProfileDialog from './components/EditProfileDialog.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn, setMatter } from '@/composables/auth.js'
-//import { useUser } from '@/composables/useUser.js'
 import { inject, onMounted, onBeforeUnmount } from "vue";
 import { getCurrentUser } from './composables/auth.js'
-//import HomeView from './views/HomeView.vue'
 
 
 const { toggleTheme } = useDarkMode()

@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema(
   {
-    lesson: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Lesson",
-      required: true,
-    },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

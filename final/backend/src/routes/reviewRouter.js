@@ -18,9 +18,9 @@ module.exports = function (socket, io) {
   // -----------------------------------------
   // GET ALL REVIEWS OF LESSONS A USER TOOK
   // -----------------------------------------
-  socket.on("review:getAllByUser", async (username, callback) => {
+  socket.on("review:getByUserEmail", async (email, callback) => {
     try {
-      const reviews = await controller.getAllUserLessonsReviewSocket(username);
+      const reviews = await controller.getAllUserReviewSocket(email);
       callback({ success: true, data: reviews });
     } catch (err) {
       callback({ success: false, error: err.message });
