@@ -59,9 +59,9 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" v-if="isLoggedIn.value" @click="openCreateReport()">Segnala Profilo</button>
+      <button class="btn btn-ghost" v-if="getCurrentUser()?.value" @click="openCreateReport()">Segnala Profilo</button>
       <button class="btn btn-primary" @click="$emit('view-lessons')">Visualizza lezioni</button>
-      <button class="btn btn-primary" v-if="isLoggedIn.value" @click="openCreateReview()">Crea recensione</button>
+      <button class="btn btn-primary" v-if="getCurrentUser().value" @click="openCreateReview()">Crea recensione</button>
     </div>
   </section>
 </template>
@@ -70,7 +70,8 @@
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
-import { getCurrentUser, isLoggedIn } from '@/composables/auth.js'
+import CreateReportDialog from '@/components/CreateReportDialog.vue'
+import { getCurrentUser } from '@/composables/auth.js'
 import { ref } from 'vue'
 import { inject } from "vue";
 
@@ -101,6 +102,7 @@ function openCreateReview() {
 }
 
 function openCreateReport() {
+  console.log("Apro il dialog di creazione report");
   createReportDialog.value.visible = true
 }
 

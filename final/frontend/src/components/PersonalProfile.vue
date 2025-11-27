@@ -61,11 +61,10 @@
 import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import EditProfileDialog from '@/components/EditProfileDialog.vue'
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { getCurrentUser } from '@/composables/auth.js'
-import { useSocket } from '@/composables/socket.js'
 
-const socket = useSocket()
+const socket = inject("socket");
 
 const editProfileDialog = ref({ visible: false })
 

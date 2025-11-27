@@ -2,13 +2,6 @@
 
 const Report = require("../models/reportModel");
 const User = require("../models/userModel");
-
-// --------------------------------------------------
-// CREATE REPORT
-// --------------------------------------------------
-const Report = require("../models/reportModel");
-const User = require("../models/userModel");
-
 // --------------------------------------------------
 // CREATE REPORT
 // --------------------------------------------------
@@ -19,7 +12,7 @@ exports.createReportSocket = async (data) => {
     throw new Error("All required fields must be provided.");
   }
 
-  if (reporter === reported) {
+  if (reporter == reported) {
     throw new Error("A user cannot report themselves.");
   }
 
