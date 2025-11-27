@@ -1,6 +1,5 @@
 <template>
   <SidebarFilters @update:filters="handleFiltersUpdate" />
-
   <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
       <h2 id="mainTitle">Lezioni disponibili</h2>
