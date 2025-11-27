@@ -31,7 +31,11 @@ exports.createReportSocket = async (data) => {
 // --------------------------------------------------
 // GET REPORT BY ID
 // --------------------------------------------------
-exports.getReportByIdSocket = async (id) => {
+exports.getReportByIdSocket = async (emailAdmin, id) => {
+  const admin = await Admin.findOne({ emailAdmin });
+  if (!admin) {
+    throw new Error("Admin not found");
+  }
   const report = await Report.findById(id);
 
   if (!report) {
@@ -44,7 +48,11 @@ exports.getReportByIdSocket = async (id) => {
 // --------------------------------------------------
 // DELETE REPORT BY ID
 // --------------------------------------------------
-exports.deleteReportSocket = async (id) => {
+exports.deleteReportSocket = async (emailAdmin, id) => {
+  const admin = await Admin.findOne({ emailAdmin });
+  if (!admin) {
+    throw new Error("Admin not found");
+  }
   const deleted = await Report.findByIdAndDelete(id);
 
   if (!deleted) {
@@ -57,9 +65,23 @@ exports.deleteReportSocket = async (id) => {
 // --------------------------------------------------
 // GET ALL REPORTS FOR A USER (by username)
 // --------------------------------------------------
-exports.getAllUserReportsSocket = async (email) => {
-  const reports = await Report.find({ reported: email })
+exports.getAllUserReportsSocket = async (emailAdmin, username) => {
+  const admin = await Admin.findOne({ emailAdmin });
+  if (!admin) {
+    throw new Error("Admin not found");
+  }
+  const reports = await Report.find({ reported: username })
     .sort({ createdAt: -1 });
 
+  return reports;
+};
+
+exports.getOpenReportsSocket = async (emailAdmin) => {
+  const admin = await Admin.findOne({ emailAdmin });
+  if (!admin) {
+    throw new Error("Admin not found");
+  } 
+  const reports = await Report.find({ status: "open" })
+    .sort({ createdAt: -1 });
   return reports;
 };

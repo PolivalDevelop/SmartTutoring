@@ -30,26 +30,26 @@ const reports = ref([]);
 onMounted(() => {
 
   // 1️⃣ Chiedo al server la lista delle lezioni disponibili
-  socket.emit("reports:getOpen");
+  socket.emit("report:getOpen");
 
   // 2️⃣ Ricevo la lista
-  socket.on("reports:open", (report) => {
+  socket.on("report:open", (report) => {
     reports.value = report;
   });
 
   // 3️⃣ Aggiornamenti in tempo reale
-  socket.on("reports:updated", () => {
-    socket.emit("reports:getOpen"); // Ricarica lista
+  socket.on("report:updated", () => {
+    socket.emit("report:getOpen"); // Ricarica lista
   });
 });
 
 onUnmounted(() => {
-  socket.off("reports:open");
-  socket.off("reports:updated");
+  socket.off("report:open");
+  socket.off("report:updated");
 });
 
 function deleteReport(report) {
-  socket.emit("reports:delete", report).then(() => {
+  socket.emit("report:delete", report).then(() => {
     console.log("Report eliminato con successo:", report);
     reports.value = reports.value.filter(r => r._id !== report._id);
   }).catch((error) => {
