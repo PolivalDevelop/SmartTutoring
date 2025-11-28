@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 export const isLoggedIn = ref(false)
+export const isAdmin = ref(false)
 export const user = ref(null)
 
 

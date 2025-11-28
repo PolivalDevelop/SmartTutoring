@@ -114,7 +114,7 @@ import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
 import { inject } from "vue";
-import { getCurrentUser } from '../composables/auth'
+import { getCurrentUser, setAdmin } from '../composables/auth'
 const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()
@@ -197,6 +197,17 @@ function handleSubmit() {
       console.log(getCurrentUser())
       showToast("✅ Registrazione completata con successo!")
 
+      socket.emit("admin:check", getCurrentUser().value?.email, (adminRes) => {
+        if (adminRes.success) {
+          console.log("Utente è admin:", adminRes.data)
+          if (adminRes.data === true) {
+            setAdmin(true)
+            console.log("Stato admin aggiornato a: ", getCurrentUser().value)
+          }
+        } else {
+          console.error("Errore nel controllo admin:", adminRes.error)
+        }
+      })
       setTimeout(() => router.push("/"), 500)
     })
   })

@@ -6,6 +6,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import BookedView from '@/views/BookedView.vue'
 import OfferedView from '@/views/OfferedView.vue'
 import { getCurrentUser } from '@/composables/auth.js'
+import ReporterView from '@/views/ReporterView.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView, meta: { showFilters: true } },
@@ -23,7 +24,8 @@ const routes = [
   },
   { path: '/profile/:email', name: 'profile', component: ProfileView },
   { path: '/booked', name: 'booked', component: BookedView, meta: { showFilters: true } },
-  { path: '/offered', name: 'offered', component: OfferedView, meta: { showFilters: true } }
+  { path: '/offered', name: 'offered', component: OfferedView, meta: { showFilters: true } },
+  { path: '/reports', name: 'reports', component: ReporterView },
 
 ]
 

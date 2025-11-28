@@ -15,6 +15,7 @@
       <template v-if="isLoggedIn">
         <div class="logged-menu">
           <RouterLink to="/" class="menu-item">Home</RouterLink>
+          <RouterLink to="/reports" class="menu-item" v-if="isAdmin.value">Report</RouterLink>
           <RouterLink to="/booked" class="menu-item">Lezioni Prenotate</RouterLink>
           <RouterLink to="/offered" class="menu-item">Lezioni Offerte</RouterLink>
           <RouterLink :to="`/profile/${getCurrentUser().value?.email}`" class="menu-item">Profilo</RouterLink>
@@ -23,6 +24,7 @@
       </template>
       <template v-else>
         <div class="guest-menu">
+          <RouterLink to="/" class="menu-item">Home</RouterLink>
           <RouterLink to="/login" class="btn btn-ghost">Accedi</RouterLink>
           <RouterLink to="/register" class="btn btn-primary">Iscriviti</RouterLink>
         </div>
@@ -51,7 +53,7 @@
 <script setup>
 import { isLoggedIn, logout } from '@/composables/auth.js'
 import useDarkMode from '@/composables/useDarkMode.js'
-import { getCurrentUser } from '@/composables/auth.js'
+import { getCurrentUser, isAdmin } from '@/composables/auth.js'
 
 const { toggleTheme, isDark } = useDarkMode()
 
