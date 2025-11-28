@@ -9,6 +9,8 @@ const cors = require("cors");
 const User = require("./models/userModel");       // <--- IMPORT NECESSARIO
 const Lesson = require("./models/lessonModel");
 const Review  = require("./models/reviewModel");
+const Admin  = require("./models/adminModel");
+const Report  = require("./models/reportModel");
 
 const { users, lessons, reviews } = require("./uploadDate");
 
@@ -36,6 +38,8 @@ mongoose
     await User.insertMany(users);
     await Lesson.insertMany(lessons);
     await Review.insertMany(reviews); 
+    await Admin.insertMany(admin);
+    await Report.insertMany(reports);
 
     // Controllo utenti
     const userCount = await User.countDocuments();
@@ -48,6 +52,14 @@ mongoose
     // Controllo recensioni
     const reviewCount = await Review.countDocuments();
     console.log(`📝 Reviews in DB: ${reviewCount}`);
+
+    // Controllo admin
+    const adminCount = await Admin.countDocuments();
+    console.log(`🛡️ Admins in DB: ${adminCount}`);
+
+    // Controllo segnalazioni
+    const reportCount = await Report.countDocuments();
+    console.log(`🚩 Reports in DB: ${reportCount}`);
   })
   .catch((err) => console.error("❌ MongoDB error:", err));
 
@@ -65,6 +77,7 @@ io.on("connection", (socket) => {
   require("./routes/lessonRouter")(socket, io);
   require("./routes/reviewRouter")(socket, io);
   require("./routes/reportRouter")(socket, io, jwtSettings);
+  require("./routes/adminRouter")(socket, io, jwtSettings);
 
   socket.on("disconnect", () => {
     console.log("❌ Client disconnesso:", socket.id);

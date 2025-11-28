@@ -42,7 +42,24 @@ const users = [
     birthDate: new Date("1995-02-14"),
     averageGrade: 30,
     bio: "Dottorando in matematica applicata."
+  },
+  {
+    id: "user-4",
+    firstName: "Daniel",
+    lastName: "Capannini",
+    email: "daniel.capannini@studio.unibo.it",
+    password: hashPassword("Password01!"),
+    degreeType: "magistrale",
+    photo: null,
+    birthDate: new Date("2001-04-12"),
+    averageGrade: 30,
+    bio: "proprietario di sta app."
   }
+];
+
+    const admin = [{
+      email: "daniel.capannini@studio.unibo.it"
+    }
 ];
 
 // Array di lezioni
