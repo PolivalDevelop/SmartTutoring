@@ -44,9 +44,13 @@ module.exports = function (socket, io, jwtSettings) {
   })
 
   // 6. /:username DELETE → deleteUser
-  socket.on("user:delete", (data) => {
-    // data = { username, password }
-    controller.deleteUser(socket, data)
+  socket.on("user:delete", (data, callback) => {
+    try {
+      const result = controller.deleteUser(socket, data)
+      callback({ success: true, data: result })
+    } catch (err) {
+      callback({ success: false, error: err.message })
+    }
   })
 
   // 7. /id/:id  → searchById

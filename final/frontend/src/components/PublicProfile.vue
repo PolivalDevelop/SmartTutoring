@@ -13,7 +13,14 @@
     :reporterEmail="getCurrentUser().value?.email"
     @createReport="createReport"
     @close="createReportDialog.visible = false"
-  />  
+  /> 
+  
+  <BanDialog
+    v-if="isAdmin.value && banDialogVisible.visible"
+    :email="user?.email"
+    @ban="banUser"
+    @close="banDialogVisible.visible = false"
+  />
 
   <section class="profile-card" aria-describedby="profileInfo">
     <!-- HEADER -->
@@ -59,7 +66,8 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" v-if="getCurrentUser()?.value" @click="openCreateReport()">Segnala Profilo</button>
+      <button class="btn btn-ghost" v-if="getCurrentUser()?.value && !isAdmin.value" @click="openCreateReport()">Segnala Profilo</button>
+      <button class="btn btn-ghost" v-if="isAdmin.value" @click="openBan()">Banna</button>
       <button class="btn btn-primary" @click="$emit('view-lessons')">Visualizza lezioni</button>
       <button class="btn btn-primary" v-if="getCurrentUser().value" @click="openCreateReview()">Crea recensione</button>
     </div>
@@ -71,14 +79,16 @@ import { computed } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
 import CreateReportDialog from '@/components/CreateReportDialog.vue'
-import { getCurrentUser } from '@/composables/auth.js'
+import { getCurrentUser, isAdmin } from '@/composables/auth.js'
 import { ref } from 'vue'
 import { inject } from "vue";
+import BanDialog from './BanDialog.vue'
 
 const socket = inject("socket");
 
 const createReviewDialog = ref({ visible: false })
 const createReportDialog = ref({ visible: false })
+const banDialogVisible = ref({ visible: false })
 
 const props = defineProps({
   user: { type: Object, required: true },
@@ -129,6 +139,22 @@ function createReport(newReport) {
     console.log("Report creato con successo.");
   }); 
   createReportDialog.value.visible = false
+}
+
+function openBan() {
+  banDialogVisible.value.visible = true
+}
+
+function banUser(email) {
+  console.log("Banno l'utente con email:", email);
+  socket.emit("user:delete", { email: getCurrentUser().value.email, targetEmail: email }, (response) => {
+    if (!response.success) {
+      console.log("Errore durante il ban dell'utente:", response.error);
+      return;
+    }
+    console.log("Utente bannato con successo.");
+  }); 
+  banDialogVisible.value.visible = false
 }
 </script>
 

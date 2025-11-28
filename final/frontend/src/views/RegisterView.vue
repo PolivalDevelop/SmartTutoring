@@ -196,18 +196,6 @@ function handleSubmit() {
       console.log("Utente registrato e loggato:", res.data)
       console.log(getCurrentUser())
       showToast("✅ Registrazione completata con successo!")
-
-      socket.emit("admin:check", getCurrentUser().value?.email, (adminRes) => {
-        if (adminRes.success) {
-          console.log("Utente è admin:", adminRes.data)
-          if (adminRes.data === true) {
-            setAdmin(true)
-            console.log("Stato admin aggiornato a: ", getCurrentUser().value)
-          }
-        } else {
-          console.error("Errore nel controllo admin:", adminRes.error)
-        }
-      })
       setTimeout(() => router.push("/"), 500)
     })
   })

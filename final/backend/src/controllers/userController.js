@@ -130,27 +130,21 @@ exports.searchByUsername = async (socket, username) => {
 // ======================================================
 exports.deleteUser = async (socket, data) => {
   try {
-    const { email, password } = data
+    const { email, targetEmail } = data;
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+    // Verifica se l'utente da cancellare esiste
+    const userToDelete = await User.findOne({ email: targetEmail });
+    if (!userToDelete) {
+      throw new Error("User not found");
+    }
+    await User.deleteOne({ email: targetEmail });
+    return { message: "User successfully deleted" };  
 
-    const user = await User.findOne({ email }).select("+password")
-
-    if (!user)
-      return socket.emit("user:delete:response", { error: "User not found" })
-
-    const valid = await bcrypt.compare(password, user.password)
-
-    if (!valid)
-      return socket.emit("user:delete:response", { error: "Invalid password" })
-
-    await User.deleteOne({ _id: user._id })
-
-    socket.emit("user:delete:response", {
-      success: true,
-      message: "User deleted successfully"
-    })
-
-  } catch (err) {
-    socket.emit("user:delete:response", { error: err.message })
+  }catch (err) {
+    throw new Error(err.message);
   }
 }
 

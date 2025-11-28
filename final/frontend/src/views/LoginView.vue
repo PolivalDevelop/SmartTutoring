@@ -134,6 +134,17 @@ function handleSubmit() {
         showToast("credenziali non valide: " + res.error)
         return
       }
+      socket.emit("admin:check", getCurrentUser().value?.email, (adminRes) => {
+        if (adminRes.success) {
+          console.log("Utente è admin:", adminRes.data)
+          if (adminRes.data === true) {
+            setAdmin(true)
+            console.log("Stato admin aggiornato a: ", getCurrentUser().value)
+          }
+        } else {
+          console.error("Errore nel controllo admin:", adminRes.error)
+        }
+      })
       
       login(res.data) // salva nel tuo store
       showToast("✅ Registrazione completata con successo!")
