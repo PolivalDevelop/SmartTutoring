@@ -24,7 +24,7 @@ const routes = [
   },
   { path: '/profile/:email', name: 'profile', component: ProfileView },
   { path: '/booked', name: 'booked', component: BookedView, meta: { showFilters: true } },
-  { path: '/offered', name: 'offered', component: OfferedView, meta: { showFilters: true } },
+  { path: '/offered/:email', name: 'offered', component: OfferedView, meta: { showFilters: true } },
   { path: '/reports', name: 'reports', component: ReporterView },
 
 ]

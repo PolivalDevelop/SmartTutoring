@@ -68,7 +68,7 @@
     <div class="profile-actions">
       <button class="btn btn-ghost" v-if="getCurrentUser()?.value && !isAdmin.value" @click="openCreateReport()">Segnala Profilo</button>
       <button class="btn btn-ghost" v-if="isAdmin.value" @click="openBan()">Banna</button>
-      <button class="btn btn-primary" @click="$emit('view-lessons')">Visualizza lezioni</button>
+      <button class="btn btn-primary" @click="goToLessons()">Visualizza lezioni</button>
       <button class="btn btn-primary" v-if="getCurrentUser().value" @click="openCreateReview()">Crea recensione</button>
     </div>
   </section>
@@ -83,6 +83,13 @@ import { getCurrentUser, isAdmin } from '@/composables/auth.js'
 import { ref } from 'vue'
 import { inject } from "vue";
 import BanDialog from './BanDialog.vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goToLessons() {
+  router.push(`/offered/${props.user?.email}`);
+}
 
 const socket = inject("socket");
 
