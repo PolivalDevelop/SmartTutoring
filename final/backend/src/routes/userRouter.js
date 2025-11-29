@@ -38,11 +38,6 @@ module.exports = function (socket, io, jwtSettings) {
     controller.logoutUser(socket)
   })
 
-  // 5. /:username → searchByUsername
-  socket.on("user:searchByUsername", (username) => {
-    controller.searchByUsername(socket, username)
-  })
-
   // 6. /:username DELETE → deleteUser
   socket.on("user:delete", (data, callback) => {
     try {
@@ -51,11 +46,6 @@ module.exports = function (socket, io, jwtSettings) {
     } catch (err) {
       callback({ success: false, error: err.message })
     }
-  })
-
-  // 7. /id/:id  → searchById
-  socket.on("user:searchById", (id) => {
-    controller.searchById(socket, id)
   })
 
   socket.on("user:getByEmail", (data, callback) => {
