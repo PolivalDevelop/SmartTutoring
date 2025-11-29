@@ -10,7 +10,7 @@
           v-for="lesson in myOfferedLessons"
           :key="lesson._id"
           :lesson="lesson"
-          mode="offered"
+          :mode="isOwner ? 'offered' : 'user'"
         />
       </template>
 
