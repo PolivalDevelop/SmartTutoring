@@ -52,20 +52,6 @@ exports.getAllLessonsSocket = async () => {
 };
 
 
-
-// ----------------------------------------
-// GET LESSON BY ID
-// ----------------------------------------
-exports.getLessonByIdSocket = async (id) => {
-  const lesson = await Lesson.findById(id)
-    .populate("teacher", "firstName lastName email")
-    .populate("student", "firstName lastName email");
-
-  if (!lesson) throw new Error("Lesson not found");
-
-  return lesson;
-};
-
 // ----------------------------------------
 // DELETE LESSON
 // ----------------------------------------

@@ -10,7 +10,8 @@
           v-for="lesson in myOfferedLessons"
           :key="lesson._id"
           :lesson="lesson"
-          :mode="isOwner ? 'offered' : 'user'"
+          :mode="isOwner ? 'offered' : 'unavailable'"
+          v-if="!isOwner" @book="handleBook(lesson)"
         />
       </template>
 
@@ -110,11 +111,22 @@ function loadLessons() {
 
   fetchOfferedLessons(email)
     .then(data => {
-      myOfferedLessons.value = data;
+      if(isOwner.value){
+        console.log("Utente proprietario della pagina, mostro tutte le lezioni offerte.");
+        myOfferedLessons.value = data;
+      }else{
+        console.log("Utente non proprietario, applico filtro per escludere le proprie lezioni.");
+        const lessons = data.filter(lesson => lesson.status === 'available');
+        myOfferedLessons.value = lessons;
+      }
     })
     .catch(err => {
       console.error("Errore nel recuperare le lezioni offerte:", err);
     });
+}
+
+function handleBook(lesson) {
+  emit('book', lesson)
 }
 </script>
 
