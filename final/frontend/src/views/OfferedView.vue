@@ -10,7 +10,7 @@
           v-for="lesson in myOfferedLessons"
           :key="lesson._id"
           :lesson="lesson"
-          :mode="isOwner ? 'offered' : 'unavailable'"
+          :mode="isOwner ? 'offered' : 'available'"
           v-if="!isOwner" @book="handleBook(lesson)"
         />
       </template>

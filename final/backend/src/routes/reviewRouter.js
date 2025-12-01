@@ -9,6 +9,7 @@ module.exports = function (socket, io) {
   socket.on("review:create", async (data, callback) => {
     try {
       const review = await controller.createReviewSocket(data);
+      io.emit("review:updated");
       callback({ success: true, data: review });
     } catch (err) {
       callback({ success: false, error: err.message });

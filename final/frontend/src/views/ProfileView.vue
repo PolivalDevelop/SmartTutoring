@@ -91,6 +91,23 @@ const isMe = computed(() => {
   return isLoggedIn.value && getCurrentUser().value?.email === profileEmail.value
 })
 
+onMounted(() => {
+  console.log("Mounted ProfileView for:", profileEmail.value);
+  socket.on("review:updated", () => {
+    reviewByUserEmail(profileEmail.value) // Ricarica lista
+      .then(userReviews => {
+      console.log("Recensioni utente:", userReviews);
+      reviews.value = userReviews;
+      profileUser.value.numReviews = userReviews.length;
+      profileUser.value.avgRating = userReviews.reduce((sum, r) => sum + r.rating, 0) / (userReviews.length || 1);
+    })
+    .catch(err => {
+      console.error("Errore reviews:", err);
+      reviews.value = [];
+    });
+  });
+});
+
 const isLogged = ref(isLoggedIn.value)
 
 const emit = defineEmits(['edit-profile'])
