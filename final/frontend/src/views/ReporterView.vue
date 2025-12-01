@@ -24,21 +24,24 @@
 <script setup>
 import { ref, onMounted, onUnmounted, inject } from 'vue'
 import ReportCard from '@/components/ReportCard.vue'
+import { getCurrentUser } from '../composables/auth';
 const socket = inject("socket");
 const reports = ref([]);
 
 onMounted(() => {
 
   // 1️⃣ Chiedo al server la lista delle lezioni disponibili
-  socket.emit("report:getOpen");
+  socket.emit("report:getOpen", getCurrentUser().value.email);
 
   // 2️⃣ Ricevo la lista
   socket.on("report:open", (report) => {
+    console.log("Ricevuta lista report aperti:", report);
     reports.value = report;
   });
 
   // 3️⃣ Aggiornamenti in tempo reale
   socket.on("report:updated", () => {
+    console.log("Ricevuto aggiornamento report");
     socket.emit("report:getOpen"); // Ricarica lista
   });
 });
@@ -49,7 +52,7 @@ onUnmounted(() => {
 });
 
 function deleteReport(report) {
-  socket.emit("report:delete", report).then(() => {
+  socket.emit("report:delete",getCurrentUser().value.email, report._id).then(() => {
     console.log("Report eliminato con successo:", report);
     reports.value = reports.value.filter(r => r._id !== report._id);
   }).catch((error) => {

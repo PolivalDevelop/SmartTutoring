@@ -66,7 +66,7 @@ import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
-import { login } from '@/composables/auth.js'
+import { login, getCurrentUser, isAdmin } from '@/composables/auth.js'
 import { inject } from "vue";
 const socket = inject("socket");
 
@@ -134,22 +134,22 @@ function handleSubmit() {
         showToast("credenziali non valide: " + res.error)
         return
       }
-      socket.emit("admin:check", getCurrentUser().value?.email, (adminRes) => {
+
+      login(res.data) // salva nel tuo store
+      socket.emit("admin:check", form.email, (adminRes) => {
         if (adminRes.success) {
           console.log("Utente è admin:", adminRes.data)
-          if (adminRes.data === true) {
-            setAdmin(true)
-            console.log("Stato admin aggiornato a: ", getCurrentUser().value)
-          }
+          isAdmin.value = true
+          console.log("Stato admin aggiornato a: ", getCurrentUser().value)
+          console.log("isAdmin vale ora: ", isAdmin.value)
         } else {
           console.error("Errore nel controllo admin:", adminRes.error)
         }
       })
       
-      login(res.data) // salva nel tuo store
       showToast("✅ Registrazione completata con successo!")
 
-      setTimeout(() => router.push("/"), 2000)
+      setTimeout(() => router.push("/"), 500)
     })
 }
 </script>

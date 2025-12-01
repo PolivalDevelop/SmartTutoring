@@ -114,7 +114,7 @@ import '@/assets/styles/access-page.css'
 
 import { login } from '@/composables/auth.js'
 import { inject } from "vue";
-import { getCurrentUser, setAdmin } from '../composables/auth'
+import { getCurrentUser } from '../composables/auth'
 const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()

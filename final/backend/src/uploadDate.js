@@ -72,10 +72,10 @@ const users = [
 ];
 
 const admins = [{
-      email: "daniel.capannini@studio.unibo.it"
+      emailAdmin: "daniel.capannini@studio.unibo.it"
     },
     {
-      email: "luca.cantagallo@studio.unibo.it"
+      emailAdmin: "luca.cantagallo@studio.unibo.it"
     }
 ];
 
@@ -320,6 +320,7 @@ const reports = [
     reason: "comportamento-scorretto",
     comment: "Durante una lezione online ha mostrato poca disponibilità nel rispondere alle domande.",
     status: "pending",
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 giorni fa
   },
   {
     reporter: "luca.bianchi@studio.unibo.it",
@@ -327,6 +328,7 @@ const reports = [
     reason: "linguaggio-offensivo",
     comment: "Ha utilizzato un tono di voce e un linguaggio inappropriato durante la collaborazione.",
     status: "pending",
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 giorno fa
   },
   {
     reporter: "daniele.capannini@studio.unibo.it",
@@ -334,6 +336,7 @@ const reports = [
     reason: "contenuti-inappropriati",
     comment: "Ha condiviso materiale non pertinente e non appropriato alla lezione.",
     status: "pending",
+    createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 ore fa
   },
   {
     reporter: "giulia.rossi@studio.unibo.it",
@@ -341,6 +344,7 @@ const reports = [
     reason: "spam-pubblicita",
     comment: "Ha inviato messaggi pubblicitari non richiesti durante una sessione di tutoraggio.",
     status: "pending",
+    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 ore fa
   },
   {
     reporter: "giulia.rossi@studio.unibo.it",
@@ -348,6 +352,7 @@ const reports = [
     reason: "altro",
     comment: "Comportamento ambiguo e disturbante durante le attività del gruppo di studio.",
     status: "pending",
+    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 ore fa
   }
 ]
 

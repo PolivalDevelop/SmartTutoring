@@ -81,7 +81,7 @@ exports.getOpenReportsSocket = async (emailAdmin) => {
   if (!admin) {
     throw new Error("Admin not found");
   } 
-  const reports = await Report.find({ status: "open" })
+  const reports = await Report.find({ status: "pending" })
     .sort({ createdAt: -1 });
   return reports;
 };

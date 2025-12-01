@@ -9,7 +9,7 @@ module.exports = function (socket, io) {
   socket.on("report:create", async (data, callback) => {
     try {
       const report = await controller.createReportSocket(data);
-      socket.emit("report:updated"); // Notify all clients
+      io.emit("report:updated"); // Notify all clients
       callback({ success: true, data: report });
     } catch (err) {
       callback({ success: false, error: err.message });
@@ -22,7 +22,7 @@ module.exports = function (socket, io) {
   socket.on("report:delete", async (emailAdmin, id, callback) => {
     try {
       const result = await controller.deleteReportSocket(emailAdmin, id);
-      socket.emit("report:updated"); // Notify all clients
+      io.emit("report:updated"); // Notify all clients
       callback({ success: true, data: result });
     } catch (err) {
       callback({ success: false, error: err.message });
