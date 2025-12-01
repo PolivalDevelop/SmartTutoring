@@ -125,5 +125,13 @@ exports.getMattersSocket = async () => {
         "Big data",
         "Project Management",
         "PPS",
+        "Algebra e Geometria",
+        "Algoritmi",
+        "Reti di Calcolatori",
+        "Programmazione Web",
+        "Sistemi Operativi",
+        "Basi di Dati",
+        "Machine Learning",
+        "Probabilità e Statistica",
       ];
 };

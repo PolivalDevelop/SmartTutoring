@@ -36,4 +36,6 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+reviewSchema.index({ student: 1, teacher: 1 }, { unique: true });
+
 module.exports = mongoose.model("Review", reviewSchema);
