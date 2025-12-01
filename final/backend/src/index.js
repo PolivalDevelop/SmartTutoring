@@ -14,6 +14,12 @@ const Report  = require("./models/reportModel");
 
 const { users, lessons, reviews, admins, reports } = require("./uploadDate");
 
+const bcrypt = require("bcrypt");
+
+async function hashPassword(password) {
+  return await bcrypt.hash(password, 10);
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -34,8 +40,15 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb://mongodb:27017/tutoring";
 mongoose
   .connect(MONGO_URI)
   .then(async () => {
+
+    const usersWithHashedPasswords = await Promise.all(
+      users.map(async user => ({
+        ...user,
+        password: await hashPassword(user.password),
+      }))
+    );
     console.log("✅ MongoDB connected to tutoring");
-    await User.insertMany(users);
+    await User.insertMany(usersWithHashedPasswords);
     await Lesson.insertMany(lessons);
     await Review.insertMany(reviews); 
     await Admin.insertMany(admins);

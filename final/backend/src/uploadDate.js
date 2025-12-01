@@ -1,9 +1,11 @@
 const crypto = require("crypto");
 
-// Funzione per hashare le password
+/* Funzione per hashare le password
 function hashPassword(password) {
   return crypto.createHash("sha256").update(password).digest("hex");
-}
+}*/
+
+
 
 // Array di utenti
 const users = [
@@ -12,7 +14,7 @@ const users = [
     firstName: "Daniele",
     lastName: "Capannini",
     email: "daniele.capannini@studio.unibo.it",
-    password: hashPassword("Password01!"),
+    password: "Password01!",
     degreeType: "magistrale",
     photo: null,
     birthDate: new Date("1999-05-21"),
@@ -24,7 +26,7 @@ const users = [
     firstName: "Giulia",
     lastName: "Rossi",
     email: "giulia.rossi@studio.unibo.it",
-    password: hashPassword("Password02!"),
+    password: "Password02!",
     degreeType: "triennale",
     photo: null,
     birthDate: new Date("2001-08-10"),
@@ -36,7 +38,7 @@ const users = [
     firstName: "Luca",
     lastName: "Bianchi",
     email: "luca.bianchi@studio.unibo.it",
-    password: hashPassword("Password03!"),
+    password: "Password03!",
     degreeType: "dottorato",
     photo: null,
     birthDate: new Date("1995-02-14"),
@@ -48,7 +50,7 @@ const users = [
     firstName: "Daniel",
     lastName: "Capannini",
     email: "daniel.capannini@studio.unibo.it",
-    password: hashPassword("Password01!"),
+    password: "Password01!",  
     degreeType: "magistrale",
     photo: null,
     birthDate: new Date("2001-04-12"),
@@ -60,7 +62,7 @@ const users = [
     firstName: "Luca",
     lastName: "Cantagallo",
     email: "luca.cantagallo@studio.unibo.it",
-    password: hashPassword("Password01!"),
+    password: "Password01!",
     degreeType: "magistrale",
     photo: null,
     birthDate: new Date("2001-04-12"),
