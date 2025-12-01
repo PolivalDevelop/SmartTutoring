@@ -33,6 +33,7 @@ import { socket } from "@/plugins/socket";
 import { getCurrentUser, isLoggedIn } from '@/composables/auth';
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { inject, onMounted, onUnmounted } from "vue";
 
 function userByEmail(email) {
   return new Promise((resolve, reject) => {

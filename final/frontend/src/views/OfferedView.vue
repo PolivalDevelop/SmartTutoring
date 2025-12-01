@@ -37,12 +37,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import LessonCard from '@/components/LessonCard.vue';
 import FooterNote from '@/components/FooterNote.vue';
 import { getCurrentUser } from '@/composables/auth';
-import { inject } from "vue";
+import { inject, onMounted, onUnmounted } from "vue";
 
 const socket = inject("socket");
 const route = useRoute();

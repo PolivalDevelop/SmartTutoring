@@ -30,8 +30,8 @@
           required
         />
 
-        <label for="lessonTimeStart">Ora inizio</label>
-        <select id="lessonTimeStart" v-model="lesson.timeStart" required>
+        <label for="lessontime">Ora inizio</label>
+        <select id="lessontime" v-model="lesson.time" required>
           <option value="">Seleziona...</option>
           <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
         </select>
@@ -102,25 +102,26 @@ const lesson = reactive({
   teacher: getCurrentUser().value?.email,
   course: '',
   date: '',
-  timeStart: '',
+  time: '',
   duration: '1 ora',
   price: 15
 })
 
 function submitLesson() {
-  if (!lesson.course || !lesson.date || !lesson.timeStart || !lesson.duration || !lesson.price) return
+  if (!lesson.course || !lesson.date || !lesson.time || !lesson.duration || !lesson.price) return
 
-  const formattedDate = new Date(`${lesson.date}T${lesson.timeStart}`).toLocaleDateString('it-IT', {
+  const formattedDate = new Date(`${lesson.date}T${lesson.time}`).toLocaleDateString('it-IT', {
     weekday: 'short',
     day: 'numeric',
     month: 'short'
   })
 
-  const formattedTime = lesson.timeStart
+  const formattedTime = lesson.time
 
   emit('publish', {
     teacher: lesson.teacher,
     subject: lesson.course,
+    time: lesson.time,
     date: lesson.date,
     duration: lesson.duration,
     price: lesson.price || 15

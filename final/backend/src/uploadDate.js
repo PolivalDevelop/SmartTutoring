@@ -56,7 +56,7 @@ const users = [
     bio: "proprietario di sta app."
   },
   {
-    id: "user-4",
+    id: "user-5",
     firstName: "Luca",
     lastName: "Cantagallo",
     email: "luca.cantagallo@studio.unibo.it",
@@ -69,7 +69,7 @@ const users = [
   }
 ];
 
-    const admin = [{
+const admins = [{
       email: "daniel.capannini@studio.unibo.it"
     },
     {
@@ -83,6 +83,7 @@ const lessons = [
     id: "lesson-1",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "9:00",
     subject: "Analisi",
     date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // tra 3 giorni
     duration: 60,
@@ -94,6 +95,7 @@ const lessons = [
     id: "lesson-2",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "10:00",
     subject: "Ingegneria del software",
     date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // tra 5 giorni
     duration: 90,
@@ -105,6 +107,7 @@ const lessons = [
     id: "lesson-3",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "11:00",
     subject: "Basi di dati",
     date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // tra 7 giorni
     duration: 60,
@@ -116,6 +119,7 @@ const lessons = [
     id: "lesson-4",
     teacher: "luca.bianchi@studio.unibo.it",
     student: null,
+    time: "9:30",
     subject: "Algebra e Geometria",
     date: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -127,6 +131,7 @@ const lessons = [
     id: "lesson-5",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "10:30",
     subject: "Algoritmi",
     date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
     duration: 90,
@@ -138,6 +143,7 @@ const lessons = [
     id: "lesson-6",
     teacher: "luca.cantagallo@studio.unibo.it",
     student: null,
+    time: "11:30",
     subject: "Reti di Calcolatori",
     date: new Date(Date.now() + 11 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -149,6 +155,7 @@ const lessons = [
     id: "lesson-7",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "12:00",
     subject: "Programmazione Web",
     date: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
     duration: 120,
@@ -160,6 +167,7 @@ const lessons = [
     id: "lesson-8",
     teacher: "luca.bianchi@studio.unibo.it",
     student: null,
+    time: "13:00",
     subject: "Algoritmi",
     date: new Date(Date.now() + 13 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -171,7 +179,8 @@ const lessons = [
     id: "lesson-9",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
-    subject: "Ingegneria del Software",
+    time: "14:00",
+    subject: "Ingegneria del software",
     date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
     duration: 90,
     price: 30,
@@ -182,6 +191,7 @@ const lessons = [
     id: "lesson-10",
     teacher: "luca.cantagallo@studio.unibo.it",
     student: null,
+    time: "15:00",
     subject: "Sistemi Operativi",
     date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -193,6 +203,7 @@ const lessons = [
     id: "lesson-11",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "16:00",
     subject: "Basi di Dati",
     date: new Date(Date.now() + 16 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -204,6 +215,7 @@ const lessons = [
     id: "lesson-12",
     teacher: "luca.bianchi@studio.unibo.it",
     student: null,
+    time: "17:00",
     subject: "Probabilità e Statistica",
     date: new Date(Date.now() + 17 * 24 * 60 * 60 * 1000),
     duration: 60,
@@ -215,6 +227,7 @@ const lessons = [
     id: "lesson-13",
     teacher: "giulia.rossi@studio.unibo.it",
     student: null,
+    time: "18:00",
     subject: "Machine Learning",
     date: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000),
     duration: 120,
@@ -295,23 +308,48 @@ const reviews = [
     student: "luca.bianchi@studio.unibo.it",
     rating: 4,
     comment: "Ben strutturata la lezione, molto utile."
-  },
-  {
-    id: "review-11",
-    teacher: "giulia.rossi@studio.unibo.it",
-    student: "luca.bianchi@studio.unibo.it",
-    rating: 5,
-    comment: "Molto migliorata rispetto alla volta precedente."
-  },
-  {
-    id: "review-12",
-    teacher: "luca.cantagallo@studio.unibo.it",
-    student: "luca.cantagallo@studio.unibo.it",
-    rating: 5,
-    comment: "Ottima padronanza dell’argomento."
   }
 ];
 
+const reports = [
+  {
+    reporter: "daniele.capannini@studio.unibo.it",
+    reported: "giulia.rossi@studio.unibo.it",
+    reason: "comportamento-scorretto",
+    comment: "Durante una lezione online ha mostrato poca disponibilità nel rispondere alle domande.",
+    status: "pending",
+  },
+  {
+    reporter: "luca.bianchi@studio.unibo.it",
+    reported: "daniele.capannini@studio.unibo.it",
+    reason: "linguaggio-offensivo",
+    comment: "Ha utilizzato un tono di voce e un linguaggio inappropriato durante la collaborazione.",
+    status: "pending",
+  },
+  {
+    reporter: "daniele.capannini@studio.unibo.it",
+    reported: "luca.bianchi@studio.unibo.it",
+    reason: "contenuti-inappropriati",
+    comment: "Ha condiviso materiale non pertinente e non appropriato alla lezione.",
+    status: "pending",
+  },
+  {
+    reporter: "giulia.rossi@studio.unibo.it",
+    reported: "luca.bianchi@studio.unibo.it",
+    reason: "spam-pubblicita",
+    comment: "Ha inviato messaggi pubblicitari non richiesti durante una sessione di tutoraggio.",
+    status: "pending",
+  },
+  {
+    reporter: "giulia.rossi@studio.unibo.it",
+    reported: "daniele.capannini@studio.unibo.it",
+    reason: "altro",
+    comment: "Comportamento ambiguo e disturbante durante le attività del gruppo di studio.",
+    status: "pending",
+  }
+]
+
+
 
 // Esportiamo i dati usando CommonJS
-module.exports = { users, lessons, reviews };
+module.exports = { users, lessons, reviews, admins, reports };

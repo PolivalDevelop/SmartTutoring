@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 // CREATE LESSON
 // ----------------------------------------
 exports.createLessonSocket = async (data) => {
-  const { teacher, subject, date, duration, price } = data;
+  const { teacher, subject, time, date, duration, price } = data;
 
   if (!teacher || !subject || !date || !price) {
     throw new Error("Missing required fields.");
@@ -17,6 +17,7 @@ exports.createLessonSocket = async (data) => {
     teacher,
     student: null,
     subject,
+    time: time || "9:00",
     date,
     duration: duration || 60,
     price,

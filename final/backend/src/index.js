@@ -12,7 +12,7 @@ const Review  = require("./models/reviewModel");
 const Admin  = require("./models/adminModel");
 const Report  = require("./models/reportModel");
 
-const { users, lessons, reviews } = require("./uploadDate");
+const { users, lessons, reviews, admins, reports } = require("./uploadDate");
 
 const app = express();
 app.use(cors());
@@ -38,7 +38,7 @@ mongoose
     await User.insertMany(users);
     await Lesson.insertMany(lessons);
     await Review.insertMany(reviews); 
-    await Admin.insertMany(admin);
+    await Admin.insertMany(admins);
     await Report.insertMany(reports);
 
     // Controllo utenti

@@ -18,6 +18,11 @@ const lessonSchema = new mongoose.Schema(
       default: null,
       trim: true,
     },
+    time: {
+      type: String,       // email dello studente
+      default: "9:00",
+      trim: true,
+    },  
     subject: {
       type: String,
       required: true,
