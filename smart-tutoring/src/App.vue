@@ -129,30 +129,35 @@ function showToast(message) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .app {
   min-height: 100vh;
   gap: var(--gap);
   padding-top: 4.5rem;
+}
 
-  &.no-sidebar {
+.app.no-sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* WITH SIDEBAR - Desktop */
+@media (min-width: 880px) {
+  .app.with-sidebar {
     display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  &.with-sidebar {
-    @media (min-width: 880px) {
-      display: grid;
-      grid-template-columns: var(--sidebar-w) 1fr;
-    }
-
-    @media (max-width: 879px) {
-      display: flex;
-      flex-direction: column;
-    }
+    grid-template-columns: var(--sidebar-w) 1fr;
   }
 }
 
+/* WITH SIDEBAR - Mobile */
+@media (max-width: 879px) {
+  .app.with-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* FAB */
 .fab-main {
   position: fixed;
   bottom: 2rem;
@@ -177,3 +182,4 @@ function showToast(message) {
   box-shadow: var(--shadow-lg);
 }
 </style>
+

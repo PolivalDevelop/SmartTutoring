@@ -1,4 +1,5 @@
 <template>
+  <SidebarFilters @update:filters="handleFiltersUpdate" />
   <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
       <h2 id="mainTitle">Lezioni prenotate</h2>
@@ -37,6 +38,7 @@ import { socket } from "@/plugins/socket";
 //import { useRoute } from 'vue-router'
 import { onMounted } from "vue";
 import { getCurrentUser } from '../composables/auth';
+import SidebarFilters from '@/components/SidebarFilters.vue'
 
 //const route = useRoute()
 

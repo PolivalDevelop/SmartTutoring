@@ -1,4 +1,6 @@
 <template>
+  <SidebarFilters @update:filters="handleFiltersUpdate" />
+
   <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
       <h2 id="mainTitle">{{ pageTitle }}</h2>
@@ -44,6 +46,8 @@ import FooterNote from '@/components/FooterNote.vue';
 import { getCurrentUser } from '@/composables/auth';
 import { inject, onMounted, onUnmounted } from "vue";
 import { isLoggedIn } from '../composables/auth';
+import SidebarFilters from '@/components/SidebarFilters.vue'
+
 
 const socket = inject("socket");
 const route = useRoute();

@@ -170,6 +170,27 @@ function showToast(message) {
 
 }
 
+.app.no-sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* WITH SIDEBAR - Desktop */
+@media (min-width: 880px) {
+  .app.with-sidebar {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+  }
+}
+
+/* WITH SIDEBAR - Mobile */
+@media (max-width: 879px) {
+  .app.with-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .fab-main {
   position: fixed;
   bottom: 2rem;
