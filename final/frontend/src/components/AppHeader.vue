@@ -25,8 +25,8 @@
       <template v-else>
         <div class="guest-menu">
           <RouterLink to="/" class="menu-item">Home</RouterLink>
-          <RouterLink to="/login" class="btn btn-ghost">Accedi</RouterLink>
-          <RouterLink to="/register" class="btn btn-primary">Iscriviti</RouterLink>
+          <RouterLink to="/login" class="menu-item">Accedi</RouterLink>
+          <RouterLink to="/register" class="menu-item">Iscriviti</RouterLink>
         </div>
       </template>
 
@@ -102,15 +102,26 @@ header.app-header {
   gap: 0.5rem;
 }
 
-/* Guest menu */
-.guest-menu .btn {
-  padding: 0.4rem 1rem;
+/* Logged menu */
+.guest-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.guest-menu .menu-item {
+  padding: 0.45rem 0.9rem;
   border-radius: 9999px;
+  background-color: var(--accent-light);
+  color: var(--accent-dark);
   font-weight: 500;
+  text-decoration: none;
   transition: all 0.2s ease;
 }
-.guest-menu .btn:hover {
+.guest-menu .menu-item:hover {
+  background-color: var(--accent);
+  color: white;
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Logged menu */
