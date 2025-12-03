@@ -16,7 +16,7 @@
   /> 
   
   <BanDialog
-    v-if="isAdmin.value && banDialogVisible.visible"
+    v-if="isAdmin && banDialogVisible.visible"
     :email="user?.email"
     @ban="banUser"
     @close="banDialogVisible.visible = false"
@@ -67,7 +67,7 @@
     <!-- ACTIONS -->
     <div class="profile-actions">
       <button class="btn btn-ghost" v-if="getCurrentUser()?.value && !isAdmin.value" @click="openCreateReport()">Segnala Profilo</button>
-      <button class="btn btn-ghost" v-if="isAdmin.value" @click="openBan()">Banna</button>
+      <button class="btn btn-ghost" v-if="isAdmin" @click="openBan()">Banna</button>
       <button class="btn btn-primary" @click="goToLessons()">Visualizza lezioni</button>
       <button class="btn btn-primary" v-if="getCurrentUser().value" @click="openCreateReview()">Crea recensione</button>
     </div>
@@ -149,6 +149,7 @@ function createReport(newReport) {
 }
 
 function openBan() {
+  console.log("Apro il dialog di ban");
   banDialogVisible.value.visible = true
 }
 

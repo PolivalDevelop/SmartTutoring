@@ -42,7 +42,7 @@ onMounted(() => {
   // 3️⃣ Aggiornamenti in tempo reale
   socket.on("report:updated", () => {
     console.log("Ricevuto aggiornamento report");
-    socket.emit("report:getOpen"); // Ricarica lista
+    socket.emit("report:getOpen", getCurrentUser().value.email); // Ricarica lista
   });
 });
 
@@ -52,11 +52,13 @@ onUnmounted(() => {
 });
 
 function deleteReport(report) {
-  socket.emit("report:delete",getCurrentUser().value.email, report._id).then(() => {
-    console.log("Report eliminato con successo:", report);
-    reports.value = reports.value.filter(r => r._id !== report._id);
-  }).catch((error) => {
-    console.error("Errore durante l'eliminazione del report:", error);
+  socket.emit("report:delete",getCurrentUser().value.email, report._id, (response) => {
+    if (!response.success) {
+      console.error("Errore durante l'eliminazione del report:", response.error);
+      return;
+    }else {
+      console.log("Report eliminato con successo:", response.data);
+    }
   });
 }
 

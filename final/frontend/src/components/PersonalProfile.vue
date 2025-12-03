@@ -50,7 +50,6 @@
 
     <!-- ACTIONS -->
     <div class="profile-actions">
-      <button class="btn btn-ghost" @click="$emit('bhoooo')">Visualizza saldo</button>
       <button class="btn btn-primary" @click="openEditProfile()">Modifica profilo</button>
 
     </div>
@@ -97,6 +96,7 @@ function updateUser(updatedUser) {
       return;
     }
     getCurrentUser().value = response.data;
+    props.user = response.data;
     console.log("Profilo aggiornato con successo:", response.data);
   }); 
   editProfileDialog.value.visible = false
