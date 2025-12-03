@@ -11,7 +11,8 @@
           :key="lesson._id"
           :lesson="lesson"
           :mode="isOwner ? 'offered' : 'available'"
-          v-if="!isOwner" @book="handleBook(lesson)"
+          @book="(lesson) => { console.log('book ricevuto', lesson); handleBook(lesson) }"
+          @edit="(lesson) => { console.log('edit ricevuto', lesson); handleEdit(lesson) }"
         />
       </template>
 
@@ -48,7 +49,7 @@ import { isLoggedIn } from '../composables/auth';
 const socket = inject("socket");
 const route = useRoute();
 
-const emit = defineEmits(['book'])
+const emit = defineEmits(['book', 'edit']);
 
 const myOfferedLessons = ref([]);
 
@@ -114,12 +115,15 @@ watch(
 /* Funzione centralizzata */
 function loadLessons() {
   const email = routeEmail.value;
+  console.log("Caricamento lezioni offerte per email:", email);
 
   fetchOfferedLessons(email)
     .then(data => {
       if(isOwner.value){
         console.log("Utente proprietario della pagina, mostro tutte le lezioni offerte.");
+        console.log("Lezioni offerte:", data);
         myOfferedLessons.value = data;
+        console.log("Lezioni offerte mostrate:", myOfferedLessons.value);
       }else{
         console.log("Utente non proprietario, applico filtro per escludere le proprie lezioni.");
         const lessons = data.filter(lesson => lesson.status === 'available');
@@ -133,6 +137,11 @@ function loadLessons() {
 
 function handleBook(lesson) {
   emit('book', lesson)
+}
+
+function handleEdit(lesson) {
+  console.log("Emetto evento di modifica per la lezione:", lesson);
+  emit('edit', lesson)
 }
 </script>
 

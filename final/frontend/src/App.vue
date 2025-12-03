@@ -5,6 +5,7 @@
     
     <RouterView 
       @book="openBooking"
+      @edit="openEdit"
       @publish-request="publishDialog.visible = true"
     />
 
@@ -33,6 +34,12 @@
       @publish="handlePublish"
     />
 
+    <EditLessonDialog
+      v-if="editDialog.visible && editDialog.lesson"
+      :lesson="editDialog.lesson"
+      @close="editDialog.visible = false"
+      @modify="handleModify"
+    />
 
     <ToastNotification v-if="toast.visible" :message="toast.message" @close="toast.visible = false" />
   </div>
@@ -50,6 +57,7 @@ import useDarkMode from './composables/useDarkMode.js'
 import { isLoggedIn, setMatter } from '@/composables/auth.js'
 import { inject, onMounted, onBeforeUnmount } from "vue";
 import { getCurrentUser } from './composables/auth.js'
+import EditLessonDialog from './components/EditLessonDialog.vue'
 
 
 const { toggleTheme } = useDarkMode()
@@ -61,6 +69,7 @@ const showFilters = computed(() => route.meta.showFilters)
 
 const bookingDialog = ref({ visible: false, lesson: null })
 const publishDialog = ref({ visible: false })
+const editDialog = ref({ visible: false, lesson: null })
 
 
 const toast = ref({ visible: false, message: '' })
@@ -78,6 +87,18 @@ function openBooking(lesson) {
   bookingDialog.value = { visible: true, lesson }
 }
 
+function openEdit(lesson) {
+  console.log("Tentativo di modifica lezione:", lesson);
+  if (!isLoggedIn.value) {
+    console.log("Utente non loggato, reindirizzamento alla pagina di login.");
+    showToast('⚠️ Devi effettuare l’accesso per modificare una lezione.')
+    router.push('/login')
+    return
+  }
+  console.log("Apertura dialog di modifica per la lezione");
+
+  editDialog.value = { visible: true, lesson }
+}
 
 const socket = inject("socket");
 
@@ -150,6 +171,22 @@ function handlePublish(lesson) {
     }
     console.log("Lezione pubblicata:", response.data);
     showToast("✅ Lezione pubblicata con successo!");
+
+  });
+}
+
+function handleModify(lesson) {
+  editDialog.value.visible = false;
+  console.log("Modifica lezione:", lesson);
+
+  socket.emit("lesson:modify", lesson, (response) => {
+    if (!response.success) {
+      console.error("Errore durante la modifica:", response.error);
+      showToast("❌ Errore durante la modifica: " + response.error);
+      return;
+    }
+    console.log("Lezione modificata:", response.data);
+    showToast("✅ Lezione modificata con successo!");
 
   });
 }

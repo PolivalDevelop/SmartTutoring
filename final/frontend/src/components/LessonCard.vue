@@ -37,28 +37,6 @@
         </div>
       </div>
       <div
-      v-else-if="mode === 'offered' && !lesson.bookedBy"
-      class="lesson-footer">
-        <div class="lesson-author">Non ancora prenotata</div>
-        <div class="card-actions">
-          <button 
-            class="small btn-ghost" 
-            aria-label="Modifica lezione"
-            @click="$emit('edit', lesson)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 viewBox="0 0 24 24">
-              <path d="M12 20h9"/>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-            </svg>
-          </button>
-        </div>
-        
-
-        
-      </div>
-      <div
       v-else-if="mode === 'offered' && lesson.student"
       class="lesson-footer">
         <div class="lesson-author">Prenotata da {{ lesson.student }}</div>
@@ -77,6 +55,20 @@
             disabled
           >
             Prenotata
+          </button>
+        </div>
+      </div>
+      <div
+      v-else
+      class="lesson-footer">
+        <div class="lesson-author">Non ancora prenotata</div>
+        <div class="card-actions">
+          <button 
+            class="small btn-ghost" 
+            aria-label="Modifica lezione"
+            @click="$emit('edit', lesson)"
+          >
+          Modifica
           </button>
         </div>
       </div>

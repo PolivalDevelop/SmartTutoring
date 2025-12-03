@@ -34,6 +34,19 @@ module.exports = function (socket, io) {
   });
 
 
+  socket.on("lesson:modify", async (lesson, callback) => {
+    try {
+      const modifiedLesson = await controller.modifyLessonSocket(lesson);
+      callback({ success: true, data: modifiedLesson });
+
+      // Notifica aggiornamento
+      io.emit("lessons:updated");
+    } catch (err) {
+      callback({ success: false, error: err.message });
+    }
+  });
+
+
 
   // ------------------------------------
   // DELETE LESSON

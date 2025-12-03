@@ -95,6 +95,20 @@ exports.getLessonsByTeacherSocket = async (email) => {
   return lessons;
 };
 
+exports.modifyLessonSocket = async (lesson) => {
+  if (!lesson._id) throw new Error("Lesson ID mancante");
+
+  const existingLesson = await Lesson.findById(lesson._id);
+
+  if (!existingLesson) {
+    throw new Error("Lezione non trovata");
+  }
+
+  Object.assign(existingLesson, lesson);
+
+  return await existingLesson.save();
+};
+
 exports.bookLessonSocket = async (lessonId, studentEmail) => {
   if (!lessonId) throw new Error("Lesson ID mancante");
   if (!studentEmail) throw new Error("Email dello studente mancante");
