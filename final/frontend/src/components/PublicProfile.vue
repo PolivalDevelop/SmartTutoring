@@ -26,7 +26,7 @@
     <!-- HEADER -->
     <div class="profile-header">
       <img
-        :src="user?.photo || defaultPhoto"
+        :src="photoUrl"
         :alt="`Foto profilo di ${user?.firstName} ${user?.lastName}`"
         class="profile-photo"
       />
@@ -92,6 +92,8 @@ function goToLessons() {
 }
 
 const socket = inject("socket");
+
+const photoUrl = computed(() => "http://localhost:4000"+props.user.photo || defaultPhoto)
 
 const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
 
