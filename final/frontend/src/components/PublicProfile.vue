@@ -54,7 +54,7 @@
       </div>
       <div class="info-item">
         <strong>Data di nascita:</strong>
-        <span>{{ user?.birthDate || '—' }}</span>
+        <span>{{ new Date(user?.birthDate).toLocaleDateString('it-IT') || '—' }}</span>
       </div>
     </div>
 

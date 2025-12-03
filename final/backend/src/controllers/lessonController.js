@@ -131,7 +131,6 @@ exports.getMattersSocket = async () => {
         "Reti di Calcolatori",
         "Programmazione Web",
         "Sistemi Operativi",
-        "Basi di Dati",
         "Machine Learning",
         "Probabilità e Statistica",
       ];

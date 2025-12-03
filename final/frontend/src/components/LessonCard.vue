@@ -5,9 +5,11 @@
         <h3 class="lesson-title">{{ lesson.subject }}</h3>
         <div class="lesson-info">
           <span class="time">{{ lesson.time }}</span>
-          <span class="duration">{{ lesson.duration }}</span>
+          <span class="duration">{{ lesson.duration }} min</span>
           <span class="price">€{{ lesson.price }}</span>
-          <span class="date">{{ lesson.date }}</span>
+          <span class="date">
+            {{ new Date(lesson.date).toLocaleDateString('it-IT') }}
+          </span>
         </div>
       </div>
 
