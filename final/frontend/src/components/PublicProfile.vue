@@ -160,7 +160,8 @@ function banUser(email) {
       console.log("Errore durante il ban dell'utente:", response.error);
       return;
     }
-    console.log("Utente bannato con successo.");
+    console.log(response.message);
+    router.push("/");
   }); 
   banDialogVisible.value.visible = false
 }

@@ -65,9 +65,9 @@ module.exports = function (socket, io, jwtSettings) {
   })
 
   // 6. /:username DELETE → deleteUser
-  socket.on("user:delete", (data, callback) => {
+  socket.on("user:delete", async (data, callback) => {
     try {
-      const result = controller.deleteUser(socket, data)
+      const result = await controller.deleteUser(socket, data)
       callback({ success: true, data: result })
     } catch (err) {
       callback({ success: false, error: err.message })

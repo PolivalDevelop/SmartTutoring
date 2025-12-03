@@ -3,6 +3,10 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel") 
+const Admin = require("../models/adminModel")
+const Lesson = require("../models/lessonModel")
+const Review = require("../models/reviewModel")
+const Report = require("../models/reportModel")
 
 
 // 🔹 Utility: Rimuove password dal risultato
@@ -131,15 +135,20 @@ exports.searchByUsername = async (socket, username) => {
 exports.deleteUser = async (socket, data) => {
   try {
     const { email, targetEmail } = data;
-    const admin = await Admin.findOne({ email });
+    console.log("Admin email:", email, "Target email:", targetEmail);
+    const admin = await Admin.findOne({ emailAdmin: email });
+    console.log("Admin found:", admin);
     if (!admin) {
-      throw new Error("Admin not found");
+      return { message: "Only admins can delete users" };
     }
+    console.log("Admin verified:");
     // Verifica se l'utente da cancellare esiste
     const userToDelete = await User.findOne({ email: targetEmail });
+    console.log("User to delete found:", userToDelete);
     if (!userToDelete) {
-      throw new Error("User not found");
+      return { message: "User not found" };
     }
+    console.log("User verified:");
     await User.deleteOne({ email: targetEmail });
     return { message: "User successfully deleted" };  
 
@@ -147,6 +156,74 @@ exports.deleteUser = async (socket, data) => {
     throw new Error(err.message);
   }
 }
+exports.deleteUser = async (socket, data) => {
+  try {
+    const { email, targetEmail } = data;
+
+    console.log("Admin email:", email, "Target email:", targetEmail);
+
+    // Controllo admin
+    const admin = await Admin.findOne({ emailAdmin: email });
+    console.log("Admin found:", admin);
+
+    if (!admin) {
+      return { message: "Only admins can delete users" };
+    }
+
+    // Cerca l’utente da cancellare
+    const userToDelete = await User.findOne({ email: targetEmail });
+    console.log("User to delete found:", userToDelete);
+
+    if (!userToDelete) {
+      return { message: "User not found" };
+    }
+
+    console.log("User verified");
+
+    // 1️⃣ Cancella tutte le lezioni dove l'utente è presente
+    const lessonsDeleted = await Lesson.deleteMany({
+      $or: [
+        { student: targetEmail },
+        { teacher: targetEmail }
+      ]
+    });
+
+    console.log("Lessons deleted:", lessonsDeleted);
+
+
+    // 3️⃣ Cancella tutte le valutazioni in cui appare l'utente
+    const reviewsDeleted = await Review.deleteMany({
+      $or: [
+        { teacher: targetEmail },   // ha lasciato una valutazione
+        { student: targetEmail }    // ha ricevuto una valutazione
+      ]
+    });
+
+    console.log("Reviews deleted:", reviewsDeleted);
+
+    const reportsDeleted = await Report.deleteMany({
+      $or: [
+        { reporter: targetEmail },   // ha fatto una segnalazione
+        { reported: targetEmail }    // è stato segnalato
+      ]
+    });
+
+    console.log("Reports deleted:", reportsDeleted);
+
+
+    // 4️⃣ Cancella l’utente
+    await User.deleteOne({ email: targetEmail });
+
+    console.log("User deleted");
+
+    return {
+      message: "User, lessons, reviews and ratings successfully deleted"
+    };
+
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 
 
 
