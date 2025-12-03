@@ -30,7 +30,7 @@ const lessonSchema = new mongoose.Schema(
         "Analisi",
         "Ingegneria del software",
         "OOP",
-        "Basi di dati",
+        "Basi di Dati",
         "Big data",
         "Project Management",
         "PPS",

@@ -11,6 +11,7 @@ const Lesson = require("./models/lessonModel");
 const Review  = require("./models/reviewModel");
 const Admin  = require("./models/adminModel");
 const Report  = require("./models/reportModel");
+const path = require("path");
 
 const { users, lessons, reviews, admins, reports } = require("./uploadDate");
 
@@ -23,6 +24,8 @@ async function hashPassword(password) {
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 
 // SERVER HTTP + SOCKET.IO
 const server = http.createServer(app);

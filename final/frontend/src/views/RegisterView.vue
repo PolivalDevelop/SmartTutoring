@@ -112,9 +112,9 @@ import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
 
-import { login } from '@/composables/auth.js'
+import { login, toBase64 } from '@/composables/auth'
 import { inject } from "vue";
-import { getCurrentUser } from '../composables/auth'
+import { getCurrentUser } from '@/composables/auth'
 const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()
@@ -163,7 +163,7 @@ function onFileChange(e) {
   form.photo = e.target.files[0]
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   errors.email = false
   errors.password = false
 
@@ -174,6 +174,9 @@ function handleSubmit() {
   if (!passwordValid) showFieldError('password') && showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
   if (!emailValid || !passwordValid) return
 
+  const photoBase64 = form.photo ? await toBase64(form.photo) : null;
+
+  form.photo = photoBase64;
 
 
   console.log("Submitting registration form:", form)

@@ -83,7 +83,7 @@ if (db.lessons.countDocuments() === 0) {
             id: "lesson-3",
             teacher: "giulia.rossi@studio.unibo.it",
             student: null,
-            subject: "Basi di dati",
+            subject: "Basi di Dati",
             date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // tra 7 giorni
             duration: 60,
             price: 25,
