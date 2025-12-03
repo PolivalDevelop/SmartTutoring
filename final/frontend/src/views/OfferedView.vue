@@ -43,9 +43,12 @@ import LessonCard from '@/components/LessonCard.vue';
 import FooterNote from '@/components/FooterNote.vue';
 import { getCurrentUser } from '@/composables/auth';
 import { inject, onMounted, onUnmounted } from "vue";
+import { isLoggedIn } from '../composables/auth';
 
 const socket = inject("socket");
 const route = useRoute();
+
+const emit = defineEmits(['book'])
 
 const myOfferedLessons = ref([]);
 
