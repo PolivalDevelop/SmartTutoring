@@ -94,6 +94,9 @@ function fetchOfferedLessons(email) {
 -------------------------------------------- */
 onMounted(() => {
   loadLessons();
+  socket.on("lessons:updated", () => {
+    loadLessons();
+  });
 });
 
 /* -------------------------------------------
