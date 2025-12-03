@@ -10,7 +10,7 @@
     <!-- HEADER -->
     <div class="profile-header">
       <img
-        :src="user.photo || defaultPhoto"
+        :src="photoUrl"
         :alt="`Foto profilo di ${user.firstName} ${user.lastName}`"
         class="profile-photo"
       />
@@ -73,6 +73,7 @@ const props = defineProps({
 
 const defaultPhoto = defaultPhotoPath
 const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
+const photoUrl = computed(() => "http://localhost:4000"+props.user.photo || defaultPhoto)
 
 const fullDegreeInfo = computed(() => {
   const degree = props.user.degreeType
