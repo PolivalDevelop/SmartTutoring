@@ -37,8 +37,8 @@
 
         <!-- Rating sempre visibile -->
         <div class="profile-rating" aria-label="Valutazione media utente">
-          <span class="stars">{{ '★'.repeat(user?.avgRating || 0) + '☆'.repeat(5 - (user?.avgRating || 0)) }}</span>
-          <span class="rating-value">({{ user?.avgRating || 0 }} / 5)</span>
+          <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
+          <span class="rating-value">({{ (user?.avgRating || 0).toFixed(2) }} / 5)</span>
           <span class="rating-count">• {{  user?.numReviews || 0 }} valutazioni</span>
         </div>
       </div>
@@ -92,6 +92,8 @@ function goToLessons() {
 }
 
 const socket = inject("socket");
+
+const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
 
 const createReviewDialog = ref({ visible: false })
 const createReportDialog = ref({ visible: false })

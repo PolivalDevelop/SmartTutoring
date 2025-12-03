@@ -72,7 +72,7 @@ const props = defineProps({
 })
 
 const defaultPhoto = defaultPhotoPath
-const roundedRating = computed(() => Math.round(0))
+const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
 
 const fullDegreeInfo = computed(() => {
   const degree = props.user.degreeType
