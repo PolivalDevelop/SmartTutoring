@@ -11,54 +11,77 @@
     </div>
 
     <nav class="top-actions" role="navigation" aria-label="Azioni principali">
-      <!-- Guest/Logged menu -->
-      <template v-if="isLoggedIn">
-        <div class="logged-menu">
-          <RouterLink to="/" class="menu-item">Home</RouterLink>
-          <RouterLink to="/reports" class="menu-item" v-if="isAdmin">Report</RouterLink>
-          <RouterLink to="/booked" class="menu-item">Lezioni Prenotate</RouterLink>
-          <RouterLink :to="`/offered/${getCurrentUser().value?.email}`" class="menu-item">Lezioni Offerte</RouterLink>
-          <RouterLink :to="`/profile/${getCurrentUser().value?.email}`" class="menu-item">Profilo</RouterLink>
-          <button class="menu-item logout-btn" @click="handleLogout">Logout</button>
-        </div>
-      </template>
-      <template v-else>
-        <div class="guest-menu">
-          <RouterLink to="/" class="menu-item">Home</RouterLink>
-          <RouterLink to="/login" class="menu-item">Accedi</RouterLink>
-          <RouterLink to="/register" class="menu-item">Iscriviti</RouterLink>
-        </div>
-      </template>
+        
+        <button class="hamburger-btn" @click="toggleMenu" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
 
-      <!-- Toggle tema sempre visibile in fondo -->
-      <button class="theme-toggle" :class="{ dark: isDark }" @click="toggleTheme" aria-label="Cambia tema">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5" class="sun" />
-          <g class="rays">
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </g>
-        </svg>
-      </button>
+        <div class="nav-menu" :class="{ 'open': isMenuOpen }">
+          
+          <template v-if="isLoggedIn">
+            <div class="logged-menu">
+              <RouterLink to="/" class="menu-item" @click="closeMenu">Home</RouterLink>
+              <RouterLink to="/reports" class="menu-item" v-if="isAdmin" @click="closeMenu">Report</RouterLink>
+              <RouterLink to="/booked" class="menu-item" @click="closeMenu">Lezioni Prenotate</RouterLink>
+              <RouterLink :to="`/offered/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Lezioni Offerte</RouterLink>
+              <RouterLink :to="`/profile/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Profilo</RouterLink>
+              <button class="menu-item logout-btn" @click="handleLogout(); closeMenu()">Logout</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="guest-menu">
+              <RouterLink to="/" class="menu-item" @click="closeMenu">Home</RouterLink>
+              <RouterLink to="/login" class="menu-item" @click="closeMenu">Accedi</RouterLink>
+              <RouterLink to="/register" class="menu-item" @click="closeMenu">Iscriviti</RouterLink>
+            </div>
+          </template>
+
+        </div>
+
+        <button class="theme-toggle" :class="{ dark: isDark }" @click="toggleTheme" aria-label="Cambia tema">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5" class="sun" />
+              <g class="rays">
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </g>
+            </svg>
+        </button>
     </nav>
   </header>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { isLoggedIn, logout } from '@/composables/auth.js'
 import useDarkMode from '@/composables/useDarkMode.js'
 import { getCurrentUser, isAdmin } from '@/composables/auth.js'
 
 const { toggleTheme, isDark } = useDarkMode()
 
+const isMenuOpen = ref(false)
+
 function handleLogout() {
   logout()
+}
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+function closeMenu() {
+  isMenuOpen.value = false
 }
 </script>
 
@@ -176,5 +199,67 @@ header.app-header {
   transform: rotate(180deg);
   stroke: #f0f0f0;
   fill: #f0f0f0;
+}
+
+.hamburger-btn {
+  display: none; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent-dark);
+}
+
+@media (max-width: 768px) {
+
+  .lesson-sub {
+    display: none;
+  }
+
+  .brand h1 {
+    font-size: 1rem; 
+  }
+
+  .hamburger-btn {
+    display: block;
+    margin-right: 10px;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background: var(--card); 
+    box-shadow: var(--shadow-md);
+    padding: 1rem;
+    
+    display: flex;
+    flex-direction: column; 
+    
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none; 
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .nav-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .logged-menu, .guest-menu {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .menu-item {
+    text-align: center;
+    width: 100%;
+    display: block;
+  }
 }
 </style>
