@@ -5,7 +5,7 @@
     <div class="publish-panel" role="document">
       <button class="dialog-close" aria-label="Chiudi finestra" @click="$emit('close')">&times;</button>
       <h2 id="publishTitle">
-        {{ lessonToEdit ? 'Modifica lezione' : 'Pubblica nuova lezione' }}
+        {{ lesson ? 'Modifica lezione' : 'Pubblica nuova lezione' }}
       </h2>
 
       <form id="publishForm" autocomplete="off" @submit.prevent="submitLesson">
@@ -68,7 +68,7 @@
             Annulla
           </button>
           <button type="submit" class="btn btn-primary">
-            {{ lessonToEdit ? 'Salva modifiche' : 'Pubblica' }}
+            {{ lesson ? 'Salva modifiche' : 'Pubblica' }}
           </button>
         </div>
       </form>
@@ -80,12 +80,9 @@
 import { reactive, computed, watch, toRefs } from 'vue'
 import { getCurrentUser, matters } from '../composables/auth'
 
-const props = defineProps({
-  lessonToEdit: {
-    type: Object,
-    default: null
-  }
-})
+const props = defineProps({ lesson: Object })
+
+console.log(props.lesson)
 
 const emit = defineEmits(['close', 'publish'])
 
@@ -120,14 +117,14 @@ const lesson = reactive({
 })
 
 // Se stiamo modificando, popola i dati
-if (props.lessonToEdit) {
+if (props.lesson) {
   Object.assign(lesson, {
-    teacher: props.lessonToEdit.teacher,
-    course: props.lessonToEdit.subject,
-    date: props.lessonToEdit.date,
-    time: props.lessonToEdit.time,
-    duration: props.lessonToEdit.duration,
-    price: props.lessonToEdit.price
+    teacher: props.lesson.teacher,
+    course: props.lesson.subject,
+    date: props.lesson.date,
+    time: props.lesson.time,
+    duration: props.lesson.duration,
+    price: props.lesson.price
   })
 }
 
@@ -135,7 +132,7 @@ function submitLesson() {
   if (!lesson.course || !lesson.date || !lesson.time || !lesson.duration || !lesson.price) return
 
   const payload = {
-    id: props.lessonToEdit?.id || undefined,
+    _id: props.lesson?._id || undefined,
     teacher: lesson.teacher,
     subject: lesson.course,
     time: lesson.time,

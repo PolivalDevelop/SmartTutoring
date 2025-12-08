@@ -97,7 +97,7 @@ function openEdit(lesson) {
   }
   console.log("Apertura dialog di modifica per la lezione");
 
-  editDialog.value = { visible: true, lesson }
+  editDialog.value = { visible: true, lesson: lesson }
 }
 
 const socket = inject("socket");
