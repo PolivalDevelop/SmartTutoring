@@ -93,7 +93,12 @@ function goToLessons() {
 
 const socket = inject("socket");
 
-const photoUrl = computed(() => "http://localhost:4000"+props.user.photo || defaultPhoto)
+const photoUrl = computed(() =>
+  props.user.photo && props.user.photo !== "null"
+    ? "http://localhost:4000" + props.user.photo
+    : defaultPhoto
+);
+
 
 const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
 

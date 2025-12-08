@@ -73,7 +73,12 @@ const props = defineProps({
 
 const defaultPhoto = defaultPhotoPath
 const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
-const photoUrl = computed(() => "http://localhost:4000"+props.user.photo || defaultPhoto)
+const photoUrl = computed(() =>
+  props.user.photo && props.user.photo !== "null"
+    ? "http://localhost:4000" + props.user.photo
+    : defaultPhoto
+);
+
 
 const fullDegreeInfo = computed(() => {
   const degree = props.user.degreeType
