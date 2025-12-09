@@ -11,7 +11,7 @@
       <form id="publishForm" autocomplete="off" @submit.prevent="submitLesson">
 
         <label for="lessonCourse">Corso</label>
-        <select id="lessonCourse" v-model="lesson.course" required>
+        <select id="lessonCourse" v-model="lessonUpdate.course" required>
           <option value="">Seleziona un corso...</option>
           <option 
             v-for="matter in matters" 
@@ -26,20 +26,20 @@
         <input
           type="date"
           id="lessonDate"
-          v-model="lesson.date"
+          v-model="lessonUpdate.date"
           :min="today"
           :max="maxDate"
           required
         />
 
         <label for="lessontime">Ora inizio</label>
-        <select id="lessontime" v-model="lesson.time" required>
+        <select id="lessontime" v-model="lessonUpdate.time" required>
           <option value="">Seleziona...</option>
           <option v-for="time in timeOptions" :key="time" :value="time">{{ time }}</option>
         </select>
 
         <label for="lessonDuration">Durata</label>
-        <select id="lessonDuration" v-model="lesson.duration" required>
+        <select id="lessonDuration" v-model="lessonUpdate.duration" required>
           <option value=30>30 minuti</option>
           <option value=45>45 minuti</option>
           <option value=60>60 minuti</option>
@@ -57,7 +57,7 @@
         <input
           type="number"
           id="lessonPrice"
-          v-model.number="lesson.price"
+          v-model.number="lessonUpdate.price"
           min="1"
           step="1"
           required
@@ -107,7 +107,7 @@ const timeOptions = computed(() => {
 })
 
 // Reactive state della lezione
-const lesson = reactive({
+const lessonUpdate = reactive({
   teacher: getCurrentUser().value?.email,
   course: '',
   date: '',
@@ -118,10 +118,10 @@ const lesson = reactive({
 
 // Se stiamo modificando, popola i dati
 if (props.lesson) {
-  Object.assign(lesson, {
+  Object.assign(lessonUpdate, {
     teacher: props.lesson.teacher,
     course: props.lesson.subject,
-    date: props.lesson.date,
+    date: props.lesson.date?.split('T')[0] ?? '',
     time: props.lesson.time,
     duration: props.lesson.duration,
     price: props.lesson.price
@@ -129,16 +129,16 @@ if (props.lesson) {
 }
 
 function submitLesson() {
-  if (!lesson.course || !lesson.date || !lesson.time || !lesson.duration || !lesson.price) return
+  if (!lessonUpdate.course || !lessonUpdate.date || !lessonUpdate.time || !lessonUpdate.duration || !lessonUpdate.price) return
 
   const payload = {
     _id: props.lesson?._id || undefined,
-    teacher: lesson.teacher,
-    subject: lesson.course,
-    time: lesson.time,
-    date: lesson.date,
-    duration: lesson.duration,
-    price: lesson.price
+    teacher: lessonUpdate.teacher,
+    subject: lessonUpdate.course,
+    time: lessonUpdate.time,
+    date: lessonUpdate.date,
+    duration: lessonUpdate.duration,
+    price: lessonUpdate.price
   }
 
   emit('modify', payload)

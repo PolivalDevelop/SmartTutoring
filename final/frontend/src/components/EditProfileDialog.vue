@@ -83,7 +83,7 @@ const form = reactive({
   firstname: props.user.firstName || '',
   lastname: props.user.lastName || '',
   degreeType: props.user.degreeType || '',
-  birthDate: props.user.birthDate || '',
+  birthDate: props.user.birthDate?.split('T')[0] || '',
   averageGrade: props.user.averageGrade || null,
   bio: props.user.bio || '',
   photo: null
