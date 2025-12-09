@@ -16,7 +16,7 @@
         </datalist>
       </div>
 
-      <div class="control-group">
+      <div class="control-group" v-if ="props.mode == 'null'">
         <label for="author">Insegnante</label>
         <input type="text" id="author" placeholder="email docente" v-model="filters.author" />
       </div>
@@ -56,6 +56,13 @@
 <script setup>
 import { reactive, watch } from 'vue'
 import { matters } from '../composables/auth'
+
+const props = defineProps({
+  mode: {
+    type: String,
+    default: "null"   // mostra tutto di default
+  }
+})
 
 const emit = defineEmits(['update:filters'])
 
