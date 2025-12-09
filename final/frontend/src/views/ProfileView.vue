@@ -1,27 +1,37 @@
 <template>
   <main class="profile-container" role="main" aria-labelledby="profileTitle">
 
-    <PersonalProfile
-      v-if="isMe && profileUser"
-      :user="profileUser"
-    />
-    <PublicProfile
-      v-else-if="profileUser"
-      :user="profileUser"
-      :isLogged="isLogged.value"
-    />
-    <p v-else class="loading">⏳ Caricamento profilo...</p>
-
-    <section class="results" id="reviewsList">
-      <ReviewCard
-        v-for="review in reviews"
-        :key="review?._id"
-        :review="review"
-        v-if="reviews?.length > 0"
+    <div class="profile-wrapper">
+      <!-- Profilo utente -->
+      <PersonalProfile
+        v-if="isMe && profileUser"
+        :user="profileUser"
       />
-    </section>
+      <PublicProfile
+        v-else-if="profileUser"
+        :user="profileUser"
+        :isLogged="isLogged.value"
+      />
+      <p v-else class="loading">⏳ Caricamento profilo...</p>
+
+      <!-- RECENSIONI sotto al profilo -->
+      <section class="reviews-section" id="reviewsList">
+        <h3 class="reviews-title" v-if="reviews?.length > 0">Recensioni</h3>
+
+        <ReviewCard
+          v-for="review in reviews"
+          :key="review?._id"
+          :review="review"
+          v-if="reviews?.length > 0"
+        />
+
+        <p v-else class="no-reviews">Nessuna recensione presente.</p>
+      </section>
+    </div>
+
   </main>
 </template>
+
 
 <script setup>
 import { ref } from 'vue'
@@ -142,16 +152,71 @@ watch(
 </script>
 
 <style scoped>
-.no-user {
-  text-align: center;
-  color: var(--muted);
-  margin-top: 2rem;
-}
+
 .profile-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 1rem;
+  padding: 1.2rem 0.8rem;
+}
+
+.profile-wrapper {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* TESTO DI CARICAMENTO */
+.loading {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* SEZIONE RECENSIONI */
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.reviews-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.no-reviews {
+  color: var(--muted);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+@media (min-width: 700px) {
+  .profile-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .reviews-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .profile-wrapper {
+    gap: 2.5rem;
+  }
+
+  .reviews-section {
+    padding: 2rem;
+  }
 }
 
 </style>

@@ -177,102 +177,82 @@ function banUser(email) {
 </script>
 
 <style scoped>
+
 .profile-card {
   background: var(--card);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  padding: 2rem;
-  max-width: 850px;
+  padding: 1.4rem;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transition: all 0.3s ease;
+  gap: 1.2rem;
 }
 
-.profile-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-}
-
-/* HEADER */
+/* HEADER mobile */
 .profile-header {
   display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .profile-photo {
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: var(--shadow-md);
-  border: 3px solid var(--accent-light);
+  border: 2px solid var(--accent-light);
 }
 
-.profile-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-/* Allinea tutto a sinistra */
+/* Testi centrati su mobile */
 .profile-name,
 .profile-role,
 .profile-rating {
-  text-align: left;
+  text-align: center;
 }
 
 .profile-name {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: var(--text);
-  line-height: 1.1;
 }
 
 .profile-role {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--muted);
 }
 
-/* RATING */
 .profile-rating {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
-  margin-top: 0.4rem;
 }
 
 .stars {
   color: #facc15;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .rating-value {
   font-weight: 600;
-  color: var(--text);
-  font-size: 0.95rem;
 }
 
 .rating-count {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 /* INFO */
 .profile-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .info-item strong {
   color: var(--text);
-  margin-bottom: 0.3rem;
   display: block;
+  margin-bottom: 0.2rem;
 }
 
 .info-item span {
@@ -284,56 +264,81 @@ function banUser(email) {
 .profile-bio {
   background: var(--surface);
   border-radius: var(--radius);
-  padding: 1rem 1.2rem;
+  padding: 1rem;
   border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
 }
 
 .profile-bio h3 {
-  margin: 0 0 0.4rem 0;
-  font-size: 1.1rem;
-  color: var(--text);
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
 }
 
 .profile-bio p {
   margin: 0;
-  color: var(--muted);
   line-height: 1.5;
-  white-space: pre-wrap;
 }
 
-/* ACTIONS */
+/* ACTIONS (stacked on mobile) */
 .profile-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.8rem;
   margin-top: 1rem;
 }
 
-/* RESPONSIVE */
-@media (max-width: 700px) {
+.profile-actions .btn {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
   .profile-card {
-    padding: 1.5rem 1rem;
-  }
-
-  .profile-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .profile-photo {
-    width: 100px;
-    height: 100px;
-  }
-
-  .profile-name {
-    font-size: 1.4rem;
+    padding: 1.8rem;
+    border-radius: var(--radius-xl);
   }
 
   .profile-actions {
-    justify-content: center;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .profile-actions .btn {
+    width: auto;
+  }
+}
+
+
+@media (min-width: 900px) {
+  .profile-header {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .profile-photo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-main {
+    flex: 1;
+  }
+
+  .profile-name,
+  .profile-role,
+  .profile-rating {
+    text-align: left;
+  }
+
+  .profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem 2rem;
+  }
+
+  .profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    transition: 0.25s ease;
   }
 }
 </style>
