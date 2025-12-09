@@ -6,9 +6,9 @@
     </div>
 
     <section class="results" id="lessonsList">
-      <template v-if="myBookedLessons.length > 0">
+      <template v-if="filteredLessons.length > 0">
         <LessonCard
-          v-for="lesson in myBookedLessons"
+          v-for="lesson in filteredLessons"
           :key="lesson._id"
           :lesson="lesson"
           mode="booked"
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
@@ -63,6 +63,55 @@ function bookedLessons(email) {
 
 
 const myBookedLessons = ref([]); 
+
+const filters = ref({
+  course: '',
+  author: '',
+  date: null,
+  minPrice: '',
+  maxPrice: ''
+})
+
+function handleFiltersUpdate(newFilters) {
+  filters.value = newFilters  
+  console.log("Filtri aggiornati in BookedView:", filters.value);
+}
+
+const filteredLessons = computed(() => {
+  return myBookedLessons.value.filter(lesson => {
+
+    // Materia
+    if (filters.value.course &&
+        !lesson.subject.toLowerCase().includes(filters.value.course.toLowerCase())) {
+      return false
+    }
+
+    // Data
+    if (filters.value.date) {
+      const lessonDate = lesson.date.slice(0, 10)      // "2025-11-26"
+      const filterDate = filters.value.date.slice(0, 10)
+
+      if (lessonDate !== filterDate) {
+        return false
+      }
+    }
+
+    // Prezzo minimo
+    if (filters.value.minPrice !== '' &&
+        lesson.price < filters.value.minPrice) {
+      return false
+    }
+
+    // Prezzo massimo
+    if (filters.value.maxPrice !== '' &&
+        lesson.price > filters.value.maxPrice) {
+      return false
+    }
+
+    return true
+  })
+})
+
 
 onMounted(() => {
   console.log("Recupero lezioni prenotate per l'utente:", getCurrentUser().value.email);

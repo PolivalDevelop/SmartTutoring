@@ -236,7 +236,43 @@ const lessons = [
     price: 45,
     status: "available",
     notes: "Regressione lineare e overfitting."
-  }
+  },
+  {
+    id: "lesson-14",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "daniel.capannini@studio.unibo.it",
+    time: "18:00",
+    subject: "PPS",
+    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    duration: 120,
+    price: 45,
+    status: "booked",
+    notes: "Regressione lineare e overfitting."
+  },
+  {
+    id: "lesson-15",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "luca.cantagallo@studio.unibo.it",
+    time: "14:00",
+    subject: "Machine Learning",
+    date: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
+    duration: 120,
+    price: 20,
+    status: "booked",
+    notes: "Regressione lineare e overfitting."
+  },
+  {
+    id: "lesson-16",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "daniel.capannini@studio.unibo.it",
+    time: "12:00",
+    subject: "Basi di Dati",
+    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    duration: 90,
+    price: 15,
+    status: "booked",
+    notes: "Regressione lineare e overfitting."
+  },
 ];
 
 

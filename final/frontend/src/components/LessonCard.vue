@@ -41,7 +41,7 @@
       class="lesson-footer">
         <div class="lesson-author">Prenotata da {{ lesson.student }}</div>
         <div class="card-actions">
-          <RouterLink :to="`/profile/${lesson.teacher}`" class="small btn-ghost" aria-label="Vedi profilo">
+          <RouterLink :to="`/profile/${lesson.student}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  viewBox="0 0 24 24">
