@@ -7,12 +7,12 @@
         <h2 id="registerTitle">Crea il tuo account</h2>
         <form @submit.prevent="handleSubmit" novalidate>
           <div class="form-group">
-            <label for="firstName">firstName *</label>
+            <label for="firstName">Nome *</label>
             <input v-model.trim="form.firstName" type="text" id="firstName" required />
           </div>
 
           <div class="form-group">
-            <label for="lastName">lastName *</label>
+            <label for="lastName">Cognome *</label>
             <input v-model.trim="form.lastName" type="text" id="lastName" required />
           </div>
 
