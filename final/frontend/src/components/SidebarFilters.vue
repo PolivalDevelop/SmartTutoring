@@ -29,7 +29,7 @@
         
         <div class="control-group">
           <label for="course">Materia</label>
-          <input list="courses" id="course" placeholder="Seleziona o digita" v-model="filters.course" />
+          <input list="courses" id="course" placeholder="Seleziona il corso di interesse" v-model="filters.course" />
           <datalist id="courses">
             <option v-for="matter in matters" :key="matter" :value="matter">{{ matter }}</option>
           </datalist>
@@ -37,7 +37,7 @@
 
         <div class="control-group" v-if="props.mode == 'null'">
           <label for="author">Insegnante</label>
-          <input type="text" id="author" placeholder="email docente" v-model="filters.author" />
+          <input type="text" id="author" placeholder="Email docente" v-model="filters.author" />
         </div>
 
         <div class="control-group">
