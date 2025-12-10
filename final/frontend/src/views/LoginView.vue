@@ -147,7 +147,7 @@ function handleSubmit() {
         }
       })
       
-      showToast("✅ Registrazione completata con successo!")
+      showToast("✅ Accesso completato con successo!")
 
       setTimeout(() => router.push("/"), 500)
     })
