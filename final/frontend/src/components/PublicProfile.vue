@@ -5,7 +5,8 @@
     :studentEmail="getCurrentUser().value?.email"
     @createReview="createReview"
     @close="createReviewDialog.visible = false"
-  />  
+    @show-toast="$emit('show-toast', $event)" 
+  />
 
   <CreateReportDialog
     v-if="createReportDialog.visible"
@@ -13,6 +14,7 @@
     :reporterEmail="getCurrentUser().value?.email"
     @createReport="createReport"
     @close="createReportDialog.visible = false"
+    @show-toast="$emit('show-toast', $event)"
   /> 
   
   <BanDialog
@@ -20,6 +22,7 @@
     :email="user?.email"
     @ban="banUser"
     @close="banDialogVisible.visible = false"
+    @show-toast="$emit('show-toast', $event)"
   />
 
   <section class="profile-card" aria-describedby="profileInfo">
@@ -75,23 +78,29 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, inject } from 'vue'
+import { useRouter } from 'vue-router';
 import defaultPhotoPath from '@/assets/images/user.png'
 import CreateReviewDialog from '@/components/CreateReviewDialog.vue'
 import CreateReportDialog from '@/components/CreateReportDialog.vue'
-import { getCurrentUser, isAdmin } from '@/composables/auth.js'
-import { ref } from 'vue'
-import { inject } from "vue";
 import BanDialog from './BanDialog.vue'
-import { useRouter } from 'vue-router';
+import { getCurrentUser, isAdmin } from '@/composables/auth.js'
+
+const emit = defineEmits(['show-toast']);
+
+const props = defineProps({
+  user: { type: Object, required: true },
+  isLogged: { type: Boolean, required: true }
+})
 
 const router = useRouter();
-
-function goToLessons() {
-  router.push(`/offered/${props.user?.email}`);
-}
-
 const socket = inject("socket");
+
+const createReviewDialog = ref({ visible: false })
+const createReportDialog = ref({ visible: false })
+const banDialogVisible = ref({ visible: false })
+
+const defaultPhoto = defaultPhotoPath
 
 const photoUrl = computed(() =>
   props.user.photo && props.user.photo !== "null"
@@ -99,19 +108,7 @@ const photoUrl = computed(() =>
     : defaultPhoto
 );
 
-
 const roundedRating = computed(() => Math.round(props.user?.avgRating || 0))
-
-const createReviewDialog = ref({ visible: false })
-const createReportDialog = ref({ visible: false })
-const banDialogVisible = ref({ visible: false })
-
-const props = defineProps({
-  user: { type: Object, required: true },
-  isLogged: { type: Boolean, required: true }
-})
-
-const defaultPhoto = defaultPhotoPath
 
 const fullDegreeInfo = computed(() => {
   const degree = props.user?.degreeType
@@ -123,6 +120,10 @@ const fullDegreeInfo = computed(() => {
   return `${formatted} — Ingegneria e Scienze Informatiche`
 })
 
+function goToLessons() {
+  router.push(`/offered/${props.user?.email}`);
+}
+
 function openCreateReview() {
   createReviewDialog.value.visible = true
 }
@@ -132,15 +133,24 @@ function openCreateReport() {
   createReportDialog.value.visible = true
 }
 
+function openBan() {
+  console.log("Apro il dialog di ban");
+  banDialogVisible.value.visible = true
+}
+
+// --- LOGICA CON I TOAST ---
 
 function createReview(newReview) {
   console.log("la nuova recensione è:", newReview);
   socket.emit("review:create", newReview, (response) => {
     if (!response.success) {
       console.log("Errore durante la creazione della recensione:", response.error);
+      // Ora 'emit' è definito e funzionerà
+      emit('show-toast', "❌ Errore durante la pubblicazione della recensione.");
       return;
     }
     console.log("Recensione creata con successo.");
+    emit('show-toast', "✅ Recensione pubblicata con successo!");
   }); 
   createReviewDialog.value.visible = false
 }
@@ -150,16 +160,13 @@ function createReport(newReport) {
   socket.emit("report:create", newReport, (response) => {
     if (!response.success) {
       console.log("Errore durante la creazione del report:", response.error);
+      emit('show-toast', "❌ Errore durante la segnalazione.");
       return;
     }
     console.log("Report creato con successo.");
+    emit('show-toast', "✅ Segnalazione inviata agli amministratori.");
   }); 
   createReportDialog.value.visible = false
-}
-
-function openBan() {
-  console.log("Apro il dialog di ban");
-  banDialogVisible.value.visible = true
 }
 
 function banUser(email) {
@@ -167,9 +174,11 @@ function banUser(email) {
   socket.emit("user:delete", { email: getCurrentUser().value.email, targetEmail: email }, (response) => {
     if (!response.success) {
       console.log("Errore durante il ban dell'utente:", response.error);
+      emit('show-toast', "❌ Errore durante il ban.");
       return;
     }
     console.log(response.message);
+    emit('show-toast', "⛔ Utente bannato correttamente.");
     router.push("/");
   }); 
   banDialogVisible.value.visible = false

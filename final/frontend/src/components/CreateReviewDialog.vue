@@ -8,7 +8,6 @@
 
       <form @submit.prevent="saveReview" autocomplete="off">
         
-        <!-- ⭐ RATING -->
         <div class="form-group rating-group" style="grid-column: span 2;">
           <label>Valutazione</label>
           <div class="stars">
@@ -24,7 +23,6 @@
           </div>
         </div>
 
-        <!-- COMMENTO -->
         <div class="form-group" style="grid-column: span 2;">
           <label for="comment">Commento</label>
           <textarea 
@@ -36,7 +34,6 @@
           ></textarea>
         </div>
 
-        <!-- Bottoni -->
         <div class="dialog-actions">
           <button type="button" class="btn btn-ghost" @click="$emit('close')">Annulla</button>
           <button type="submit" class="btn btn-primary">Invia recensione</button>
@@ -50,7 +47,9 @@
 <script setup>
 import { reactive } from 'vue'
 
+// 1️⃣ Aggiungiamo 'show-toast' alla lista degli eventi emessi
 const emit = defineEmits(["close", "createReview"])
+
 const props = defineProps({
   teacherEmail: String,   // email del docente
   studentEmail: String    // email dello studente
@@ -62,8 +61,10 @@ const form = reactive({
 })
 
 function saveReview() {
+  // Validazione
   if (form.rating < 1 || form.rating > 5) {
-    alert("Per favore seleziona una valutazione da 1 a 5 stelle.")
+    // 2️⃣ Sostituito alert() con il toast di avviso
+    emit('show-toast', "⚠️ Per favore seleziona una valutazione da 1 a 5 stelle.")
     return
   }
 
@@ -74,7 +75,12 @@ function saveReview() {
     comment: form.comment
   }
 
+  // 3️⃣ Emetto l'evento di creazione
   emit("createReview", review)
+
+
+
+  // Chiudo il dialog
   emit("close")
 }
 </script>
