@@ -8,6 +8,14 @@ const Lesson = require("../models/lessonModel")
 const Review = require("../models/reviewModel")
 const Report = require("../models/reportModel")
 
+const path = require("path");
+const fs = require("fs");
+
+const UPLOAD_DIR = path.join(__dirname, "../../uploads");
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR);
+}
+
 
 // 🔹 Utility: Rimuove password dal risultato
 const sanitizeUser = (user) => {
@@ -132,30 +140,6 @@ exports.searchByUsername = async (socket, username) => {
 // ======================================================
 //  DELETE USER (DELETE /:username)
 // ======================================================
-exports.deleteUser = async (socket, data) => {
-  try {
-    const { email, targetEmail } = data;
-    console.log("Admin email:", email, "Target email:", targetEmail);
-    const admin = await Admin.findOne({ emailAdmin: email });
-    console.log("Admin found:", admin);
-    if (!admin) {
-      return { message: "Only admins can delete users" };
-    }
-    console.log("Admin verified:");
-    // Verifica se l'utente da cancellare esiste
-    const userToDelete = await User.findOne({ email: targetEmail });
-    console.log("User to delete found:", userToDelete);
-    if (!userToDelete) {
-      return { message: "User not found" };
-    }
-    console.log("User verified:");
-    await User.deleteOne({ email: targetEmail });
-    return { message: "User successfully deleted" };  
-
-  }catch (err) {
-    throw new Error(err.message);
-  }
-}
 exports.deleteUser = async (socket, data) => {
   try {
     const { email, targetEmail } = data;
@@ -296,6 +280,23 @@ exports.updateUserProfile = async (socket, email, updatedData, callback) => {
         success: false,
         error: "User not found",
       });
+    }
+
+    if (updatedData.photo && updatedData.photo.startsWith("data:image/")) {
+      console.log("Processing base64 photo data");
+      const matches = updatedData.photo.match(/^data:image\/(\w+);base64,(.+)$/);
+      if (matches) {
+        console.log("Base64 photo data matched");
+        const ext = matches[1]; // png, jpeg, ecc.
+        const base64Data = matches[2];
+        const filename = `${Date.now()}.${ext}`;
+        const filePath = path.join(UPLOAD_DIR, filename);
+      
+        fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
+      
+        // Aggiorna il path della foto nel formato che il client può richiedere
+          updatedData.photo = `/uploads/${filename}`;
+      }
     }
 
     Object.keys(updatedData).forEach((key) => {

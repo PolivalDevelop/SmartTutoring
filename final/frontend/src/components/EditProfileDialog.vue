@@ -69,6 +69,7 @@
 <script setup>
 import { reactive, ref, watch } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
+import { toBase64 } from '@/composables/auth'
 
 const emit = defineEmits(['close', 'save'])
 const props = defineProps({
@@ -83,7 +84,7 @@ const form = reactive({
   firstname: props.user.firstName || '',
   lastname: props.user.lastName || '',
   degreeType: props.user.degreeType || '',
-  birthDate: props.user.birthDate?.split('T')[0] || '',
+  birthDate: props.user.birthDate || '',
   averageGrade: props.user.averageGrade || null,
   bio: props.user.bio || '',
   photo: null
@@ -96,16 +97,17 @@ function onFileChange(e) {
   photoPreview.value = URL.createObjectURL(file)
 }
 
-function saveChanges() {
+async function saveChanges() {
+  const photoBase64 = form.photo ? await toBase64(form.photo) : null;
   const updatedUser = {
     ...props.user,
     firstName: form.firstname,
     lastName: form.lastname,
-    degreeType: form.tipo,
-    birthDate: form.nascita,
-    averageGrade: form.media,
+    degreeType: form.degreeType,
+    birthDate: form.birthDate,
+    averageGrade: form.averageGrade,
     bio: form.bio,
-    photo: form.photo ? URL.createObjectURL(form.photo) : props.user.photo
+    photo: photoBase64 || props.user.photo
   }
   emit('save', updatedUser)
   emit('close')
