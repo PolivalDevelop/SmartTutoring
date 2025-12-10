@@ -25,6 +25,7 @@
 import { ref, onMounted, onUnmounted, inject } from 'vue'
 import ReportCard from '@/components/ReportCard.vue'
 import { getCurrentUser } from '../composables/auth';
+const emit = defineEmits(['show-toast']);
 const socket = inject("socket");
 const reports = ref([]);
 
@@ -58,6 +59,7 @@ function deleteReport(report) {
       return;
     }else {
       console.log("Report eliminato con successo:", response.data);
+      emit('show-toast', '✅ Report eliminato correttamente!');
     }
   });
 }
