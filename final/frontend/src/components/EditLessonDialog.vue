@@ -54,13 +54,8 @@
           <option value=30>30 minuti</option>
           <option value=45>45 minuti</option>
           <option value=60>60 minuti</option>
-          <option value=75>75 minuti</option>
           <option value=90>90 minuti</option>
-          <option value=105>105 minuti</option>
           <option value=120>120 minuti</option>
-          <option value=135>135 minuti</option>
-          <option value=150>150 minuti</option>
-          <option value=165>165 minuti</option>
           <option value=180>180 minuti</option>
         </select>
 

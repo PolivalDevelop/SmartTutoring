@@ -131,7 +131,7 @@ function handleSubmit() {
 
   socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
       if (!res.success) {
-        showToast("credenziali non valide: " + res.error)
+        showToast("❌ Email istituzionale o password errati")
         return
       }
 
