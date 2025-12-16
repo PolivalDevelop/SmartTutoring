@@ -54,7 +54,7 @@ const reportSchema = new mongoose.Schema(
 
 // Prevent a user from reporting themselves
 reportSchema.pre("save", function (next) {
-  if (!this.reporter.equals(this.reportedUser)) {
+  if (this.reporter !== this.reportedUser) {
     next();
   } else {
     next(new Error("A user cannot report themselves."));
