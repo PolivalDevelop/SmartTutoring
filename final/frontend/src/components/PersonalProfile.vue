@@ -36,7 +36,7 @@
         <strong>Email:</strong>
         <span>{{ user.email || '—' }}</span>
       </div>
-      <div class="info-item">
+      <div class="info-item" v-if="user.birthDate">
         <strong>Data di nascita:</strong>
         <span>{{ new Date(user.birthDate).toLocaleDateString('it-IT') || '—' }}</span>
       </div>
