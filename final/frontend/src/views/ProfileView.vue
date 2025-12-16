@@ -11,6 +11,7 @@
         v-else-if="profileUser"
         :user="profileUser"
         :isLogged="isLogged.value"
+        @show-toast="$emit('show-toast', $event)"
       />
       <p v-else class="loading">⏳ Caricamento profilo...</p>
 
@@ -121,7 +122,7 @@ onMounted(() => {
 
 const isLogged = ref(isLoggedIn.value)
 
-const emit = defineEmits(['edit-profile'])
+const emit = defineEmits(['edit-profile', 'show-toast']);
 
 watch(
   () => route.params.email,

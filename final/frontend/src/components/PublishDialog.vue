@@ -20,15 +20,26 @@
           </option>
         </select>
 
-        <label for="lessonDate">Data</label>
-        <input
-          type="date"
-          id="lessonDate"
-          v-model="lesson.date"
-          :min="today"
-          :max="maxDate"
-          required
-        />
+        <label>Data</label>
+        <div class="custom-date-wrapper" @click="openCalendar">
+          <div class="fake-input" :class="{ 'has-value': lesson.date }">
+            {{ formattedDateLabel }}
+          </div>
+          
+          <input
+            ref="dateInputRef"
+            type="date"
+            id="lessonDate"
+            v-model="lesson.date"
+            :min="today"
+            :max="maxDate"
+            required
+            class="ghost-date-input"
+            @click.stop
+          />
+          
+          <span v-if="!lesson.date" class="calendar-icon">📅</span>
+        </div>
 
         <label for="lessontime">Ora inizio</label>
         <select id="lessontime" v-model="lesson.time" required>
@@ -41,13 +52,8 @@
           <option value=30>30 minuti</option>
           <option value=45>45 minuti</option>
           <option value=60>60 minuti</option>
-          <option value=75>75 minuti</option>
           <option value=90>90 minuti</option>
-          <option value=105>105 minuti</option>
           <option value=120>120 minuti</option>
-          <option value=135>135 minuti</option>
-          <option value=150>150 minuti</option>
-          <option value=165>165 minuti</option>
           <option value=180>180 minuti</option>
         </select>
 
@@ -73,10 +79,11 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { getCurrentUser, matters } from '../composables/auth'
 
 const emit = defineEmits(['close', 'publish'])
+const dateInputRef = ref(null)
 
 const now = new Date()
 const today = now.toISOString().split('T')[0]
@@ -84,7 +91,6 @@ const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
   .toISOString()
   .split('T')[0]
 
-// Genera orari ogni 15 minuti
 const timeOptions = computed(() => {
   const times = []
   for (let h = 7; h <= 22; h++) {
@@ -107,16 +113,28 @@ const lesson = reactive({
   price: 15
 })
 
+const formattedDateLabel = computed(() => {
+  if (!lesson.date) return 'Seleziona data...';
+  try {
+    const [year, month, day] = lesson.date.split('-');
+    return `${day}/${month}/${year}`;
+  } catch (e) {
+    return lesson.date;
+  }
+})
+
+function openCalendar() {
+  if (dateInputRef.value) {
+    if (typeof dateInputRef.value.showPicker === 'function') {
+      dateInputRef.value.showPicker();
+    } else {
+      dateInputRef.value.focus();
+    }
+  }
+}
+
 function submitLesson() {
   if (!lesson.course || !lesson.date || !lesson.time || !lesson.duration || !lesson.price) return
-
-  const formattedDate = new Date(`${lesson.date}T${lesson.time}`).toLocaleDateString('it-IT', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short'
-  })
-
-  const formattedTime = lesson.time
 
   emit('publish', {
     teacher: lesson.teacher,
@@ -173,7 +191,7 @@ function submitLesson() {
   font-weight: 500;
 }
 
-.publish-panel input,
+.publish-panel input:not(.ghost-date-input),
 .publish-panel select {
   width: 100%;
   margin-top: .25rem;
@@ -183,12 +201,59 @@ function submitLesson() {
   background: var(--bg);
   color: var(--text);
   font-family: inherit;
+  box-sizing: border-box; 
 }
 
 .publish-panel input:focus,
 .publish-panel select:focus {
   outline: 2px solid var(--accent);
   border-color: var(--accent);
+}
+
+.custom-date-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: .25rem;
+  cursor: pointer;
+}
+
+.fake-input {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+  background: var(--bg);
+  color: var(--muted, #888); 
+  font-family: inherit;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: 38px; 
+}
+
+.fake-input.has-value {
+  color: var(--text);
+}
+
+.ghost-date-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+  opacity: 0.6;
 }
 
 .publish-panel .dialog-actions {

@@ -22,15 +22,26 @@
           </option>
         </select>
 
-        <label for="lessonDate">Data</label>
-        <input
-          type="date"
-          id="lessonDate"
-          v-model="lessonUpdate.date"
-          :min="today"
-          :max="maxDate"
-          required
-        />
+        <label>Data</label>
+        <div class="custom-date-wrapper" @click="openCalendar">
+          <div class="fake-input" :class="{ 'has-value': lessonUpdate.date }">
+            {{ formattedDateLabel }}
+          </div>
+          
+          <input
+            ref="dateInputRef"
+            type="date"
+            id="lessonDate"
+            v-model="lessonUpdate.date"
+            :min="today"
+            :max="maxDate"
+            required
+            class="ghost-date-input"
+            @click.stop
+          />
+          
+          <span v-if="!lessonUpdate.date" class="calendar-icon">📅</span>
+        </div>
 
         <label for="lessontime">Ora inizio</label>
         <select id="lessontime" v-model="lessonUpdate.time" required>
@@ -43,13 +54,8 @@
           <option value=30>30 minuti</option>
           <option value=45>45 minuti</option>
           <option value=60>60 minuti</option>
-          <option value=75>75 minuti</option>
           <option value=90>90 minuti</option>
-          <option value=105>105 minuti</option>
           <option value=120>120 minuti</option>
-          <option value=135>135 minuti</option>
-          <option value=150>150 minuti</option>
-          <option value=165>165 minuti</option>
           <option value=180>180 minuti</option>
         </select>
 
@@ -77,14 +83,12 @@
 </template>
 
 <script setup>
-import { reactive, computed, watch, toRefs } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { getCurrentUser, matters } from '../composables/auth'
 
 const props = defineProps({ lesson: Object })
-
-console.log(props.lesson)
-
-const emit = defineEmits(['close', 'publish'])
+const emit = defineEmits(['close', 'modify']) 
+const dateInputRef = ref(null)
 
 const now = new Date()
 const today = now.toISOString().split('T')[0]
@@ -92,7 +96,6 @@ const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
   .toISOString()
   .split('T')[0]
 
-// Genera orari ogni 15 minuti
 const timeOptions = computed(() => {
   const times = []
   for (let h = 7; h <= 22; h++) {
@@ -106,7 +109,6 @@ const timeOptions = computed(() => {
   return times
 })
 
-// Reactive state della lezione
 const lessonUpdate = reactive({
   teacher: getCurrentUser().value?.email,
   course: '',
@@ -116,7 +118,6 @@ const lessonUpdate = reactive({
   price: 15
 })
 
-// Se stiamo modificando, popola i dati
 if (props.lesson) {
   Object.assign(lessonUpdate, {
     teacher: props.lesson.teacher,
@@ -126,6 +127,26 @@ if (props.lesson) {
     duration: props.lesson.duration,
     price: props.lesson.price
   })
+}
+
+const formattedDateLabel = computed(() => {
+  if (!lessonUpdate.date) return 'Seleziona data...';
+  try {
+    const [year, month, day] = lessonUpdate.date.split('-');
+    return `${day}/${month}/${year}`;
+  } catch (e) {
+    return lessonUpdate.date;
+  }
+})
+
+function openCalendar() {
+  if (dateInputRef.value) {
+    if (typeof dateInputRef.value.showPicker === 'function') {
+      dateInputRef.value.showPicker();
+    } else {
+      dateInputRef.value.focus();
+    }
+  }
 }
 
 function submitLesson() {
@@ -145,7 +166,6 @@ function submitLesson() {
   emit('close')
 }
 </script>
-
 
 <style scoped>
 .publish-dialog.hidden { display: none; }
@@ -189,7 +209,7 @@ function submitLesson() {
   font-weight: 500;
 }
 
-.publish-panel input,
+.publish-panel input:not(.ghost-date-input),
 .publish-panel select {
   width: 100%;
   margin-top: .25rem;
@@ -199,12 +219,59 @@ function submitLesson() {
   background: var(--bg);
   color: var(--text);
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .publish-panel input:focus,
 .publish-panel select:focus {
   outline: 2px solid var(--accent);
   border-color: var(--accent);
+}
+
+.custom-date-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: .25rem;
+  cursor: pointer;
+}
+
+.fake-input {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+  background: var(--bg);
+  color: var(--muted, #888); 
+  font-family: inherit;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+.fake-input.has-value {
+  color: var(--text);
+}
+
+.ghost-date-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+  opacity: 0.6;
 }
 
 .publish-panel .dialog-actions {

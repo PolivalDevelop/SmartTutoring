@@ -7,6 +7,7 @@
       @book="openBooking"
       @edit="openEdit"
       @publish-request="publishDialog.visible = true"
+      @show-toast="showToast"
     />
 
     <!-- FAB pubblicazione lezione -->
