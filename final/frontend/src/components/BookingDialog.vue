@@ -13,7 +13,7 @@
         <p><strong>insegnante:</strong> {{ lesson.teacher }}</p>
         <p><strong>Costo:</strong> €{{ lesson.price }}</p>
         <p><strong>durata:</strong> {{ lesson.duration }}</p>
-        <p><strong>data:</strong> {{ lesson.date }}</p>
+        <p><strong>data:</strong> {{ new Date(lesson.date).toLocaleDateString('it-IT') }}</p>
         <p class="muted">Il costo sarà addebitato dal saldo interno di Smart Tutoring.</p>
       </div>
       <footer class="dialog-footer">
