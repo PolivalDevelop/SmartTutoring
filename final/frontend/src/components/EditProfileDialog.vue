@@ -10,7 +10,7 @@
         <!-- Foto -->
         <div class="profile-pic-wrapper">
           <img
-            :src="photoPreview || user.photo || defaultPhoto"
+            :src="photoPreview || photouser || defaultPhoto"
             alt="Immagine del profilo"
             class="profile-pic"
           />
@@ -70,6 +70,7 @@
 import { reactive, ref, watch } from 'vue'
 import defaultPhotoPath from '@/assets/images/user.png'
 import { toBase64 } from '@/composables/auth'
+import { computed } from 'vue'
 
 const emit = defineEmits(['close', 'save'])
 const props = defineProps({
@@ -78,7 +79,13 @@ const props = defineProps({
 console.log("Utente da modificare:", props.user);
 
 const defaultPhoto = defaultPhotoPath
-const photoPreview = ref(null)
+const photoPreview = ref(null);
+
+const photouser = computed(() =>
+  props.user.photo && props.user.photo !== "null"
+    ? "http://localhost:4000" + props.user.photo
+    : defaultPhoto
+);
 
 const form = reactive({
   firstname: props.user.firstName || '',
