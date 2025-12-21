@@ -12,8 +12,10 @@ export function login(userdata) {
 }
 export function logout() { 
   isLoggedIn.value = false
+  isAdmin.value = false
   user.value = null
 }
+
 export function getCurrentUser() {
   return user;
 }
