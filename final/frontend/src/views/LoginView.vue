@@ -117,14 +117,14 @@ function handleSubmit() {
   const emailValid = form.email.endsWith('@studio.unibo.it')
   const passwordValid = /^(?=.*[0-9]).{6,}$/.test(form.password)
 
-  if (!emailValid) {
-    showFieldError('email')
-    showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
-  }
-
   if (!passwordValid) {
     showFieldError('password')
     showToast('❌ La password deve avere almeno 6 caratteri e includere un numero')
+  }
+
+  if (!emailValid) {
+    showFieldError('email')
+    showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
   }
 
   if (!emailValid || !passwordValid) return

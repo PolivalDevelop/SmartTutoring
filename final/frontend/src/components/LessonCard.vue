@@ -156,7 +156,7 @@ const emit = defineEmits(["book", "edit"])
   display: flex;
   gap: 0.5rem;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   justify-content: flex-end;
   flex-wrap: wrap;
 }

@@ -29,7 +29,7 @@
               <RouterLink to="/booked" class="menu-item" @click="closeMenu">Lezioni Prenotate</RouterLink>
               <RouterLink :to="`/offered/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Lezioni Offerte</RouterLink>
               <RouterLink :to="`/profile/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Profilo</RouterLink>
-              <button class="menu-item logout-btn" @click="handleLogout(); closeMenu()">Logout</button>
+              <RouterLink to="/" class="menu-item logout-btn" @click="handleLogout(); closeMenu()">Logout</RouterLink>
             </div>
           </template>
 
