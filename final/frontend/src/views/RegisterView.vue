@@ -6,6 +6,22 @@
       <section class="access-card">
         <h2 id="registerTitle">Crea il tuo account</h2>
         <form @submit.prevent="handleSubmit" novalidate>
+          <div class="form-group centered-group">
+            <div class="profile-pic-wrapper">
+              <img
+                :src="photoPreview || defaultPhoto"
+                alt="Anteprima profilo"
+                class="profile-pic"
+              />
+              <label for="photo" class="edit-icon" title="Carica immagine">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </label>
+              <input type="file" id="photo" accept="image/*" @change="onFileChange" hidden />
+            </div>
+            <span class="secondary-text small-text">Foto profilo (opzionale)</span>
+          </div>
           <div class="form-group">
             <label for="firstName">Nome *</label>
             <input v-model.trim="form.firstName" type="text" id="firstName" required />
@@ -66,11 +82,6 @@
           <hr aria-hidden="true" />
 
           <div class="form-group">
-            <label for="photo">Foto profilo (opzionale)</label>
-            <input type="file" id="photo" accept=".jpg,.png" @change="onFileChange" />
-          </div>
-
-          <div class="form-group">
             <label for="birthDate">Data di nascita (opzionale)</label>
             <input v-model="form.birthDate" type="date" id="birthDate" />
           </div>
@@ -111,7 +122,7 @@ import AppHeader from '@/components/AppHeader.vue'
 import ToastNotification from '@/components/ToastNotification.vue'
 import useDarkMode from '@/composables/useDarkMode.js'
 import '@/assets/styles/access-page.css'
-
+import defaultPhotoPath from '@/assets/images/user.png'
 import { login, toBase64 } from '@/composables/auth'
 import { inject } from "vue";
 import { getCurrentUser } from '@/composables/auth'
@@ -119,7 +130,8 @@ const socket = inject("socket");
 
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
-
+const defaultPhoto = defaultPhotoPath
+const photoPreview = ref(null)
 const form = reactive({
   firstName: '',
   lastName: '',
@@ -160,7 +172,11 @@ function showFieldError(field) {
 }
 
 function onFileChange(e) {
-  form.photo = e.target.files[0]
+  const file = e.target.files[0]
+  if (file) {
+    form.photo = file
+    photoPreview.value = URL.createObjectURL(file)
+  }
 }
 
 async function handleSubmit() {
@@ -175,12 +191,11 @@ async function handleSubmit() {
   if (!emailValid || !passwordValid) return
 
   const photoBase64 = form.photo ? await toBase64(form.photo) : null;
+  
+  const payload = { ...form, photo: photoBase64 }
 
-  form.photo = photoBase64;
-
-
-  console.log("Submitting registration form:", form)
-  socket.emit("user:register", form, (response) => {
+  console.log("Submitting registration form:", payload)
+  socket.emit("user:register", payload, (response) => {
     if (!response.success) {
       console.log(response.error)
       showToast("❌ " + response.error)
@@ -204,3 +219,57 @@ async function handleSubmit() {
   })
 }
 </script>
+
+<style scoped>
+  .centered-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-pic-wrapper {
+  position: relative;
+  width: 85px;
+  height: 85px;
+  margin-bottom: 0.5rem;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+  background-color: var(--bg);
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.edit-icon:hover {
+  background: var(--accent-hover);
+  transform: scale(1.1);
+}
+
+.small-text {
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  opacity: 0.8;
+}
+</style>
