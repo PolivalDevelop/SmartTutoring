@@ -59,6 +59,10 @@
         <strong>Data di nascita:</strong>
         <span>{{ new Date(user?.birthDate).toLocaleDateString('it-IT') || '—' }}</span>
       </div>
+      <div class="info-item" v-if="user.averageGrade">
+        <strong>Media universitaria:</strong>
+        <span>{{ user.averageGrade }}/30</span>
+      </div>
     </div>
 
     <!-- BIO (se presente) -->
@@ -340,7 +344,7 @@ function banUser(email) {
 
   .profile-info {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.2rem 2rem;
   }
 

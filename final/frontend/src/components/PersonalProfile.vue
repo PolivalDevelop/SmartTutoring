@@ -40,6 +40,10 @@
         <strong>Data di nascita:</strong>
         <span>{{ new Date(user.birthDate).toLocaleDateString('it-IT') || '—' }}</span>
       </div>
+      <div class="info-item" v-if="user?.averageGrade">
+        <strong>Media universitaria:</strong>
+        <span>{{ user.averageGrade }}/30</span>
+      </div>
     </div>
 
     <!-- BIO (se presente) -->
