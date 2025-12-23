@@ -14,7 +14,13 @@
       />
       <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
-        <h3 class="empty-title">Nessun report aperto</h3>
+        <div class="empty-illustration">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="empty-title">Tutto tranquillo!</h3>
+        <p class="empty-text">Non ci sono segnalazioni aperte al momento.</p>
       </div>
     </section>
   </main>
@@ -114,20 +120,36 @@ main.content {
 
 /* Empty state */
 .empty-state {
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: .75rem;
+  padding: 4rem 1rem;
   text-align: center;
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 2rem 1rem;
-  box-shadow: var(--shadow-sm);
-  min-height: 280px;
+  color: var(--muted);
+}
+
+.empty-illustration svg {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.5rem;
+  color: var(--primary); 
+  opacity: 0.8;
+}
+
+.empty-title {
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--text);
-  opacity: .9;
- 
+  margin-bottom: 0.5rem;
+}
+
+.empty-text {
+  font-size: 0.95rem;
+  max-width: 400px;
+  line-height: 1.5;
+  opacity: 0.8;
 }
 
 .empty-icon {
@@ -140,11 +162,6 @@ main.content {
   margin: 0;
 }
 
-.empty-text {
-  color: var(--muted);
-  font-size: .95rem;
-  max-width: 320px;
-}
 
 .empty-state .btn {
   margin-top: .5rem;
