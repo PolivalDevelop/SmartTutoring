@@ -209,6 +209,13 @@ header.app-header {
   color: var(--accent-dark);
 }
 
+.menu-item.router-link-exact-active:not(.logout-btn) {
+  background-color: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: none;
+}
+
 @media (max-width: 768px) {
 
   .lesson-sub {
@@ -261,5 +268,7 @@ header.app-header {
     width: 100%;
     display: block;
   }
+
+
 }
 </style>
