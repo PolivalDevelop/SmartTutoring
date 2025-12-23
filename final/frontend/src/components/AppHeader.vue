@@ -25,7 +25,7 @@
           <template v-if="isLoggedIn">
             <div class="logged-menu">
               <RouterLink to="/" class="menu-item" @click="closeMenu">Home</RouterLink>
-              <RouterLink to="/reports" class="menu-item" v-if="isAdmin" @click="closeMenu">Report</RouterLink>
+              <RouterLink to="/reports" class="menu-item" v-if="isAdmin" @click="closeMenu">Segnalazioni</RouterLink>
               <RouterLink to="/booked" class="menu-item" @click="closeMenu">Lezioni Prenotate</RouterLink>
               <RouterLink :to="`/offered/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Lezioni Offerte</RouterLink>
               <RouterLink :to="`/profile/${getCurrentUser().value?.email}`" class="menu-item" @click="closeMenu">Profilo</RouterLink>

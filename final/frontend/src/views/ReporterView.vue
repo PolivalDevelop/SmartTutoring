@@ -1,7 +1,7 @@
 <template>
   <main class="content" role="main" aria-labelledby="mainTitle">
     <div class="content-header">
-      <h2 id="mainTitle">Report aperti</h2>
+      <h2 id="mainTitle">Segnalazioni aperte</h2>
     </div>
 
     <section class="results" id="reportsList">
