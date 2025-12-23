@@ -88,7 +88,7 @@
 
           <div class="form-group">
             <label for="averageGrade">Media universitaria (opzionale)</label>
-            <input v-model.number="form.averageGrade" type="number" id="averageGrade" min="18" max="30" step="0.1" />
+            <input v-model.number="form.averageGrade" type="number" id="averageGrade" min="18" max="30" step="0.1" :class="{ error: errors.averageGrade }" />         
           </div>
 
           <div class="form-group">
@@ -158,7 +158,7 @@ function showToast(message) {
   toastTimeout = setTimeout(() => (toast.visible = false), 3000)
 }
 
-const errors = reactive({ email: false, password: false, birthDate: false })
+const errors = reactive({ email: false, password: false, birthDate: false, averageGrade: false })
 
 function showFieldError(field) {
   errors[field] = true
@@ -199,6 +199,18 @@ async function handleSubmit() {
     if (age < 18) birthDateValid = false
   }
 
+  let averageGradeValid = true
+  if (form.averageGrade) {
+    if (form.averageGrade < 18 || form.averageGrade > 30) {
+      averageGradeValid = false
+    }
+  }
+
+  if (!averageGradeValid) {
+    showFieldError('averageGrade')
+    showToast('❌ La media deve essere compresa tra 18 e 30')
+  }
+
   if (!birthDateValid) {
     showFieldError('birthDate')
     showToast('❌ Devi essere maggiorenne per registrarti')
@@ -214,7 +226,7 @@ async function handleSubmit() {
     showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
   }
 
-  if (!emailValid || !passwordValid || !birthDateValid) return
+  if (!emailValid || !passwordValid || !birthDateValid || !averageGradeValid) return
 
   const photoBase64 = form.photo ? await toBase64(form.photo) : null;
   
