@@ -83,7 +83,7 @@
 
           <div class="form-group">
             <label for="birthDate">Data di nascita (opzionale)</label>
-            <input v-model="form.birthDate" type="date" id="birthDate" />
+            <input v-model="form.birthDate" type="date" id="birthDate" :class="{ error: errors.birthDate }"/>
           </div>
 
           <div class="form-group">
@@ -158,7 +158,7 @@ function showToast(message) {
   toastTimeout = setTimeout(() => (toast.visible = false), 3000)
 }
 
-const errors = reactive({ email: false, password: false })
+const errors = reactive({ email: false, password: false, birthDate: false })
 
 function showFieldError(field) {
   errors[field] = true
@@ -182,9 +182,27 @@ function onFileChange(e) {
 async function handleSubmit() {
   errors.email = false
   errors.password = false
+  errors.birthDate = false
 
   const emailValid = form.email.endsWith('@studio.unibo.it')
-  const passwordValid = /^(?=.*[0-9]).{6,}$/.test(form.password)  
+  const passwordValid = /^(?=.*[0-9]).{6,}$/.test(form.password)
+  
+  let birthDateValid = true
+  if (form.birthDate) {
+    const today = new Date()
+    const birthDate = new Date(form.birthDate)
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const m = today.getMonth() - birthDate.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+    if (age < 18) birthDateValid = false
+  }
+
+  if (!birthDateValid) {
+    showFieldError('birthDate')
+    showToast('❌ Devi essere maggiorenne per registrarti')
+  }
 
   if (!passwordValid) {
     showFieldError('password')
@@ -196,7 +214,7 @@ async function handleSubmit() {
     showToast('❌ Usa la tua email istituzionale @studio.unibo.it')
   }
 
-  if (!emailValid || !passwordValid) return
+  if (!emailValid || !passwordValid || !birthDateValid) return
 
   const photoBase64 = form.photo ? await toBase64(form.photo) : null;
   
@@ -210,15 +228,13 @@ async function handleSubmit() {
       return
     }
 
-    // 🔵 Login automatico
     socket.emit("session:login", { email: form.email, password: form.password }, (res) => {
       if (!res.success) {
         showToast("⚠️ Registrato ma non loggato: " + res.error)
         return
       }
 
-      // 🔥 Utente loggato correttamente
-      login(res.data) // salva nel tuo store
+      login(res.data) 
       console.log("Utente registrato e loggato:", res.data)
       console.log(getCurrentUser())
       showToast("✅ Registrazione completata con successo!")
