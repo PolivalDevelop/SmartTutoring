@@ -39,7 +39,7 @@
       <div
       v-else-if="mode === 'offered' && lesson.student"
       class="lesson-footer">
-        <div class="lesson-author">Prenotata da {{ lesson.student }}</div>
+        <div class="lesson-author">{{ lesson.student }}</div>
         <div class="card-actions">
           <RouterLink :to="`/profile/${lesson.student}`" class="small btn-ghost" aria-label="Vedi profilo">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
