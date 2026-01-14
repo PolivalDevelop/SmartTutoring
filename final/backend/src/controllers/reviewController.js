@@ -43,13 +43,11 @@ exports.createReviewSocket = async (data) => {
 
 exports.getAllUserReviewSocket = async (email) => {
   const user = await User.findOne({ email: email });
-  console.log("Utente trovato:", user);
 
   if (!user) throw new Error("User not found");
 
   const reviews = await Review.find({ teacher: email });
 
-  console.log("Recensioni trovate:", reviews);
   if (!reviews || reviews.length === 0) {
     throw new Error("No reviews found for this teacher");
   }
