@@ -133,55 +133,44 @@ function openCreateReview() {
 }
 
 function openCreateReport() {
-  console.log("Apro il dialog di creazione report");
   createReportDialog.value.visible = true
 }
 
 function openBan() {
-  console.log("Apro il dialog di ban");
   banDialogVisible.value.visible = true
 }
 
 // --- LOGICA CON I TOAST ---
 
 function createReview(newReview) {
-  console.log("la nuova recensione è:", newReview);
   socket.emit("review:create", newReview, (response) => {
     if (!response.success) {
-      console.log("Errore durante la creazione della recensione:", response.error);
       // Ora 'emit' è definito e funzionerà
       emit('show-toast', "❌ Errore durante la pubblicazione della recensione.");
       return;
     }
-    console.log("Recensione creata con successo.");
     emit('show-toast', "✅ Recensione pubblicata con successo!");
   }); 
   createReviewDialog.value.visible = false
 }
 
 function createReport(newReport) {
-  console.log("il nuovo report è:", newReport);
   socket.emit("report:create", newReport, (response) => {
     if (!response.success) {
-      console.log("Errore durante la creazione del report:", response.error);
       emit('show-toast', "❌ Errore durante la segnalazione.");
       return;
     }
-    console.log("Report creato con successo.");
     emit('show-toast', "✅ Segnalazione inviata agli amministratori.");
   }); 
   createReportDialog.value.visible = false
 }
 
 function banUser(email) {
-  console.log("Banno l'utente con email:", email);
   socket.emit("user:delete", { email: getCurrentUser().value.email, targetEmail: email }, (response) => {
     if (!response.success) {
-      console.log("Errore durante il ban dell'utente:", response.error);
       emit('show-toast', "❌ Errore durante il ban.");
       return;
     }
-    console.log(response.message);
     emit('show-toast', "⛔ Utente bannato correttamente.");
     router.push("/");
   }); 
