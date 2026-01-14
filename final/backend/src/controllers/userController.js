@@ -29,19 +29,15 @@ const sanitizeUser = (user) => {
 //  CREATE USER ( / )
 // ======================================================
 exports.createUser = async (data) => {
-  console.log("punto1");
   // Controllo se l'email è già registrata
   const existingUser = await User.findOne({ email: data.email });
-  console.log("punto2");
   if (existingUser) {
     throw new Error("❌ Esiste già un account registrato con questa email");
   }
 
-  console.log("punto3");
   // Hash della password
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  console.log("punto4");
   // Creazione nuovo utente
   const user = new User({
     firstName: data.firstName,
@@ -54,10 +50,8 @@ exports.createUser = async (data) => {
     averageGrade: data.averageGrade,
     bio: data.bio
   });
-  console.log("punto5");
 
   await user.save();
-  console.log("punto6");
 
   return sanitizeUser(user); // restituisce utente senza password
 };
@@ -87,8 +81,6 @@ exports.loginUser = async (data, jwtSettings) => {
     jwtSettings.secret,
     { expiresIn: jwtSettings.expires }
   );
-  console.log("Generated JWT:", token);
-  console.log("User logged in:", user);
 
   return sanitizeUser(user);
 };
@@ -144,11 +136,8 @@ exports.deleteUser = async (socket, data) => {
   try {
     const { email, targetEmail } = data;
 
-    console.log("Admin email:", email, "Target email:", targetEmail);
-
     // Controllo admin
     const admin = await Admin.findOne({ emailAdmin: email });
-    console.log("Admin found:", admin);
 
     if (!admin) {
       return { message: "Only admins can delete users" };
@@ -156,13 +145,10 @@ exports.deleteUser = async (socket, data) => {
 
     // Cerca l’utente da cancellare
     const userToDelete = await User.findOne({ email: targetEmail });
-    console.log("User to delete found:", userToDelete);
 
     if (!userToDelete) {
       return { message: "User not found" };
     }
-
-    console.log("User verified");
 
     // 1️⃣ Cancella tutte le lezioni dove l'utente è presente
     const lessonsDeleted = await Lesson.deleteMany({
@@ -171,8 +157,6 @@ exports.deleteUser = async (socket, data) => {
         { teacher: targetEmail }
       ]
     });
-
-    console.log("Lessons deleted:", lessonsDeleted);
 
 
     // 3️⃣ Cancella tutte le valutazioni in cui appare l'utente
@@ -183,8 +167,6 @@ exports.deleteUser = async (socket, data) => {
       ]
     });
 
-    console.log("Reviews deleted:", reviewsDeleted);
-
     const reportsDeleted = await Report.deleteMany({
       $or: [
         { reporter: targetEmail },   // ha fatto una segnalazione
@@ -192,13 +174,9 @@ exports.deleteUser = async (socket, data) => {
       ]
     });
 
-    console.log("Reports deleted:", reportsDeleted);
-
 
     // 4️⃣ Cancella l’utente
     await User.deleteOne({ email: targetEmail });
-
-    console.log("User deleted");
 
     return {
       message: "User, lessons, reviews and ratings successfully deleted"
@@ -248,7 +226,6 @@ exports.getUserByEmail = async (socket, email, callback) => {
       });
     }
 
-    console.log("Utente ottenuto per email:", user);
     callback({
       success: true,
       data: sanitizeUser(user),
@@ -283,10 +260,8 @@ exports.updateUserProfile = async (socket, email, updatedData, callback) => {
     }
 
     if (updatedData.photo && updatedData.photo.startsWith("data:image/")) {
-      console.log("Processing base64 photo data");
       const matches = updatedData.photo.match(/^data:image\/(\w+);base64,(.+)$/);
       if (matches) {
-        console.log("Base64 photo data matched");
         const ext = matches[1]; // png, jpeg, ecc.
         const base64Data = matches[2];
         const filename = `${Date.now()}.${ext}`;
