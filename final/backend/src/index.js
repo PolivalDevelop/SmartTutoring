@@ -95,6 +95,5 @@ io.on("connection", (socket) => {
 // 🚀 AVVIO SERVER
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(`🚀 Server avviato su http://0.0.0.0:${PORT}`);
 });
 
