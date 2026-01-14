@@ -56,7 +56,6 @@ const filters = ref({
 
 function handleFiltersUpdate(newFilters) {
   filters.value = newFilters  
-  console.log("Filtri aggiornati in HomeView:", filters.value);
 }
 
 const filteredLessons = computed(() => {
@@ -109,15 +108,11 @@ onMounted(() => {
   // 2️⃣ Ricevo la lista
   socket.on("lessons:available", (lessons) => {
     if(isLoggedIn.value){
-      console.log("Utente loggato, applico filtro per escludere le proprie lezioni.");
       const currentUserEmail = getCurrentUser().value.email;
       availableLessons.value = lessons.filter(lesson => lesson.teacher !== currentUserEmail);
     }else{
-      console.log("Utente non loggato, nessun filtro applicato.");
       availableLessons.value = lessons;
     }
-    console.log("Lezioni aggiornate:", lessons);
-    console.log("utente Attivo:  ", getCurrentUser().value)
   });
 
   // 3️⃣ Aggiornamenti in tempo reale
