@@ -50,7 +50,6 @@ mongoose
         password: await hashPassword(user.password),
       }))
     );
-    console.log("✅ MongoDB connected to tutoring");
     await User.insertMany(usersWithHashedPasswords);
     await Lesson.insertMany(lessons);
     await Review.insertMany(reviews); 
@@ -59,30 +58,23 @@ mongoose
 
     // Controllo utenti
     const userCount = await User.countDocuments();
-    console.log(`👤 Users in DB: ${userCount}`);
 
     // Controllo lezioni
     const lessonCount = await Lesson.countDocuments();
-    console.log(`📚 Lessons in DB: ${lessonCount}`);
 
     // Controllo recensioni
     const reviewCount = await Review.countDocuments();
-    console.log(`📝 Reviews in DB: ${reviewCount}`);
 
     // Controllo admin
     const adminCount = await Admin.countDocuments();
-    console.log(`🛡️ Admins in DB: ${adminCount}`);
 
     // Controllo segnalazioni
     const reportCount = await Report.countDocuments();
-    console.log(`🚩 Reports in DB: ${reportCount}`);
   })
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 // 🔥 SOCKET.IO HANDLERS
 io.on("connection", (socket) => {
-  console.log("🔗 Nuovo client connesso:", socket.id);
-
   const jwtSettings = {
     secret: process.env.JWT_SECRET,
     expires: process.env.JWT_EXPIRES
@@ -96,7 +88,7 @@ io.on("connection", (socket) => {
   require("./routes/adminRouter")(socket, io, jwtSettings);
 
   socket.on("disconnect", () => {
-    console.log("❌ Client disconnesso:", socket.id);
+    console.log("Client disconnesso:", socket.id);
   });
 });
 
