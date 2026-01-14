@@ -74,7 +74,6 @@ const filters = ref({
 
 function handleFiltersUpdate(newFilters) {
   filters.value = newFilters  
-  console.log("Filtri aggiornati in BookedView:", filters.value);
 }
 
 const filteredLessons = computed(() => {
@@ -114,16 +113,13 @@ const filteredLessons = computed(() => {
 
 
 onMounted(() => {
-  console.log("Recupero lezioni prenotate per l'utente:", getCurrentUser().value.email);
   bookedLessons(getCurrentUser().value.email)
     .then(lessons => {
-      console.log("Lezioni prenotate:", lessons);
       myBookedLessons.value = lessons;
     })
     .catch(err => {
       console.error("Errore nel recuperare le lezioni:", err);
     });
-  console.log("Lezioni prenotate caricate:", myBookedLessons.value);  
 });
 
 
