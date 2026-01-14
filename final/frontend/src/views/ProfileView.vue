@@ -78,7 +78,6 @@ const profileUser = ref(null)
 
 userByEmail(profileEmail.value)
   .then(user => {
-    console.log("Profilo utente:", user);
     profileUser.value = user;
   })
   .catch(err => {
@@ -89,7 +88,6 @@ const reviews = ref([])
 
 reviewByUserEmail(profileEmail.value)
   .then(userReviews => {
-    console.log("Recensioni utente:", userReviews);
     reviews.value = userReviews;
     profileUser.value.numReviews = userReviews.length;
     profileUser.value.avgRating = userReviews.reduce((sum, r) => sum + r.rating, 0) / (userReviews.length || 1);
@@ -104,11 +102,9 @@ const isMe = computed(() => {
 })
 
 onMounted(() => {
-  console.log("Mounted ProfileView for:", profileEmail.value);
   socket.on("review:updated", () => {
     reviewByUserEmail(profileEmail.value) // Ricarica lista
       .then(userReviews => {
-      console.log("Recensioni utente:", userReviews);
       reviews.value = userReviews;
       profileUser.value.numReviews = userReviews.length;
       profileUser.value.avgRating = userReviews.reduce((sum, r) => sum + r.rating, 0) / (userReviews.length || 1);
@@ -128,21 +124,17 @@ watch(
   () => route.params.email,
   async (newEmail) => {
     profileEmail.value = newEmail
-    console.log("🔁 Cambio pagina profilo:", newEmail);
     try {
       profileUser.value = await userByEmail(newEmail).then(user => {
-        console.log("Profilo utente:", user);
         return user;
       })
       reviews.value = await reviewByUserEmail(newEmail).then(userReviews => {
-          console.log("Recensioni utente:", userReviews);
           return userReviews;
         })
         .catch(err => {
           console.error("Errore reviews:", err);
           return [];
-        });
-      console.log("isMe:", isMe);  
+        }); 
       isLogged.value = isLoggedIn.value
     } catch (err) {
       console.error("Errore caricando il profilo:", err);
