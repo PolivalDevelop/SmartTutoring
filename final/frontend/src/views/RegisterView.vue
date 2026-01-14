@@ -232,10 +232,8 @@ async function handleSubmit() {
   
   const payload = { ...form, photo: photoBase64 }
 
-  console.log("Submitting registration form:", payload)
   socket.emit("user:register", payload, (response) => {
     if (!response.success) {
-      console.log(response.error)
       showToast("❌ " + response.error)
       return
     }
@@ -247,8 +245,6 @@ async function handleSubmit() {
       }
 
       login(res.data) 
-      console.log("Utente registrato e loggato:", res.data)
-      console.log(getCurrentUser())
       showToast("✅ Registrazione completata con successo!")
       setTimeout(() => router.push("/"), 500)
     })
