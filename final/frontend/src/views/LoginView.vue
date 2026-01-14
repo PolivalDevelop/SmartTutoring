@@ -138,10 +138,7 @@ function handleSubmit() {
       login(res.data) // salva nel tuo store
       socket.emit("admin:check", form.email, (adminRes) => {
         if (adminRes.success) {
-          console.log("Utente è admin:", adminRes.data)
           isAdmin.value = true
-          console.log("Stato admin aggiornato a: ", getCurrentUser().value)
-          console.log("isAdmin vale ora: ", isAdmin.value)
         } else {
           console.error("Errore nel controllo admin:", adminRes.error)
         }
