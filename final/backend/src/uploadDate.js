@@ -21,7 +21,7 @@ const users = [
     email: "giulia.rossi@studio.unibo.it",
     password: "Password02!",
     degreeType: "dottorato",
-    photo: null,
+    photo: "/uploads/giulia.jpg",
     birthDate: new Date("2000-08-10"),
     averageGrade: 30,
     bio: "Dottoranda in Business Intelligence."
@@ -45,7 +45,7 @@ const users = [
     email: "daniel.capannini@studio.unibo.it",
     password: "Password01!",  
     degreeType: "magistrale",
-    photo: null,
+    photo: "/uploads/daniel.jpg",
     birthDate: new Date("2001-04-12"),
     averageGrade: 27,
     bio: "Cofondatore di SmartTutoring e amministratore dell'applicazione."
