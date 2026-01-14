@@ -68,7 +68,6 @@ exports.deleteLessonSocket = async (id) => {
 exports.getLessonsByStudentSocket = async (email) => {
   if (!email) throw new Error("Email dello studente non fornita");
 
-  console.log("Recupero lezioni per lo studente:", email);
   const now = new Date();
 
   const lessons = await Lesson.find({
@@ -77,7 +76,6 @@ exports.getLessonsByStudentSocket = async (email) => {
     })
     .sort({ date: 1 }); // ordina per data crescente
 
-  console.log("Lezioni trovate:", lessons);  
   return lessons;
 };
 
