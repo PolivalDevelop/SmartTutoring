@@ -41,6 +41,9 @@ const lessonSchema = new mongoose.Schema(
         "Sistemi Operativi",
         "Machine Learning",
         "Probabilità e Statistica",
+        "Applicazioni Web",
+        "Visione Artificiale",
+        "Business Intelligence"
       ],
       trim: true,
     },

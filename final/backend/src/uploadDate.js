@@ -1,25 +1,18 @@
 const crypto = require("crypto");
 
-/* Funzione per hashare le password
-function hashPassword(password) {
-  return crypto.createHash("sha256").update(password).digest("hex");
-}*/
 
-
-
-// Array di utenti
 const users = [
   {
     id: "user-1",
-    firstName: "Daniele",
-    lastName: "Capannini",
-    email: "daniele.capannini@studio.unibo.it",
+    firstName: "Elisa",
+    lastName: "Ruffini",
+    email: "elisa.ruffini@studio.unibo.it",
     password: "Password01!",
-    degreeType: "magistrale",
+    degreeType: "triennale",
     photo: null,
-    birthDate: new Date("1999-05-21"),
-    averageGrade: 28,
-    bio: "Studente appassionato di informatica."
+    birthDate: new Date("2005-05-15"),
+    averageGrade: 26,
+    bio: "Studente di ingegneria e scienze informatiche, al secondo anno di triennale."
   },
   {
     id: "user-2",
@@ -27,11 +20,11 @@ const users = [
     lastName: "Rossi",
     email: "giulia.rossi@studio.unibo.it",
     password: "Password02!",
-    degreeType: "triennale",
+    degreeType: "dottorato",
     photo: null,
-    birthDate: new Date("2001-08-10"),
-    averageGrade: 27,
-    bio: "Studentessa magistrale in ingegneria."
+    birthDate: new Date("2000-08-10"),
+    averageGrade: 30,
+    bio: "Dottoranda in Business Intelligence."
   },
   {
     id: "user-3",
@@ -43,7 +36,7 @@ const users = [
     photo: null,
     birthDate: new Date("1995-02-14"),
     averageGrade: 30,
-    bio: "Dottorando in matematica applicata."
+    bio: "Dottorando in visione artificiale."
   },
   {
     id: "user-4",
@@ -54,8 +47,8 @@ const users = [
     degreeType: "magistrale",
     photo: null,
     birthDate: new Date("2001-04-12"),
-    averageGrade: 30,
-    bio: "proprietario di sta app."
+    averageGrade: 27,
+    bio: "Cofondatore di SmartTutoring e amministratore dell'applicazione."
   },
   {
     id: "user-5",
@@ -65,9 +58,33 @@ const users = [
     password: "Password01!",
     degreeType: "magistrale",
     photo: null,
-    birthDate: new Date("2001-04-12"),
+    birthDate: new Date("1999-08-15"),
+    averageGrade: 29,
+    bio: "Cofondatore di SmartTutoring e amministratore dell'applicazione."
+  },
+  {
+    id: "user-6",
+    firstName: "Francesca",
+    lastName: "Proni",
+    email: "francesca.proni@studio.unibo.it",
+    password: "Password01!",
+    degreeType: "triennale",
+    photo: null,
+    birthDate: new Date("2003-11-18"),
+    averageGrade: 25,
+    bio: "Studentessa triennale e appassionata di intelligenza artificiale."
+  },
+  {
+    id: "user-7",
+    firstName: "Manuel",
+    lastName: "Andruccioli",
+    email: "manuel.andruccioli@studio.unibo.it",
+    password: "Password01!",
+    degreeType: "dottorato",
+    photo: null,
+    birthDate: new Date("1999-03-22"),
     averageGrade: 30,
-    bio: "proprietario di sta app."
+    bio: "Tutor di Applicazioni e Servizi Web."
   }
 ];
 
@@ -79,7 +96,6 @@ const admins = [{
     }
 ];
 
-// Array di lezioni
 const lessons = [
   {
     id: "lesson-1",
@@ -87,7 +103,7 @@ const lessons = [
     student: null,
     time: "9:00",
     subject: "Analisi",
-    date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // tra 3 giorni
+    date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
     duration: 60,
     price: 20,
     status: "available",
@@ -99,7 +115,7 @@ const lessons = [
     student: null,
     time: "10:00",
     subject: "Ingegneria del software",
-    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // tra 5 giorni
+    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
     duration: 90,
     price: 30,
     status: "available",
@@ -111,7 +127,7 @@ const lessons = [
     student: null,
     time: "11:00",
     subject: "Basi di Dati",
-    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // tra 7 giorni
+    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 
     duration: 60,
     price: 25,
     status: "available",
@@ -273,6 +289,54 @@ const lessons = [
     status: "booked",
     notes: "Regressione lineare e overfitting."
   },
+  {
+    id: "lesson-17",
+    teacher: "manuel.andruccioli@studio.unibo.it",
+    student: null,
+    time: "9:00",
+    subject: "Applicazioni Web",
+    date: new Date(Date.now() + 19 * 24 * 60 * 60 * 1000),
+    duration: 90,
+    price: 30,
+    status: "available",
+    notes: "Introduzione a REST API e architettura client-server."
+  },
+  {
+    id: "lesson-18",
+    teacher: "manuel.andruccioli@studio.unibo.it",
+    student: null,
+    time: "11:00",
+    subject: "Applicazioni Web",
+    date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
+    duration: 120,
+    price: 35,
+    status: "available",
+    notes: "Async/await, promise e gestione degli errori."
+  },
+  {
+    id: "lesson-19",
+    teacher: "luca.bianchi@studio.unibo.it",
+    student: null,
+    time: "14:00",
+    subject: "Visione Artificiale",
+    date: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
+    duration: 120,
+    price: 40,
+    status: "available",
+    notes: "Introduzione al riconoscimento di immagini."
+  },
+  {
+    id: "lesson-20",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: null,
+    time: "18:00",
+    subject: "Business Intelligence",
+    date: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000),
+    duration: 120,
+    price: 45,
+    status: "available",
+    notes: "Data warehouse e strumenti di analisi."
+  }
 ];
 
 
@@ -280,7 +344,7 @@ const reviews = [
   {
     id: "review-1",
     teacher: "giulia.rossi@studio.unibo.it",
-    student: "daniele.capannini@studio.unibo.it",
+    student: "elisa.ruffini@studio.unibo.it",
     rating: 5,
     comment: "Ottima spiegazione e molto disponibile."
   },
@@ -294,14 +358,14 @@ const reviews = [
   {
     id: "review-3",
     teacher: "luca.bianchi@studio.unibo.it",
-    student: "daniele.capannini@studio.unibo.it",
+    student: "elisa.ruffini@studio.unibo.it",
     rating: 5,
     comment: "Spiegazioni estremamente chiare e dettagliate."
   },
   {
     id: "review-4",
     teacher: "luca.cantagallo@studio.unibo.it",
-    student: "daniele.capannini@studio.unibo.it",
+    student: "elisa.ruffini@studio.unibo.it",
     rating: 4,
     comment: "Molto preparato, ottimo approccio."
   },
@@ -346,33 +410,96 @@ const reviews = [
     student: "luca.bianchi@studio.unibo.it",
     rating: 4,
     comment: "Ben strutturata la lezione, molto utile."
+  },
+  {
+    id: "review-11",
+    teacher: "manuel.andruccioli@studio.unibo.it",
+    student: "elisa.ruffini@studio.unibo.it",
+    rating: 5,
+    comment: "Lezione molto chiara e ben organizzata."
+  },
+  {
+    id: "review-12",
+    teacher: "manuel.andruccioli@studio.unibo.it",
+    student: "daniel.capannini@studio.unibo.it",
+    rating: 4,
+    comment: "Ottima spiegazione, esempi pratici utilissimi."
+  },
+  {
+    id: "review-13",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "francesca.proni@studio.unibo.it",
+    rating: 5,
+    comment: "Spiegazioni semplici e molto efficaci."
+  },
+  {
+    id: "review-14",
+    teacher: "luca.bianchi@studio.unibo.it",
+    student: "francesca.proni@studio.unibo.it",
+    rating: 4,
+    comment: "Lezione interessante e ben strutturata."
+  },
+  {
+    id: "review-15",
+    teacher: "luca.cantagallo@studio.unibo.it",
+    student: "francesca.proni@studio.unibo.it",
+    rating: 5,
+    comment: "Molto disponibile e preparato."
+  },
+  {
+    id: "review-16",
+    teacher: "giulia.rossi@studio.unibo.it",
+    student: "manuel.andruccioli@studio.unibo.it",
+    rating: 4,
+    comment: "Contenuti chiari, ritmo un po’ veloce ma efficace."
+  },
+  {
+    id: "review-17",
+    teacher: "luca.bianchi@studio.unibo.it",
+    student: "manuel.andruccioli@studio.unibo.it",
+    rating: 5,
+    comment: "Ottima capacità di spiegare concetti complessi."
+  },
+  {
+    id: "review-18",
+    teacher: "manuel.andruccioli@studio.unibo.it",
+    student: "luca.cantagallo@studio.unibo.it",
+    rating: 4,
+    comment: "Lezione pratica e molto utile."
+  },
+  {
+    id: "review-19",
+    teacher: "luca.cantagallo@studio.unibo.it",
+    student: "manuel.andruccioli@studio.unibo.it",
+    rating: 5,
+    comment: "Spiegazione chiara e ben approfondita."
   }
 ];
 
 const reports = [
   {
-    reporter: "daniele.capannini@studio.unibo.it",
+    reporter: "elisa.ruffini@studio.unibo.it",
     reported: "giulia.rossi@studio.unibo.it",
     reason: "comportamento-scorretto",
     comment: "Durante una lezione online ha mostrato poca disponibilità nel rispondere alle domande.",
     status: "pending",
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 giorni fa
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), 
   },
   {
     reporter: "luca.bianchi@studio.unibo.it",
-    reported: "daniele.capannini@studio.unibo.it",
+    reported: "elisa.ruffini@studio.unibo.it",
     reason: "linguaggio-offensivo",
     comment: "Ha utilizzato un tono di voce e un linguaggio inappropriato durante la collaborazione.",
     status: "pending",
-    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 giorno fa
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), 
   },
   {
-    reporter: "daniele.capannini@studio.unibo.it",
+    reporter: "elisa.ruffini@studio.unibo.it",
     reported: "luca.bianchi@studio.unibo.it",
     reason: "contenuti-inappropriati",
     comment: "Ha condiviso materiale non pertinente e non appropriato alla lezione.",
     status: "pending",
-    createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 ore fa
+    createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000), 
   },
   {
     reporter: "giulia.rossi@studio.unibo.it",
@@ -380,19 +507,18 @@ const reports = [
     reason: "spam-pubblicita",
     comment: "Ha inviato messaggi pubblicitari non richiesti durante una sessione di tutoraggio.",
     status: "pending",
-    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 ore fa
+    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), 
   },
   {
     reporter: "giulia.rossi@studio.unibo.it",
-    reported: "daniele.capannini@studio.unibo.it",
+    reported: "elisa.ruffini@studio.unibo.it",
     reason: "altro",
     comment: "Comportamento ambiguo e disturbante durante le attività del gruppo di studio.",
     status: "pending",
-    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 ore fa
+    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000), 
   }
 ]
 
 
 
-// Esportiamo i dati usando CommonJS
 module.exports = { users, lessons, reviews, admins, reports };
