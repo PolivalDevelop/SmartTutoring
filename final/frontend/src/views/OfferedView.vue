@@ -67,7 +67,6 @@ const filters = ref({
 
 function handleFiltersUpdate(newFilters) {
   filters.value = newFilters  
-  console.log("Filtri aggiornati in BookedView:", filters.value);
 }
 
 const filteredLessons = computed(() => {
@@ -168,17 +167,12 @@ watch(
 /* Funzione centralizzata */
 function loadLessons() {
   const email = routeEmail.value;
-  console.log("Caricamento lezioni offerte per email:", email);
 
   fetchOfferedLessons(email)
     .then(data => {
       if(isOwner.value){
-        console.log("Utente proprietario della pagina, mostro tutte le lezioni offerte.");
-        console.log("Lezioni offerte:", data);
         myOfferedLessons.value = data;
-        console.log("Lezioni offerte mostrate:", myOfferedLessons.value);
       }else{
-        console.log("Utente non proprietario, applico filtro per escludere le proprie lezioni.");
         const lessons = data.filter(lesson => lesson.status === 'available');
         myOfferedLessons.value = lessons;
       }
@@ -193,7 +187,6 @@ function handleBook(lesson) {
 }
 
 function handleEdit(lesson) {
-  console.log("Emetto evento di modifica per la lezione:", lesson);
   emit('edit', lesson)
 }
 </script>
