@@ -42,13 +42,11 @@ onMounted(() => {
 
   // 2️⃣ Ricevo la lista
   socket.on("report:open", (report) => {
-    console.log("Ricevuta lista report aperti:", report);
     reports.value = report;
   });
 
   // 3️⃣ Aggiornamenti in tempo reale
   socket.on("report:updated", () => {
-    console.log("Ricevuto aggiornamento report");
     socket.emit("report:getOpen", getCurrentUser().value.email); // Ricarica lista
   });
 });
@@ -64,7 +62,6 @@ function deleteReport(report) {
       console.error("Errore durante l'eliminazione del report:", response.error);
       return;
     }else {
-      console.log("Report eliminato con successo:", response.data);
       emit('show-toast', '✅ Report eliminato correttamente!');
     }
   });
