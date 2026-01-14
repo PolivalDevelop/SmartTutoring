@@ -20,8 +20,8 @@
 
         <div class="profile-rating" aria-label="Valutazione media utente">
           <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
-          <span class="rating-value">({{ 0 }} / 5)</span>
-          <span class="rating-count">• {{ 0 }} valutazioni</span>
+          <span class="rating-value">({{ (user?.avgRating || 0).toFixed(2)  }} / 5)</span>
+          <span class="rating-count">• {{ user?.numReviews || 0 }} valutazioni</span>
         </div>
       </div>
     </div>
