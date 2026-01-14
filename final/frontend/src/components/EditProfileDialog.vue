@@ -72,7 +72,6 @@ const emit = defineEmits(['close', 'save'])
 const props = defineProps({
   user: { type: Object, required: true }
 })
-console.log("Utente da modificare:", props.user);
 
 const defaultPhoto = defaultPhotoPath
 const photoPreview = ref(null);
