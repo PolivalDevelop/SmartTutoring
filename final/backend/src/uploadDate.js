@@ -76,15 +76,15 @@ const users = [
   },
   {
     id: "user-7",
-    firstName: "Manuel",
-    lastName: "Andruccioli",
-    email: "manuel.andruccioli@studio.unibo.it",
+    firstName: "Valerio",
+    lastName: "Di Zio",
+    email: "valerio.di.zio@studio.unibo.it",
     password: "Password01!",
-    degreeType: "dottorato",
+    degreeType: "magistrale",
     photo: null,
-    birthDate: new Date("1999-03-22"),
+    birthDate: new Date("2000-12-28"),
     averageGrade: 30,
-    bio: "Tutor di Applicazioni e Servizi Web."
+    bio: "Prossimo alla Laurea."
   }
 ];
 
