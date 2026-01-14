@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const User = require("./models/userModel");       // <--- IMPORT NECESSARIO
+const User = require("./models/userModel");
 const Lesson = require("./models/lessonModel");
 const Review  = require("./models/reviewModel");
 const Admin  = require("./models/adminModel");
@@ -27,7 +27,6 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 
-// SERVER HTTP + SOCKET.IO
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -37,7 +36,6 @@ const io = new Server(server, {
   }
 });
 
-// 🔗 MONGO DB (VERSIONE PER DOCKER)
 const MONGO_URI = process.env.MONGO_URI || "mongodb://mongodb:27017/tutoring";
 
 mongoose
@@ -56,31 +54,24 @@ mongoose
     await Admin.insertMany(admins);
     await Report.insertMany(reports);
 
-    // Controllo utenti
     const userCount = await User.countDocuments();
 
-    // Controllo lezioni
     const lessonCount = await Lesson.countDocuments();
 
-    // Controllo recensioni
     const reviewCount = await Review.countDocuments();
 
-    // Controllo admin
     const adminCount = await Admin.countDocuments();
 
-    // Controllo segnalazioni
     const reportCount = await Report.countDocuments();
   })
-  .catch((err) => console.error("❌ MongoDB error:", err));
+  .catch((err) => console.error("MongoDB error:", err));
 
-// 🔥 SOCKET.IO HANDLERS
 io.on("connection", (socket) => {
   const jwtSettings = {
     secret: process.env.JWT_SECRET,
     expires: process.env.JWT_EXPIRES
   };
 
-  // ROUTES SOCKET
   require("./routes/userRouter")(socket, io, jwtSettings);
   require("./routes/lessonRouter")(socket, io);
   require("./routes/reviewRouter")(socket, io);
@@ -92,7 +83,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// 🚀 AVVIO SERVER
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
 });

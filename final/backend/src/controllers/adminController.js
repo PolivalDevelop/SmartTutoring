@@ -1,9 +1,6 @@
 
 Admin = require("../models/adminModel");
 
-// ----------------------------------------
-// CHECK ADMIN EXISTS
-// ----------------------------------------
 
 exports.checkAdminSocket = async (emailAdmin) => {
   const admin = await Admin.findOne({ emailAdmin: emailAdmin });

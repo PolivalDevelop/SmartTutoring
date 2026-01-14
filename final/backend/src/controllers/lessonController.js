@@ -1,11 +1,6 @@
-// lessonController.js (versione Socket.io)
-
 const Lesson = require("../models/lessonModel");
 const User = require("../models/userModel");
 
-// ----------------------------------------
-// CREATE LESSON
-// ----------------------------------------
 exports.createLessonSocket = async (data) => {
   const { teacher, subject, time, date, duration, price } = data;
 
@@ -27,11 +22,6 @@ exports.createLessonSocket = async (data) => {
   return await newLesson.save();
 };
 
-// ----------------------------------------
-// GET ALL LESSONS
-// ----------------------------------------
-
-
 exports.getAllLessonsSocket = async () => {
   try {
     const now = new Date();
@@ -52,10 +42,6 @@ exports.getAllLessonsSocket = async () => {
   }
 };
 
-
-// ----------------------------------------
-// DELETE LESSON
-// ----------------------------------------
 exports.deleteLessonSocket = async (id) => {
   const deleted = await Lesson.findByIdAndDelete(id);
 
@@ -72,9 +58,9 @@ exports.getLessonsByStudentSocket = async (email) => {
 
   const lessons = await Lesson.find({
       student: email,
-      date: { $gte: now } // solo date future
+      date: { $gte: now } 
     })
-    .sort({ date: 1 }); // ordina per data crescente
+    .sort({ date: 1 }); 
 
   return lessons;
 };
@@ -86,9 +72,9 @@ exports.getLessonsByTeacherSocket = async (email) => {
 
   const lessons = await Lesson.find({
       teacher: email,
-      date: { $gte: now } // solo date future
+      date: { $gte: now }
     })
-    .sort({ date: 1 }); // ordina per data crescente
+    .sort({ date: 1 }); 
 
   return lessons;
 };
