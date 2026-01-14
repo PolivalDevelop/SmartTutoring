@@ -134,7 +134,6 @@ const props = defineProps({
   color: var(--accent);
 }
 
-/* Mobile */
 @media (max-width: 600px) {
   .lesson-header, .lesson-footer {
     flex-direction: column;
@@ -150,7 +149,6 @@ const props = defineProps({
   }
 }
 
-/* Larger screens */
 @media (min-width: 880px) {
   .lesson-line {
     grid-template-columns: 1fr auto;
@@ -158,18 +156,17 @@ const props = defineProps({
   }
 }
 
-/* Bottoni disabilitati con tinta verde */
 html[data-theme='light'] button:disabled {
-  background-color: #d1fae5; /* verde pastello */
-  color: #15803d;            /* verde scuro */
+  background-color: #d1fae5; 
+  color: #15803d;           
   border: 1px solid #15803d;
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 html[data-theme='dark'] button:disabled {
-  background-color: #1e3a2f; /* verde profondo */
-  color: #4ade80;            /* verde chiaro */
+  background-color: #1e3a2f; 
+  color: #4ade80;            
   border: 1px solid #4ade80;
   opacity: 0.6;
   cursor: not-allowed;

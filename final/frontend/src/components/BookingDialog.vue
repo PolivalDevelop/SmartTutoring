@@ -29,8 +29,6 @@ defineProps({ lesson: Object })
 </script>
 
 <style scoped>
-/* modal.css */
-/* Modal booking */
 .booking-dialog.hidden { display: none; }
 .booking-dialog {
   position: fixed;
@@ -62,10 +60,8 @@ defineProps({ lesson: Object })
   transition: transform .18s ease, opacity .18s ease;
 }
 
-/* show animation (remove hidden then add .open via JS if vuoi animare) */
 .booking-dialog.open .booking-panel { transform: translateY(0); }
 
-/* Close button */
 .dialog-close {
   position: absolute;
   top: 0.5rem;
@@ -81,7 +77,6 @@ defineProps({ lesson: Object })
 }
 .dialog-close:focus { outline: 2px solid var(--accent); }
 
-/* Header/body/footer */
 .dialog-header { margin-bottom: .5rem; }
 .dialog-sub { margin: .25rem 0 0; color: var(--muted); font-size: .95rem; }
 
@@ -95,10 +90,8 @@ defineProps({ lesson: Object })
   margin-top: .8rem;
 }
 
-/* focus styles for buttons */
 .dialog-footer .btn:focus { outline: 3px solid color-mix(in srgb, var(--accent) 25%, transparent); outline-offset: 2px; }
 
-/* Responsive */
 @media (max-width: 520px) {
   .booking-panel { padding: .85rem; width: calc(100% - 1.6rem); }
   .dialog-footer { flex-direction: column-reverse; align-items: stretch; }

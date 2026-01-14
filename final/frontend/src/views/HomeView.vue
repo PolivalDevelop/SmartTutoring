@@ -14,7 +14,6 @@
         @book="handleBook(lesson)"
         v-if="filteredLessons.length > 0"
       />
-      <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-icon">📚</div>
         <h3 class="empty-title">Nessuna lezione disponibile</h3>
@@ -61,21 +60,18 @@ function handleFiltersUpdate(newFilters) {
 const filteredLessons = computed(() => {
   return availableLessons.value.filter(lesson => {
 
-    // Materia
     if (filters.value.course &&
         !lesson.subject.toLowerCase().includes(filters.value.course.toLowerCase())) {
       return false
     }
 
-    // Autore
     if (filters.value.author &&
         !lesson.teacher.toLowerCase().includes(filters.value.author.toLowerCase())) {
       return false
     }
 
-    // Data
     if (filters.value.date) {
-      const lessonDate = lesson.date.slice(0, 10)      // "2025-11-26"
+      const lessonDate = lesson.date.slice(0, 10)      
       const filterDate = filters.value.date.slice(0, 10)
 
       if (lessonDate !== filterDate) {
@@ -83,13 +79,11 @@ const filteredLessons = computed(() => {
       }
     }
 
-    // Prezzo minimo
     if (filters.value.minPrice !== '' &&
         lesson.price < filters.value.minPrice) {
       return false
     }
 
-    // Prezzo massimo
     if (filters.value.maxPrice !== '' &&
         lesson.price > filters.value.maxPrice) {
       return false
@@ -102,10 +96,8 @@ const filteredLessons = computed(() => {
 
 onMounted(() => {
 
-  // 1️⃣ Chiedo al server la lista delle lezioni disponibili
   socket.emit("lessons:getAvailable");
 
-  // 2️⃣ Ricevo la lista
   socket.on("lessons:available", (lessons) => {
     if(isLoggedIn.value){
       const currentUserEmail = getCurrentUser().value.email;
@@ -115,9 +107,8 @@ onMounted(() => {
     }
   });
 
-  // 3️⃣ Aggiornamenti in tempo reale
   socket.on("lessons:updated", () => {
-    socket.emit("lessons:getAvailable"); // Ricarica lista
+    socket.emit("lessons:getAvailable"); 
   });
 });
 
@@ -128,7 +119,6 @@ onUnmounted(() => {
 
 
 
-// Emit verso App.vue
 const emit = defineEmits(['book'])
 
 function handleBook(lesson) {
@@ -140,7 +130,6 @@ function handleBook(lesson) {
 </script>
 
 <style scoped>
-/* Main content */
 main.content {
   display: flex;
   flex-direction: column;
@@ -168,7 +157,6 @@ main.content {
   flex-wrap: wrap;
 }
 
-/* Lessons grid */
 .results {
   display: grid;
   grid-template-columns: 1fr;
@@ -177,7 +165,6 @@ main.content {
 }
 
 
-/* Larger screens */
 @media (min-width: 880px) {
   .results {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -185,7 +172,6 @@ main.content {
 
 }
 
-/* Empty state */
 .empty-state {
   display: flex;
   flex-direction: column;

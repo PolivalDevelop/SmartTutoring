@@ -125,7 +125,6 @@ header.app-header {
   gap: 0.5rem;
 }
 
-/* Logged menu */
 .guest-menu {
   display: flex;
   align-items: center;
@@ -147,7 +146,6 @@ header.app-header {
   box-shadow: var(--shadow-sm);
 }
 
-/* Logged menu */
 .logged-menu {
   display: flex;
   align-items: center;
@@ -179,7 +177,6 @@ header.app-header {
   color: white;
 }
 
-/* Toggle tema */
 .theme-toggle {
   width: 3rem;
   height: 3rem;

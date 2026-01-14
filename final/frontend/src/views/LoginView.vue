@@ -73,19 +73,16 @@ const socket = inject("socket");
 const { toggleTheme } = useDarkMode()
 const router = useRouter()
 
-// Stato form
 const form = reactive({
   email: '',
   password: ''
 })
 
-// Toggle password
 const showPassword = ref(false)
 function togglePassword() {
   showPassword.value = !showPassword.value
 }
 
-// Toast
 const toast = reactive({ visible: false, message: '' })
 let toastTimeout
 function showToast(message) {
@@ -95,7 +92,6 @@ function showToast(message) {
   toastTimeout = setTimeout(() => (toast.visible = false), 3000)
 }
 
-// Errori campi
 const errors = reactive({ email: false, password: false })
 
 function showFieldError(field) {
@@ -109,7 +105,6 @@ function showFieldError(field) {
   })
 }
 
-// Submit
 function handleSubmit() {
   errors.email = false
   errors.password = false
@@ -135,7 +130,7 @@ function handleSubmit() {
         return
       }
 
-      login(res.data) // salva nel tuo store
+      login(res.data) 
       socket.emit("admin:check", form.email, (adminRes) => {
         if (adminRes.success) {
           isAdmin.value = true

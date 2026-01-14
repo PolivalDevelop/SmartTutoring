@@ -3,7 +3,6 @@
 </template>
 
 <style scoped>
-/* Footer */
 .footer-note {
   text-align: center;
   color: var(--muted);

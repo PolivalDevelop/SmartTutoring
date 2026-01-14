@@ -1,9 +1,7 @@
-/* Transizioni tema fluide */
 html, body, .lesson-card, .sidebar, .content-header, header.app-header {
   transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
 }
 
-/* Light/Dark override */
 html[data-theme='dark'] {
   --bg: #0f172a;
   --card: #1e293b;

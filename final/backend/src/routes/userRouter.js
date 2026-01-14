@@ -1,5 +1,3 @@
-// socket/userSocket.js
-
 const controller = require("../controllers/userController")
 const path = require("path");
 const fs = require("fs");
@@ -11,20 +9,18 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 
 module.exports = function (socket, io, jwtSettings) {
 
-  // 1. /  → createUser
   socket.on("user:register", async (data, callback) => {
     try {
       if (data.photo && data.photo.startsWith("data:image/")) {
         const matches = data.photo.match(/^data:image\/(\w+);base64,(.+)$/);
         if (matches) {
-          const ext = matches[1]; // png, jpeg, ecc.
+          const ext = matches[1]; 
           const base64Data = matches[2];
           const filename = `${Date.now()}.${ext}`;
           const filePath = path.join(UPLOAD_DIR, filename);
 
           fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
 
-          // Aggiorna il path della foto nel formato che il client può richiedere
           data.photo = `/uploads/${filename}`;
         }
       }
@@ -38,15 +34,13 @@ module.exports = function (socket, io, jwtSettings) {
   });
 
 
-  // 2. /session → getSessionData
   socket.on("session:get", () => {
     controller.getSessionData(socket)
   })
 
-  // 3. /session/login  → loginUser
   socket.on("session:login", async (data, callback) => {
   try {
-    const user = await controller.loginUser(data, jwtSettings); // controller ritorna utente o token
+    const user = await controller.loginUser(data, jwtSettings); 
     callback({ success: true, data: user });
   } catch (err) {
     callback({ success: false, error: err.message });
@@ -54,12 +48,10 @@ module.exports = function (socket, io, jwtSettings) {
 });
 
 
-  // 4. /session/logout → logoutUser
   socket.on("session:logout", () => {
     controller.logoutUser(socket)
   })
 
-  // 6. /:username DELETE → deleteUser
   socket.on("user:delete", async (data, callback) => {
     try {
       const result = await controller.deleteUser(socket, data)

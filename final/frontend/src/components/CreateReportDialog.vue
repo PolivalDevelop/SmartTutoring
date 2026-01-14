@@ -8,7 +8,6 @@
 
       <form @submit.prevent="sendReport" autocomplete="off">
         
-        <!-- MOTIVO DEL REPORT -->
         <div class="form-group" style="grid-column: span 2;">
           <label for="reason">Motivo</label>
           <select id="reason" v-model="form.reason" required>
@@ -21,7 +20,6 @@
           </select>
         </div>
 
-        <!-- COMMENTO -->
         <div class="form-group" style="grid-column: span 2;">
           <label for="comment">Descrizione del problema</label>
           <textarea 
@@ -34,7 +32,6 @@
           ></textarea>
         </div>
 
-        <!-- Bottoni -->
         <div class="dialog-actions">
           <button type="button" class="btn btn-ghost" @click="$emit('close')">Annulla</button>
           <button type="submit" class="btn btn-primary">Invia segnalazione</button>
@@ -80,7 +77,6 @@ function sendReport() {
 </script>
 
 <style scoped>
-/* Mantengo tutto il tuo stile originale del dialog */
 
 .edit-dialog {
   position: fixed;

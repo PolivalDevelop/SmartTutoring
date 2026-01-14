@@ -10,7 +10,6 @@
       @show-toast="showToast"
     />
 
-    <!-- FAB pubblicazione lezione -->
     <button
       v-if="isLoggedIn"
       class="fab-main"
@@ -197,7 +196,6 @@ function showToast(message) {
   grid-template-columns: 1fr;
 }
 
-/* WITH SIDEBAR - Desktop */
 @media (min-width: 880px) {
   .app.with-sidebar {
     display: grid;
@@ -205,7 +203,6 @@ function showToast(message) {
   }
 }
 
-/* WITH SIDEBAR - Mobile */
 @media (max-width: 879px) {
   .app.with-sidebar {
     display: flex;

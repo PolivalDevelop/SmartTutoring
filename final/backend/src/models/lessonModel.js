@@ -9,17 +9,17 @@ const lessonSchema = new mongoose.Schema(
       default: () => uuidv4(),
     },
     teacher: {
-      type: String,       // email del teacher
+      type: String,       
       required: true,
       trim: true,
     },
     student: {
-      type: String,       // email dello studente
+      type: String,      
       default: null,
       trim: true,
     },
     time: {
-      type: String,       // email dello studente
+      type: String,       
       default: "9:00",
       trim: true,
     },  
@@ -50,7 +50,7 @@ const lessonSchema = new mongoose.Schema(
     },
     duration: {
       type: Number,
-      default: 60, // minutes
+      default: 60, 
     },
     price: {
       type: Number,
@@ -74,7 +74,6 @@ const lessonSchema = new mongoose.Schema(
   }
 );
 
-// Validation: a booked lesson must have a student assigned
 lessonSchema.pre("save", function (next) {
   if (this.status === "booked" && !this.student) {
     return next(new Error("A booked lesson must have a student assigned."));

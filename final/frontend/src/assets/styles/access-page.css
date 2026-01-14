@@ -1,4 +1,3 @@
-/* access-form.css */
 .access-container {
   display: flex;
   justify-content: center;
@@ -78,7 +77,6 @@ input.error {
   position: absolute;
 }
 
-/* Profile pic + edit */
 .profile-header {
   display: flex;
   align-items: center;

@@ -117,14 +117,13 @@ async function saveChanges() {
 </script>
 
 <style scoped>
-/* MOBILE FIRST: Full Screen di default */
 .edit-dialog {
   position: fixed;
   inset: 0;
   z-index: 1000;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Allinea in alto per mobile */
+  align-items: flex-start; 
 }
 
 .edit-dialog.open {
@@ -132,7 +131,7 @@ async function saveChanges() {
 }
 
 .edit-overlay {
-  display: none; /* Su mobile non serve l'ombra, copriamo tutto */
+  display: none; 
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.5);
@@ -141,17 +140,16 @@ async function saveChanges() {
 
 .edit-panel {
   position: relative;
-  background: var(--bg); /* Sfondo pieno, non card */
+  background: var(--bg); 
   width: 100%;
-  height: 100%; /* Occupa tutto lo schermo */
+  height: 100%; 
   padding: 1rem;
-  overflow-y: auto; /* Scroll interno naturale */
+  overflow-y: auto; 
   z-index: 1001;
   display: flex;
   flex-direction: column;
 }
 
-/* Header specifico per distanziare il titolo e la X */
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -184,7 +182,7 @@ form {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  padding-bottom: 2rem; /* Spazio extra in fondo per lo scroll */
+  padding-bottom: 2rem; 
 }
 
 .form-group {
@@ -202,10 +200,10 @@ form {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem; /* Input più alti per il touch */
+  padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
-  background: var(--card); /* Leggero contrasto con lo sfondo full page */
+  background: var(--card); 
   color: var(--text);
   font-size: 1rem;
   font-family: inherit;
@@ -263,27 +261,26 @@ form {
 .dialog-actions .btn {
   width: 100%;
   justify-content: center;
-  padding: 1rem; /* Bottoni belli grossi su mobile */
+  padding: 1rem; 
   font-size: 1rem;
 }
 
-/* DESKTOP (Ripristina lo stile Modale "Pop-up") */
 @media(min-width: 600px) {
   .edit-dialog {
-    align-items: center; /* Centra verticalmente */
+    align-items: center; 
     padding: 1rem;
   }
 
   .edit-overlay {
-    display: block; /* Mostra ombra */
+    display: block; 
   }
 
   .edit-panel {
-    background: var(--card); /* Torna background card */
+    background: var(--card); 
     width: 100%;
     height: auto;
     max-width: 650px;
-    max-height: 90vh; /* Limite altezza */
+    max-height: 90vh; 
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     padding: 2rem;
@@ -297,8 +294,6 @@ form {
     padding-bottom: 0;
   }
   
-  /* Nascondi la X grande header e usa quella assoluta classica se preferisci, 
-     o mantieni questa logica flex ma riadattata */
   
   form {
     grid-template-columns: 1fr 1fr;
@@ -315,7 +310,7 @@ form {
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: 0.5rem; /* Input normali per mouse */
+    padding: 0.5rem; 
     background: var(--bg);
   }
 

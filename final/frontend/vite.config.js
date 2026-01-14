@@ -7,12 +7,12 @@ export default defineConfig({
   
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),  // ⬅ necessario per importare "@/..."
+      '@': path.resolve(__dirname, './src'),  
     },
   },
 
   server: {
-    host: '0.0.0.0',  // ⬅ necessario in Docker
-    port: 8080,         // ⬅ porta frontend
+    host: '0.0.0.0', 
+    port: 8080,        
   }
 })

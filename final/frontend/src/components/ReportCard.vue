@@ -197,7 +197,6 @@ defineEmits(["delete-report"]);
   font-weight: 500;
   transition: color 0.2s;
   
-  /* Gestione testo lungo */
   white-space: normal; 
   overflow-wrap: anywhere; 
   word-break: break-word;
@@ -250,7 +249,6 @@ defineEmits(["delete-report"]);
   }
 }
 
-/* Tablet e Desktop: Layout leggermente diverso se serve */
 @media (min-width: 600px) {
   .actions {
     width: auto;

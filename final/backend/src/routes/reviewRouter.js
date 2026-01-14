@@ -1,11 +1,8 @@
-// reviewSocket.js
 const controller = require("../controllers/reviewController");
 
 module.exports = function (socket, io) {
 
-  // -----------------------------------------
-  // CREATE REVIEW
-  // -----------------------------------------
+  
   socket.on("review:create", async (data, callback) => {
     try {
       const review = await controller.createReviewSocket(data);

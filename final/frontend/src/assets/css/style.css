@@ -1,6 +1,5 @@
 @import url('base.css');
 
-/* Main content */
 main.content {
   display: flex;
   flex-direction: column;
@@ -28,7 +27,6 @@ main.content {
   flex-wrap: wrap;
 }
 
-/* Lessons grid */
 .results {
   display: grid;
   grid-template-columns: 1fr;
@@ -40,13 +38,13 @@ main.content {
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  padding: 0.85rem 1rem; /* leggermente meno padding */
+  padding: 0.85rem 1rem;
   transition: transform .2s ease, box-shadow .2s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.6rem; /* più vicino */
-  min-height: 110px; /* ridotta un po’ */
+  gap: 0.6rem; 
+  min-height: 110px; 
 }
 
 .lesson-card:hover {
@@ -130,7 +128,6 @@ main.content {
 }
 
 
-/* Mobile: rendi la card più verticale */
 @media (max-width: 600px) {
   .lesson-header, .lesson-footer {
     flex-direction: column;
@@ -148,7 +145,6 @@ main.content {
 
 
 
-/* Larger screens */
 @media (min-width: 880px) {
   .app {
     display: grid;

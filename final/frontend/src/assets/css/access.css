@@ -1,6 +1,5 @@
 @import url('base.css');
 
-/* Access and sign in Page Styles */
 .access-container {
   display: flex;
   justify-content: center;
@@ -39,7 +38,7 @@ h2 {
 
 .password-wrapper input {
   flex: 1;
-  padding-right: 2.4rem; /* spazio per l'icona */
+  padding-right: 2.4rem; 
 }
 
 input[readonly] {

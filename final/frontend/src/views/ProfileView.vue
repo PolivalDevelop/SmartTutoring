@@ -2,7 +2,6 @@
   <main class="profile-container" role="main" aria-labelledby="profileTitle">
 
     <div class="profile-wrapper">
-      <!-- Profilo utente -->
       <PersonalProfile
         v-if="isMe && profileUser"
         :user="profileUser"
@@ -15,7 +14,6 @@
       />
       <p v-else class="loading">⏳ Caricamento profilo...</p>
 
-      <!-- RECENSIONI sotto al profilo -->
       <section class="reviews-section" id="reviewsList">
         <h3 class="reviews-title" v-if="reviews?.length > 0">Recensioni</h3>
 
@@ -103,7 +101,7 @@ const isMe = computed(() => {
 
 onMounted(() => {
   socket.on("review:updated", () => {
-    reviewByUserEmail(profileEmail.value) // Ricarica lista
+    reviewByUserEmail(profileEmail.value) 
       .then(userReviews => {
       reviews.value = userReviews;
       profileUser.value.numReviews = userReviews.length;
@@ -160,14 +158,12 @@ watch(
   gap: 2rem;
 }
 
-/* TESTO DI CARICAMENTO */
 .loading {
   text-align: center;
   color: var(--muted);
   font-size: 1rem;
 }
 
-/* SEZIONE RECENSIONI */
 .reviews-section {
   display: flex;
   flex-direction: column;

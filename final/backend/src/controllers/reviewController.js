@@ -1,15 +1,9 @@
-// reviewController.js (versione Socket.io)
-
 const Review  = require("../models/reviewModel");
 const User = require("../models/userModel") 
 
-// --------------------------------------------------
-// CREATE REVIEW
-// --------------------------------------------------
 exports.createReviewSocket = async (data) => {
   const { student, teacher, rating, comment } = data;
 
-  // Controlli utente
   const userStudent = await User.findOne({ email: student });
   if (!userStudent) throw new Error("Student not found");
 
@@ -20,7 +14,6 @@ exports.createReviewSocket = async (data) => {
     throw new Error("Student and teacher cannot be the same user");
   }
 
-  // Già recensita
   const existingReview = await Review.findOne({
     student: userStudent._id,
     teacher: userTeacher._id
@@ -30,7 +23,6 @@ exports.createReviewSocket = async (data) => {
     throw new Error("Review already exists for this student and teacher");
   }
 
-  // Crea nuova recensione
   const newReview = new Review({
     student: userStudent.email,
     teacher: userTeacher.email,

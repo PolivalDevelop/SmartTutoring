@@ -26,7 +26,6 @@
   />
 
   <section class="profile-card" aria-describedby="profileInfo">
-    <!-- HEADER -->
     <div class="profile-header">
       <img
         :src="photoUrl"
@@ -38,7 +37,6 @@
         <h2 class="profile-name">{{ user?.firstName }} {{ user?.lastName }}</h2>
         <p class="profile-role">{{ fullDegreeInfo }}</p>
 
-        <!-- Rating sempre visibile -->
         <div class="profile-rating" aria-label="Valutazione media utente">
           <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
           <span class="rating-value">({{ (user?.avgRating || 0).toFixed(2) }} / 5)</span>
@@ -49,7 +47,6 @@
 
     <hr />
 
-    <!-- INFO -->
     <div id="profileInfo" class="profile-info">
       <div class="info-item">
         <strong>Email:</strong>
@@ -65,13 +62,11 @@
       </div>
     </div>
 
-    <!-- BIO (se presente) -->
     <div v-if="user?.bio" class="profile-bio">
       <h3>Bio</h3>
       <p>{{ user?.bio }}</p>
     </div>
 
-    <!-- ACTIONS -->
     <div class="profile-actions">
       <button class="btn btn-ghost" v-if="getCurrentUser()?.value && !isAdmin.value" @click="openCreateReport()">Segnala Profilo</button>
       <button class="btn btn-ghost" v-if="isAdmin" @click="openBan()">Banna</button>
@@ -140,12 +135,10 @@ function openBan() {
   banDialogVisible.value.visible = true
 }
 
-// --- LOGICA CON I TOAST ---
 
 function createReview(newReview) {
   socket.emit("review:create", newReview, (response) => {
     if (!response.success) {
-      // Ora 'emit' è definito e funzionerà
       emit('show-toast', "❌ Errore durante la pubblicazione della recensione.");
       return;
     }
@@ -190,7 +183,6 @@ function banUser(email) {
   gap: 1.2rem;
 }
 
-/* HEADER mobile */
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -206,7 +198,6 @@ function banUser(email) {
   border: 2px solid var(--accent-light);
 }
 
-/* Testi centrati su mobile */
 .profile-name,
 .profile-role,
 .profile-rating {
@@ -244,7 +235,6 @@ function banUser(email) {
   font-size: 0.85rem;
 }
 
-/* INFO */
 .profile-info {
   display: flex;
   flex-direction: column;
@@ -262,7 +252,6 @@ function banUser(email) {
   font-size: 0.95rem;
 }
 
-/* BIO */
 .profile-bio {
   background: var(--surface);
   border-radius: var(--radius);
@@ -280,7 +269,6 @@ function banUser(email) {
   line-height: 1.5;
 }
 
-/* ACTIONS (stacked on mobile) */
 .profile-actions {
   display: flex;
   flex-direction: column;

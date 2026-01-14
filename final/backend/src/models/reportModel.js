@@ -13,7 +13,6 @@ const reportSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Reason selected from the dropdown menu
     reason: {
       type: String,
       required: true,
@@ -26,7 +25,6 @@ const reportSchema = new mongoose.Schema(
       ],
     },
 
-    // Text description provided by the user
     comment: {
       type: String,
       required: true,
@@ -34,25 +32,22 @@ const reportSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Report status (admin use)
     status: {
       type: String,
       enum: ["pending", "resolved"],
       default: "pending",
     },
 
-    // Optional: admin response
     createdAt: {
       type: Date,
       required: true,
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt automatically
+    timestamps: true, 
   }
 );
 
-// Prevent a user from reporting themselves
 reportSchema.pre("save", function (next) {
   if (this.reporter !== this.reportedUser) {
     next();

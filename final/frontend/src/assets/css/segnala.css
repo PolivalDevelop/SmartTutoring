@@ -1,6 +1,5 @@
 @import url('base.css');
 
-/* Container principale */
 .report-container {
   display: flex;
   justify-content: center;
@@ -10,7 +9,6 @@
   min-height: calc(100vh - 80px);
 }
 
-/* Card */
 .report-card {
   background: var(--card);
   color: var(--text);
@@ -38,8 +36,8 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem; /* leggermente più aria tra label e input */
-  margin-bottom: 1rem; /* aggiunge spazio visivo verso il gruppo successivo */
+  gap: 0.55rem; 
+  margin-bottom: 1rem; 
 }
 
 label {
@@ -74,7 +72,6 @@ textarea:focus {
   background: color-mix(in srgb, var(--accent) 6%, var(--card));
 }
 
-/* Fix per dark mode nei select */
 html[data-theme='dark'] select {
   background: var(--card);
   color: var(--text);
@@ -85,13 +82,11 @@ select option {
   color: var(--text);
 }
 
-/* Textarea */
 textarea {
   resize: vertical;
   min-height: 120px;
 }
 
-/* Bottoni */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -99,7 +94,6 @@ textarea {
   margin-top: 0.5rem;
 }
 
-/* Responsività */
 @media (max-width: 600px) {
   .report-card {
     padding: 1.5rem 1rem;

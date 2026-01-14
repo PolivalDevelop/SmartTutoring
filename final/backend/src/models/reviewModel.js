@@ -9,12 +9,12 @@ const reviewSchema = new mongoose.Schema(
           default: () => uuidv4(),
     },
     teacher: {
-      type: String,       // email del teacher
+      type: String,       
       required: true,
       trim: true,
     },
     student: {
-      type: String,       // email dello studente
+      type: String,       
       required: true,
       trim: true,
     },
@@ -32,7 +32,7 @@ const reviewSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // automatically adds createdAt and updatedAt
+    timestamps: true, 
   }
 );
 

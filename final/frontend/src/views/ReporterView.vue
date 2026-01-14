@@ -12,7 +12,6 @@
         @delete-report="deleteReport"
         v-if="reports.length > 0"
       />
-      <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-illustration">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,17 +36,14 @@ const reports = ref([]);
 
 onMounted(() => {
 
-  // 1️⃣ Chiedo al server la lista delle lezioni disponibili
   socket.emit("report:getOpen", getCurrentUser().value.email);
 
-  // 2️⃣ Ricevo la lista
   socket.on("report:open", (report) => {
     reports.value = report;
   });
 
-  // 3️⃣ Aggiornamenti in tempo reale
   socket.on("report:updated", () => {
-    socket.emit("report:getOpen", getCurrentUser().value.email); // Ricarica lista
+    socket.emit("report:getOpen", getCurrentUser().value.email);
   });
 });
 
@@ -70,7 +66,6 @@ function deleteReport(report) {
 </script>
 
 <style scoped>
-/* Main content */
 main.content {
   display: flex;
   flex-direction: column;
@@ -98,7 +93,6 @@ main.content {
   flex-wrap: wrap;
 }
 
-/* Lessons grid */
 .results {
   display: grid;
   grid-template-columns: 1fr;
@@ -107,7 +101,6 @@ main.content {
 }
 
 
-/* Larger screens */
 @media (min-width: 880px) {
   .results {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -115,7 +108,6 @@ main.content {
 
 }
 
-/* Empty state */
 .empty-state {
   grid-column: 1 / -1;
   display: flex;

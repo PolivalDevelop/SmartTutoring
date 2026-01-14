@@ -1,18 +1,12 @@
-// lessonSocket.js
 const controller = require("../controllers/lessonController");
 
 module.exports = function (socket, io) {
-
-  // ------------------------------------
-  // CREATE LESSON
-  // ------------------------------------
   socket.on("lesson:create", async (data, callback) => {
     try {
       const lesson = await controller.createLessonSocket(data);
 
       callback({ success: true, data: lesson });
 
-      // Notifica tutti i client che le lezioni sono cambiate
       io.emit("lessons:updated");
     } catch (err) {
       callback({ success: false, error: err.message });
@@ -20,9 +14,6 @@ module.exports = function (socket, io) {
   });
 
 
-  // ------------------------------------
-  // GET AVAILABLE LESSONS (student = null, status = "available")
-  // ------------------------------------
   socket.on("lessons:getAvailable", async (callback) => {
     try {
       const lessons = await controller.getAllLessonsSocket();
@@ -38,7 +29,6 @@ module.exports = function (socket, io) {
       const modifiedLesson = await controller.modifyLessonSocket(lesson);
       callback({ success: true, data: modifiedLesson });
 
-      // Notifica aggiornamento
       io.emit("lessons:updated");
     } catch (err) {
       callback({ success: false, error: err.message });
@@ -47,16 +37,12 @@ module.exports = function (socket, io) {
 
 
 
-  // ------------------------------------
-  // DELETE LESSON
-  // ------------------------------------
   socket.on("lesson:delete", async (id, callback) => {
     try {
       const deleted = await controller.deleteLessonSocket(id);
 
       callback({ success: true, data: deleted });
 
-      // Notifica aggiornamento
       io.emit("lessons:updated");
     } catch (err) {
       callback({ success: false, error: err.message });
@@ -89,7 +75,6 @@ module.exports = function (socket, io) {
       const bookedLesson = await controller.bookLessonSocket(lessonId, studentEmail);
       callback({ success: true, data: bookedLesson });
 
-      // Notifica aggiornamento
       io.emit("lessons:updated");
     } catch (err) {
       console.error("Errore prenotazione lezione:", err, lessonId, studentEmail);

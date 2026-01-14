@@ -47,12 +47,11 @@
 <script setup>
 import { reactive } from 'vue'
 
-// 1️⃣ Aggiungiamo 'show-toast' alla lista degli eventi emessi
 const emit = defineEmits(["close", "createReview"])
 
 const props = defineProps({
-  teacherEmail: String,   // email del docente
-  studentEmail: String    // email dello studente
+  teacherEmail: String,   
+  studentEmail: String    
 })
 
 const form = reactive({
@@ -61,9 +60,7 @@ const form = reactive({
 })
 
 function saveReview() {
-  // Validazione
   if (form.rating < 1 || form.rating > 5) {
-    // 2️⃣ Sostituito alert() con il toast di avviso
     emit('show-toast', "⚠️ Per favore seleziona una valutazione da 1 a 5 stelle.")
     return
   }
@@ -75,20 +72,15 @@ function saveReview() {
     comment: form.comment
   }
 
-  // 3️⃣ Emetto l'evento di creazione
   emit("createReview", review)
 
 
 
-  // Chiudo il dialog
   emit("close")
 }
 </script>
 
 <style scoped>
-/* Usa il tuo CSS esistente e aggiungo solo la parte della valutazione */
-
-/* Stelle rating */
 .stars {
   display: flex;
   gap: 0.3rem;
@@ -103,14 +95,14 @@ function saveReview() {
 }
 
 .star.active {
-  color: #f4b400; /* giallo stella */
+  color: #f4b400; 
 }
 
 .star:hover {
   color: #f4b400;
 }
 
-/* Mantengo tutto il tuo stile originale */
+
 .edit-dialog {
   position: fixed;
   top: 0;

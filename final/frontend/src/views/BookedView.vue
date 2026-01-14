@@ -14,7 +14,6 @@
           mode="booked"
         />
       </template>
-      <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-icon">📚</div>
         <h3 class="empty-title">Nessuna lezione prenotata</h3>
@@ -35,20 +34,11 @@ import LessonCard from '@/components/LessonCard.vue'
 import FooterNote from '@/components/FooterNote.vue'
 import { isLoggedIn } from '@/composables/auth.js'
 import { socket } from "@/plugins/socket";
-//import { useRoute } from 'vue-router'
 import { onMounted } from "vue";
 import { getCurrentUser } from '../composables/auth';
 import SidebarFilters from '@/components/SidebarFilters.vue'
 
-//const route = useRoute()
 
-//const profileEmail = route.params.email
-
-/**
- * Restituisce tutte le lezioni in cui l'utente è studente
- * @param {string} email - email dell'utente
- * @returns {Promise<Array>} array di lezioni
- */
 function bookedLessons(email) {
   return new Promise((resolve, reject) => {
     socket.emit("lesson:myBooked", email, (response) => {
@@ -79,15 +69,13 @@ function handleFiltersUpdate(newFilters) {
 const filteredLessons = computed(() => {
   return myBookedLessons.value.filter(lesson => {
 
-    // Materia
     if (filters.value.course &&
         !lesson.subject.toLowerCase().includes(filters.value.course.toLowerCase())) {
       return false
     }
 
-    // Data
     if (filters.value.date) {
-      const lessonDate = lesson.date.slice(0, 10)      // "2025-11-26"
+      const lessonDate = lesson.date.slice(0, 10)     
       const filterDate = filters.value.date.slice(0, 10)
 
       if (lessonDate !== filterDate) {
@@ -95,13 +83,11 @@ const filteredLessons = computed(() => {
       }
     }
 
-    // Prezzo minimo
     if (filters.value.minPrice !== '' &&
         lesson.price < filters.value.minPrice) {
       return false
     }
 
-    // Prezzo massimo
     if (filters.value.maxPrice !== '' &&
         lesson.price > filters.value.maxPrice) {
       return false
@@ -126,7 +112,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Main content */
 main.content {
   display: flex;
   flex-direction: column;
@@ -154,7 +139,6 @@ main.content {
   flex-wrap: wrap;
 }
 
-/* Lessons grid */
 .results {
   display: grid;
   grid-template-columns: 1fr;
@@ -163,7 +147,6 @@ main.content {
 }
 
 
-/* Larger screens */
 @media (min-width: 880px) {
   .results {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -171,7 +154,6 @@ main.content {
 
 }
 
-/* Empty state */
 .empty-state {
   display: flex;
   flex-direction: column;

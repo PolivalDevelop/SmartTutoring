@@ -1,4 +1,3 @@
-/* Sidebar */
 .sidebar {
   background: var(--card);
   border-radius: var(--radius);
@@ -55,7 +54,6 @@ input:focus, select:focus {
 }
 
 
-/* Desktop: sidebar sempre visibile, bottone nascosto */
 @media (min-width: 880px) {
   .filters-toggle {
     display: none !important;
@@ -70,7 +68,6 @@ input:focus, select:focus {
   }
 }
 
-/* Mobile: sidebar chiusa di default */
 @media (max-width: 879px) {
   .filters-toggle {
     display: inline-flex;
@@ -90,7 +87,6 @@ input:focus, select:focus {
     background: color-mix(in srgb, var(--accent) 10%, transparent);
   }
 
-  /* Sidebar nascosta di default */
   .sidebar {
     max-height: 0;
     opacity: 0;
@@ -102,7 +98,6 @@ input:focus, select:focus {
     margin-top: 0;
   }
 
-  /* Sidebar aperta */
   .sidebar.open {
     max-height: 100vh;
     opacity: 1;
@@ -111,7 +106,6 @@ input:focus, select:focus {
     margin-top: 3.5rem;
   }
 
-  /* Layout mobile: sidebar sopra risultati */
   .app {
     display: flex;
     flex-direction: column;

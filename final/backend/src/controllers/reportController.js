@@ -1,10 +1,6 @@
-// reportController.js (versione Socket.io)
-
 const Report = require("../models/reportModel");
 const User = require("../models/userModel");
-// --------------------------------------------------
-// CREATE REPORT
-// --------------------------------------------------
+
 exports.createReportSocket = async (data) => {
   const { reporter, reported, reason, comment, createdAt } = data;
 
@@ -28,9 +24,6 @@ exports.createReportSocket = async (data) => {
 };
 
 
-// --------------------------------------------------
-// GET REPORT BY ID
-// --------------------------------------------------
 exports.getReportByIdSocket = async (emailAdmin, id) => {
   const admin = await Admin.findOne({ emailAdmin });
   if (!admin) {
@@ -45,9 +38,6 @@ exports.getReportByIdSocket = async (emailAdmin, id) => {
   return report;
 };
 
-// --------------------------------------------------
-// DELETE REPORT BY ID
-// --------------------------------------------------
 exports.deleteReportSocket = async (emailAdmin, id) => {
   const admin = await Admin.findOne({ emailAdmin });
   if (!admin) {
@@ -62,9 +52,6 @@ exports.deleteReportSocket = async (emailAdmin, id) => {
   return { message: "Report successfully deleted" };
 };
 
-// --------------------------------------------------
-// GET ALL REPORTS FOR A USER (by username)
-// --------------------------------------------------
 exports.getAllUserReportsSocket = async (emailAdmin, username) => {
   const admin = await Admin.findOne({ emailAdmin });
   if (!admin) {

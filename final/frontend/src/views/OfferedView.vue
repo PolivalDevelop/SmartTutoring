@@ -18,13 +18,11 @@
         />
       </template>
 
-      <!-- Stato vuoto -->
       <div v-else class="empty-state" role="status" aria-live="polite">
         <div class="empty-icon">📚</div>
         <h3 class="empty-title">{{ emptyTitle }}</h3>
         <p class="empty-text">{{ emptyText }}</p>
 
-        <!-- Pulsante solo se stai vedendo le tue lezioni -->
         <button
           v-if="isOwner"
           class="btn btn-primary"
@@ -72,15 +70,13 @@ function handleFiltersUpdate(newFilters) {
 const filteredLessons = computed(() => {
   return myOfferedLessons.value.filter(lesson => {
 
-    // Materia
     if (filters.value.course &&
         !lesson.subject.toLowerCase().includes(filters.value.course.toLowerCase())) {
       return false
     }
 
-    // Data
     if (filters.value.date) {
-      const lessonDate = lesson.date.slice(0, 10)      // "2025-11-26"
+      const lessonDate = lesson.date.slice(0, 10)      
       const filterDate = filters.value.date.slice(0, 10)
 
       if (lessonDate !== filterDate) {
@@ -88,13 +84,11 @@ const filteredLessons = computed(() => {
       }
     }
 
-    // Prezzo minimo
     if (filters.value.minPrice !== '' &&
         lesson.price < filters.value.minPrice) {
       return false
     }
 
-    // Prezzo massimo
     if (filters.value.maxPrice !== '' &&
         lesson.price > filters.value.maxPrice) {
       return false
@@ -105,19 +99,14 @@ const filteredLessons = computed(() => {
 })
 
 
-/* -------------------------------------------
-   EMAIL DA MOSTRARE
--------------------------------------------- */
+
 const routeEmail = computed(() => route.params.email || getCurrentUser().value?.email);
 
-/* Proprietario della pagina? */
 const isOwner = computed(() => {
   return routeEmail.value === getCurrentUser().value?.email;
 });
 
-/* -------------------------------------------
-   Titoli dinamici
--------------------------------------------- */
+
 const pageTitle = computed(() =>
   isOwner.value ? "Lezioni offerte da te" : `Lezioni offerte da ${routeEmail.value}`
 );
@@ -130,9 +119,7 @@ const emptyText = computed(() =>
   isOwner.value ? "Pubblica la tua prima lezione!" : "Questo utente non ha lezioni disponibili."
 );
 
-/* -------------------------------------------
-   FETCH lezioni offerte
--------------------------------------------- */
+
 function fetchOfferedLessons(email) {
   return new Promise((resolve, reject) => {
     socket.emit("lesson:myOffered", email, (response) => {
@@ -142,9 +129,7 @@ function fetchOfferedLessons(email) {
   });
 }
 
-/* -------------------------------------------
-   CARICAMENTO INIZIALE
--------------------------------------------- */
+
 onMounted(() => {
   loadLessons();
   socket.on("lessons:updated", () => {
@@ -152,11 +137,7 @@ onMounted(() => {
   });
 });
 
-/* -------------------------------------------
-   WATCH per route + email
-   → ogni volta che la mail nella route cambia,
-     si ricaricano le lezioni
--------------------------------------------- */
+
 watch(
   () => route.params.email,
   () => {
@@ -164,7 +145,6 @@ watch(
   }
 );
 
-/* Funzione centralizzata */
 function loadLessons() {
   const email = routeEmail.value;
 
@@ -193,7 +173,6 @@ function handleEdit(lesson) {
 
 
 <style scoped>
-/* Main content */
 main.content {
   display: flex;
   flex-direction: column;
@@ -221,7 +200,6 @@ main.content {
   flex-wrap: wrap;
 }
 
-/* Lessons grid */
 .results {
   display: grid;
   grid-template-columns: 1fr;
@@ -230,7 +208,6 @@ main.content {
 }
 
 
-/* Larger screens */
 @media (min-width: 880px) {
   .results {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -238,7 +215,6 @@ main.content {
 
 }
 
-/* Empty state */
 .empty-state {
   display: flex;
   flex-direction: column;

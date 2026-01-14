@@ -1,5 +1,3 @@
-// controllers/userController.js
-
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel") 
@@ -17,28 +15,20 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 }
 
 
-// 🔹 Utility: Rimuove password dal risultato
 const sanitizeUser = (user) => {
   const obj = user.toObject()
   delete obj.password
   return obj
 }
 
-
-// ======================================================
-//  CREATE USER ( / )
-// ======================================================
 exports.createUser = async (data) => {
-  // Controllo se l'email è già registrata
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
-    throw new Error("❌ Esiste già un account registrato con questa email");
+    throw new Error("Esiste già un account registrato con questa email");
   }
 
-  // Hash della password
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  // Creazione nuovo utente
   const user = new User({
     firstName: data.firstName,
     lastName: data.lastName,
@@ -53,29 +43,22 @@ exports.createUser = async (data) => {
 
   await user.save();
 
-  return sanitizeUser(user); // restituisce utente senza password
+  return sanitizeUser(user); 
 };
 
-
-// ======================================================
-//  LOGIN USER  ( /session/login )
-// ======================================================
 exports.loginUser = async (data, jwtSettings) => {
   const { email, password } = data;
 
-  // Recupera l'utente con la password (select +password)
   const user = await User.findOne({ email }).select("+password");
   if (!user) {
     throw new Error("User not found");
   }
 
-  // Confronta la password
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) {
     throw new Error("Invalid password");
   }
 
-  // Genera JWT
   const token = jwt.sign(
     { userId: user._id, email: user.email },
     jwtSettings.secret,
@@ -87,18 +70,12 @@ exports.loginUser = async (data, jwtSettings) => {
 
 
 
-// ======================================================
-//  LOGOUT USER  ( /session/logout )
-// ======================================================
 exports.logoutUser = (socket) => {
   socket.data.user = null
 }
 
 
 
-// ======================================================
-//  GET SESSION DATA ( /session )
-// ======================================================
 exports.getSessionData = (socket) => {
   if (!socket.data.user)
     return socket.emit("session:get:response", { error: "No session active" })
@@ -107,10 +84,6 @@ exports.getSessionData = (socket) => {
 }
 
 
-
-// ======================================================
-//  SEARCH USER BY USERNAME ( /:username )
-// ======================================================
 exports.searchByUsername = async (socket, username) => {
   try {
     const user = await User.findOne({ firstName: username })
@@ -129,28 +102,22 @@ exports.searchByUsername = async (socket, username) => {
 
 
 
-// ======================================================
-//  DELETE USER (DELETE /:username)
-// ======================================================
 exports.deleteUser = async (socket, data) => {
   try {
     const { email, targetEmail } = data;
 
-    // Controllo admin
     const admin = await Admin.findOne({ emailAdmin: email });
 
     if (!admin) {
       return { message: "Only admins can delete users" };
     }
 
-    // Cerca l’utente da cancellare
     const userToDelete = await User.findOne({ email: targetEmail });
 
     if (!userToDelete) {
       return { message: "User not found" };
     }
 
-    // 1️⃣ Cancella tutte le lezioni dove l'utente è presente
     const lessonsDeleted = await Lesson.deleteMany({
       $or: [
         { student: targetEmail },
@@ -159,23 +126,21 @@ exports.deleteUser = async (socket, data) => {
     });
 
 
-    // 3️⃣ Cancella tutte le valutazioni in cui appare l'utente
     const reviewsDeleted = await Review.deleteMany({
       $or: [
-        { teacher: targetEmail },   // ha lasciato una valutazione
-        { student: targetEmail }    // ha ricevuto una valutazione
+        { teacher: targetEmail },  
+        { student: targetEmail }    
       ]
     });
 
     const reportsDeleted = await Report.deleteMany({
       $or: [
-        { reporter: targetEmail },   // ha fatto una segnalazione
-        { reported: targetEmail }    // è stato segnalato
+        { reporter: targetEmail },   
+        { reported: targetEmail }    
       ]
     });
 
 
-    // 4️⃣ Cancella l’utente
     await User.deleteOne({ email: targetEmail });
 
     return {
@@ -188,10 +153,6 @@ exports.deleteUser = async (socket, data) => {
 };
 
 
-
-// ======================================================
-//  SEARCH BY ID  ( /id/:id )
-// ======================================================
 exports.searchById = async (socket, id) => {
   try {
     const user = await User.findById(id)
@@ -249,7 +210,6 @@ exports.updateUserProfile = async (socket, email, updatedData, callback) => {
       });
     }
 
-    // Trova l'utente tramite email
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -262,32 +222,27 @@ exports.updateUserProfile = async (socket, email, updatedData, callback) => {
     if (updatedData.photo && updatedData.photo.startsWith("data:image/")) {
       const matches = updatedData.photo.match(/^data:image\/(\w+);base64,(.+)$/);
       if (matches) {
-        const ext = matches[1]; // png, jpeg, ecc.
+        const ext = matches[1]; 
         const base64Data = matches[2];
         const filename = `${Date.now()}.${ext}`;
         const filePath = path.join(UPLOAD_DIR, filename);
       
         fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
       
-        // Aggiorna il path della foto nel formato che il client può richiedere
           updatedData.photo = `/uploads/${filename}`;
       }
     }
 
     Object.keys(updatedData).forEach((key) => {
-      // Evita che qualcuno cerchi di cambiare campi protetti
       if (["password", "_id", "createdAt", "updatedAt"].includes(key)) return;
 
       user[key] = updatedData[key];
     });
 
-    // Salva modifiche
     const savedUser = await user.save();
 
-    // Rimuovi campi sensibili
     const sanitized = sanitizeUser(savedUser);
 
-    // Risposta al client
     return callback({
       success: true,
       data: sanitized,

@@ -7,7 +7,6 @@
           @save="updateUser"
         />
 
-    <!-- HEADER -->
     <div class="profile-header">
       <img
         :src="photoUrl"
@@ -19,7 +18,6 @@
         <h2 class="profile-name">{{ user.firstName }} {{ user.lastName }}</h2>
         <p class="profile-role">{{ fullDegreeInfo }}</p>
 
-        <!-- Rating sempre visibile -->
         <div class="profile-rating" aria-label="Valutazione media utente">
           <span class="stars">{{ '★'.repeat(roundedRating) + '☆'.repeat(5 - roundedRating) }}</span>
           <span class="rating-value">({{ 0 }} / 5)</span>
@@ -30,7 +28,6 @@
 
     <hr />
 
-    <!-- INFO -->
     <div id="profileInfo" class="profile-info">
       <div class="info-item">
         <strong>Email:</strong>
@@ -46,13 +43,11 @@
       </div>
     </div>
 
-    <!-- BIO (se presente) -->
     <div v-if="user.bio" class="profile-bio">
       <h3>Bio</h3>
       <p>{{ user.bio }}</p>
     </div>
 
-    <!-- ACTIONS -->
     <div class="profile-actions">
       <button class="btn btn-primary" @click="openEditProfile()">Modifica profilo</button>
 
@@ -130,7 +125,6 @@ function updateUser(updatedUser) {
   box-shadow: var(--shadow-xl);
 }
 
-/* HEADER */
 .profile-header {
   display: flex;
   align-items: flex-start;
@@ -154,7 +148,6 @@ function updateUser(updatedUser) {
   gap: 0.3rem;
 }
 
-/* Allinea tutto a sinistra */
 .profile-name,
 .profile-role,
 .profile-rating {
@@ -173,7 +166,6 @@ function updateUser(updatedUser) {
   color: var(--muted);
 }
 
-/* RATING */
 .profile-rating {
   display: flex;
   align-items: center;
@@ -197,7 +189,6 @@ function updateUser(updatedUser) {
   font-size: 0.9rem;
 }
 
-/* INFO */
 .profile-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -215,7 +206,6 @@ function updateUser(updatedUser) {
   font-size: 0.95rem;
 }
 
-/* BIO */
 .profile-bio {
   background: var(--surface);
   border-radius: var(--radius);
@@ -237,7 +227,6 @@ function updateUser(updatedUser) {
   white-space: pre-wrap;
 }
 
-/* ACTIONS */
 .profile-actions {
   display: flex;
   justify-content: flex-end;
@@ -246,7 +235,6 @@ function updateUser(updatedUser) {
   margin-top: 1rem;
 }
 
-/* RESPONSIVE */
 @media (max-width: 700px) {
   .profile-card {
     padding: 1.5rem 1rem;
