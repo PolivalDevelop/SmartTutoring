@@ -76,27 +76,21 @@ const editDialog = ref({ visible: false, lesson: null })
 const toast = ref({ visible: false, message: '' })
 
 function openBooking(lesson) {
-  console.log("Tentativo di prenotazione lezione:", lesson);
   if (!isLoggedIn.value) {
-    console.log("Utente non loggato, reindirizzamento alla pagina di login.");
     showToast('⚠️ Devi effettuare l’accesso per prenotare una lezione.')
     router.push('/login')
     return
   }
-  console.log("Apertura dialog di prenotazione per la lezione");
 
   bookingDialog.value = { visible: true, lesson }
 }
 
 function openEdit(lesson) {
-  console.log("Tentativo di modifica lezione:", lesson);
   if (!isLoggedIn.value) {
-    console.log("Utente non loggato, reindirizzamento alla pagina di login.");
     showToast('⚠️ Devi effettuare l’accesso per modificare una lezione.')
     router.push('/login')
     return
   }
-  console.log("Apertura dialog di modifica per la lezione");
 
   editDialog.value = { visible: true, lesson: lesson }
 }
@@ -107,7 +101,6 @@ onMounted(() => {
   socket.emit("lessons:getMatter", (response) => {
     if (response?.success) {
       setMatter(response.matters);
-      console.log("Materie ricevute:", response.matters);
     } else {
       console.error("Errore nel recupero delle materie:", response?.error);
     }
@@ -132,13 +125,9 @@ onBeforeUnmount(() => {
 });
 
 function confirmBooking() {
-  console.log("Conferma prenotazione lezione: ", bookingDialog.value.lesson);
   const lesson = bookingDialog.value.lesson;
-  console.log("Lezione da prenotare:", lesson);
   bookingDialog.value.visible = false;
-  console.log("Dialog di prenotazione chiuso.");
   const userEmail = getCurrentUser().value?.email || null;
-  console.log("Email utente corrente:", userEmail);
 
   if (!lesson) return;
 
@@ -151,7 +140,6 @@ function confirmBooking() {
       showToast("❌ Errore durante la prenotazione: " + response.error);
       return;
     }
-    console.log("Lezione prenotata:", response.data);
     showToast(
       "✅ Lezione prenotata con successo! Il costo è stato addebitato dal tuo saldo Smart Tutoring."
     );
@@ -162,7 +150,6 @@ function confirmBooking() {
 
 function handlePublish(lesson) {
   publishDialog.value.visible = false;
-  console.log("Pubblicazione lezione:", lesson);
 
   socket.emit("lesson:create", lesson, (response) => {
     if (!response.success) {
@@ -170,7 +157,6 @@ function handlePublish(lesson) {
       showToast("❌ Errore durante la pubblicazione: " + response.error);
       return;
     }
-    console.log("Lezione pubblicata:", response.data);
     showToast("✅ Lezione pubblicata con successo!");
 
   });
@@ -178,7 +164,6 @@ function handlePublish(lesson) {
 
 function handleModify(lesson) {
   editDialog.value.visible = false;
-  console.log("Modifica lezione:", lesson);
 
   socket.emit("lesson:modify", lesson, (response) => {
     if (!response.success) {
@@ -186,7 +171,6 @@ function handleModify(lesson) {
       showToast("❌ Errore durante la modifica: " + response.error);
       return;
     }
-    console.log("Lezione modificata:", response.data);
     showToast("✅ Lezione modificata con successo!");
 
   });
