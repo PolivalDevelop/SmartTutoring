@@ -95,7 +95,6 @@ const fullDegreeInfo = computed(() => {
 })
 
 function openEditProfile() {
-  console.log("Apertura dialog di modifica profilo.");
   editProfileDialog.value.visible = true
 }
 
@@ -107,7 +106,6 @@ function updateUser(updatedUser) {
     }
     getCurrentUser().value = response.data;
     props.user = response.data;
-    console.log("Profilo aggiornato con successo:", response.data);
   }); 
   editProfileDialog.value.visible = false
 }
