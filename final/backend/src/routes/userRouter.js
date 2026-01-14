@@ -14,12 +14,9 @@ module.exports = function (socket, io, jwtSettings) {
   // 1. /  → createUser
   socket.on("user:register", async (data, callback) => {
     try {
-      console.log("Registering user with data:", data);
       if (data.photo && data.photo.startsWith("data:image/")) {
-        console.log("Processing base64 photo data");
         const matches = data.photo.match(/^data:image\/(\w+);base64,(.+)$/);
         if (matches) {
-          console.log("Base64 photo data matched");
           const ext = matches[1]; // png, jpeg, ecc.
           const base64Data = matches[2];
           const filename = `${Date.now()}.${ext}`;
@@ -31,13 +28,11 @@ module.exports = function (socket, io, jwtSettings) {
           data.photo = `/uploads/${filename}`;
         }
       }
-      console.log("User data after processing photo:", data);
 
       const user = await controller.createUser(data); 
       callback({ success: true, data: user });
     } catch (err) {
       console.error(err);
-      console.log(`Error data: ${JSON.stringify(data)}`);
       callback({ success: false, error: err.message });
     }
   });
