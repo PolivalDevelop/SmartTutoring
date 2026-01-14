@@ -26,7 +26,6 @@ module.exports = function (socket, io) {
   socket.on("lessons:getAvailable", async (callback) => {
     try {
       const lessons = await controller.getAllLessonsSocket();
-      console.log("Lezioni disponibili ottenute:", lessons);
       socket.emit("lessons:available", lessons);
     } catch (err) {
       socket.emit("lessons:available", { error: err.message });
@@ -68,7 +67,6 @@ module.exports = function (socket, io) {
   socket.on("lesson:myBooked", async (email, callback) => {
     try {
       const lessons = await controller.getLessonsByStudentSocket(email);
-      console.log("Lezioni prenotate ottenute:", lessons);
       callback({ success: true, data: lessons });
     } catch (err) {
       console.error("Errore ottenimento lezioni prenotate:", err, email);
@@ -79,7 +77,6 @@ module.exports = function (socket, io) {
   socket.on("lesson:myOffered", async (email, callback) => {
     try {
       const lessons = await controller.getLessonsByTeacherSocket(email);
-      console.log("Lezioni offerte ottenute:", lessons);
       callback({ success: true, data: lessons });
     } catch (err) {
       console.error("Errore ottenimento lezioni offerte:", err, email);
@@ -90,7 +87,6 @@ module.exports = function (socket, io) {
   socket.on("lesson:book", async ({ lessonId, studentEmail }, callback) => {
     try {
       const bookedLesson = await controller.bookLessonSocket(lessonId, studentEmail);
-      console.log("Lezione prenotata:", bookedLesson);
       callback({ success: true, data: bookedLesson });
 
       // Notifica aggiornamento
