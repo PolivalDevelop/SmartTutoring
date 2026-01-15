@@ -100,6 +100,8 @@ function updateUser(updatedUser) {
       return;
     }
     getCurrentUser().value = response.data;
+    response.data.avgRating = props.user.avgRating
+    response.data.numReviews = props.user.numReviews
     props.user = response.data;
   }); 
   editProfileDialog.value.visible = false
