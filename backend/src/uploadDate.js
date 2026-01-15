@@ -291,7 +291,7 @@ const lessons = [
   },
   {
     id: "lesson-17",
-    teacher: "manuel.andruccioli@studio.unibo.it",
+    teacher: "valerio.di.zio@studio.unibo.it",
     student: null,
     time: "9:00",
     subject: "Applicazioni Web",
@@ -303,7 +303,7 @@ const lessons = [
   },
   {
     id: "lesson-18",
-    teacher: "manuel.andruccioli@studio.unibo.it",
+    teacher: "valerio.di.zio@studio.unibo.it",
     student: null,
     time: "11:00",
     subject: "Applicazioni Web",
@@ -413,14 +413,14 @@ const reviews = [
   },
   {
     id: "review-11",
-    teacher: "manuel.andruccioli@studio.unibo.it",
+    teacher: "valerio.di.zio@studio.unibo.it",
     student: "elisa.ruffini@studio.unibo.it",
     rating: 5,
     comment: "Lezione molto chiara e ben organizzata."
   },
   {
     id: "review-12",
-    teacher: "manuel.andruccioli@studio.unibo.it",
+    teacher: "valerio.di.zio@studio.unibo.it",
     student: "daniel.capannini@studio.unibo.it",
     rating: 4,
     comment: "Ottima spiegazione, esempi pratici utilissimi."
@@ -449,20 +449,20 @@ const reviews = [
   {
     id: "review-16",
     teacher: "giulia.rossi@studio.unibo.it",
-    student: "manuel.andruccioli@studio.unibo.it",
+    student: "valerio.di.zio@studio.unibo.it",
     rating: 4,
     comment: "Contenuti chiari, ritmo un po’ veloce ma efficace."
   },
   {
     id: "review-17",
     teacher: "luca.bianchi@studio.unibo.it",
-    student: "manuel.andruccioli@studio.unibo.it",
+    student: "valerio.di.zio@studio.unibo.it",
     rating: 5,
     comment: "Ottima capacità di spiegare concetti complessi."
   },
   {
     id: "review-18",
-    teacher: "manuel.andruccioli@studio.unibo.it",
+    teacher: "valerio.di.zio@studio.unibo.it",
     student: "luca.cantagallo@studio.unibo.it",
     rating: 4,
     comment: "Lezione pratica e molto utile."
@@ -470,7 +470,7 @@ const reviews = [
   {
     id: "review-19",
     teacher: "luca.cantagallo@studio.unibo.it",
-    student: "manuel.andruccioli@studio.unibo.it",
+    student: "valerio.di.zio@studio.unibo.it",
     rating: 5,
     comment: "Spiegazione chiara e ben approfondita."
   }
