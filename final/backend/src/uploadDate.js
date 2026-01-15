@@ -21,7 +21,7 @@ const users = [
     email: "giulia.rossi@studio.unibo.it",
     password: "Password02!",
     degreeType: "dottorato",
-    photo: "/uploads/giulia.jpg",
+    photo: "/uploads/giulia.jpeg",
     birthDate: new Date("2000-08-10"),
     averageGrade: 30,
     bio: "Dottoranda in Business Intelligence."
