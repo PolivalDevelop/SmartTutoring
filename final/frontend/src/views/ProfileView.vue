@@ -36,7 +36,7 @@
 import { ref } from 'vue'
 import PersonalProfile from '@/components/PersonalProfile.vue'
 import PublicProfile from '@/components/PublicProfile.vue'
-import ReviewCard from '@/components/reviewCard.vue'
+import ReviewCard from '@/components/ReviewCard.vue'
 import { watch } from "vue"
 import { socket } from "@/plugins/socket";
 import { getCurrentUser, isLoggedIn } from '@/composables/auth';

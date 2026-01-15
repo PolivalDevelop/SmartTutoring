@@ -57,7 +57,7 @@ const users = [
     email: "luca.cantagallo@studio.unibo.it",
     password: "Password01!",
     degreeType: "magistrale",
-    photo: null,
+    photo: "/uploads/Luca.JPG",
     birthDate: new Date("1999-08-15"),
     averageGrade: 29,
     bio: "Cofondatore di SmartTutoring e amministratore dell'applicazione."
